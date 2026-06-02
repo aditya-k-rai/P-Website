@@ -251,6 +251,9 @@
             </div>
           </div>
 
+          <!-- About User Image - Between NJMS and Profile -->
+          <img src="./Images/Graphics/Icons/Aditya%20Kumar%20Rai%20Siting%20.png" alt="Aditya Kumar Rai" class="about-user-image" loading="lazy" decoding="async" />
+
           <div class="ak-panels ak-split">
             <div class="ak-panel is-shown" data-ak-panel="profile">
               <div class="ak-panel-title">Profile</div>
@@ -1149,6 +1152,27 @@
     </section>
     <!-- IT Specialist Section End -->
 
+    <!-- Companies & Collaborations Section Start -->
+    <section id="companiesCollaboration" class="projectSection pb-carousel-section">
+      <h2 class="projectTitle text-effect"><span class="te-line"><span class="te-base">Companies &amp; Collabor</span><span class="te-fade">ations</span></span><span class="te-hover">Companies & Collaborations</span></h2>
+
+      <div class="cc-wrap">
+        <p class="cc-intro">Collaborated with and contributed to multiple companies and organizations, bringing technical expertise and innovative solutions across various industries and projects.</p>
+      </div>
+
+      <div class="pb-carousel-track" style="--time: 30s; --total: 8;">
+        <div class="pb-carousel-item" style="--i: 1;"><img src="Images/Graphics/Icons/Company%20Icons/Aarna%20Logo.jpg" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 2;"><img src="Images/Graphics/Icons/Company%20Icons/County%20In%20Hotel.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 3;"><img src="Images/Graphics/Icons/Company%20Icons/Fab%20Bakers%20Logo.jpg" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 4;"><img src="Images/Graphics/Icons/Company%20Icons/Godrej%20Properties%20Logo.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 5;"><img src="Images/Graphics/Icons/Company%20Icons/Greater%20Noida%20Properties%20Dealer%20Logo.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 6;"><img src="Images/Graphics/Icons/Company%20Icons/Mulberry%20Street.jpg" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 7;"><img src="Images/Graphics/Icons/Company%20Icons/Ryoto%20Image%20Logo.jpg" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 8;"><img src="Images/Graphics/Icons/Company%20Icons/The%20Choclate%20Room%20Logo.png" alt="Company Logo" loading="lazy"></div>
+      </div>
+    </section>
+    <!-- Companies & Collaborations Section End -->
+
     <!-- Skill Section Start  -->
     <section class="skillContainer" id="skills">
       <div class="skillFadedText absolute">Skills</div>
@@ -1338,6 +1362,24 @@
 
   <!-- Section Navigation (left side) -->
   <div class="section-nav" id="sectionNav" aria-label="Section navigation">
+    <button class="section-nav-btn theme-toggle-btn" id="themeToggleBtn" title="Toggle light / dark mode" aria-label="Toggle light / dark mode">
+      <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="12" y1="2" x2="12" y2="5"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="5" y2="12"/>
+          <line x1="19" y1="12" x2="22" y2="12"/>
+          <line x1="4.5" y1="4.5" x2="6.6" y2="6.6"/>
+          <line x1="17.4" y1="17.4" x2="19.5" y2="19.5"/>
+          <line x1="4.5" y1="19.5" x2="6.6" y2="17.4"/>
+          <line x1="17.4" y1="6.6" x2="19.5" y2="4.5"/>
+        </g>
+      </svg>
+      <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
+      </svg>
+    </button>
     <button class="section-nav-btn" id="sectionNavUp" title="Tap: previous section • Hold: go to top" aria-label="Previous section (hold to go to top)">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -2067,89 +2109,111 @@
   <script src="./hero-shards.js"></script>
   <script src="https://kit.fontawesome.com/58a810656e.js" crossorigin="anonymous"></script>
   <script>
-    // Night theme and mouse trail activation based on time
+    // Theme: auto by time, or manual override (persists in localStorage).
     function isNightTime() {
       const now = new Date();
       const hour = now.getHours();
       return (hour >= 18 || hour < 9); // 6pm to 9am
     }
-    if (isNightTime()) {
-      document.body.classList.add('night-theme');
-      // document.getElementById('trailChooser').style.display = 'grid';
-      // Mouse trail effect
+    function getThemePref() {
+      try { return localStorage.getItem('themePref'); } catch (e) { return null; }
+    }
+    function setThemePref(v) {
+      try { localStorage.setItem('themePref', v); } catch (e) {}
+    }
+    function resolveTheme() {
+      const pref = getThemePref();
+      if (pref === 'dark' || pref === 'light') return pref;
+      return isNightTime() ? 'dark' : 'light';
+    }
+    function applyTheme(mode) {
+      if (mode === 'dark') {
+        document.body.classList.add('night-theme');
+        enableStarTrail();
+      } else {
+        document.body.classList.remove('night-theme');
+      }
+      const btn = document.getElementById('themeToggleBtn');
+      if (btn) {
+        btn.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
+        btn.title = mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      }
+    }
+
+    // Star trail (night only) — attach mousemove once, but suppress when not in night mode.
+    let _trailEnabled = false;
+    function enableStarTrail() {
+      if (_trailEnabled) return;
+      _trailEnabled = true;
       let fallDirection = 1;
       document
         .querySelectorAll('input[name="trailside"]')
-        .forEach(
-        r => {
-          r.addEventListener(
-            'change',
-            e => {
-              fallDirection = parseInt(e.target.value);
-            }
-          );
-        }
-      );
-      let x1=0, y1=0;
+        .forEach(r => {
+          r.addEventListener('change', e => {
+            fallDirection = parseInt(e.target.value);
+          });
+        });
+      let x1 = 0, y1 = 0;
       const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0),
         dist_to_draw = 50,
         delay = 1000,
-        fsize = [
-          '1.1rem', '1.4rem', '.8rem', '1.7rem'
-        ],
-        colors = [
-        '#E23636',
-        '#F9F3EE',
-        '#E1F8DC',
-        '#B8AFE6',
-        '#AEE1CD',
-        '#5EB0E5'
-      ],
-        rand = (min, max) => 
-          Math.floor(Math.random() * (max - min + 1)) + min,
-        selRand = (o) => o[rand(0, o.length -1)],
-        distanceTo =  (x1, y1, x2, y2) => 
-          Math.sqrt((Math.pow(x2-x1,2))+(Math.pow(y2-y1,2))),
-        shouldDraw = (x, y) => 
-          (distanceTo(x1, y1, x, y) >= dist_to_draw),
+        fsize = ['1.1rem', '1.4rem', '.8rem', '1.7rem'],
+        colors = ['#E23636', '#F9F3EE', '#E1F8DC', '#B8AFE6', '#AEE1CD', '#5EB0E5'],
+        rand = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min,
+        selRand = (o) => o[rand(0, o.length - 1)],
+        distanceTo = (x1, y1, x2, y2) => Math.sqrt((Math.pow(x2 - x1, 2)) + (Math.pow(y2 - y1, 2))),
+        shouldDraw = (x, y) => (distanceTo(x1, y1, x, y) >= dist_to_draw),
         addStr = (x, y) => {
+          if (!document.body.classList.contains('night-theme')) return;
           const str = document.createElement("div");
           str.innerHTML = '&#10022;';
           str.className = 'star';
-          str.style.top = `${y + rand(-20,20)}px`;
+          str.style.top = `${y + rand(-20, 20)}px`;
           str.style.left = `${x}px`;
           str.style.color = selRand(colors);
           str.style.fontSize = selRand(fsize);
           document.body.appendChild(str);
           const fs = 10 + 5 * parseFloat(getComputedStyle(str).fontSize);
           let dir = fallDirection;
-          if (dir === 0) dir = rand(-1,1)||1;
+          if (dir === 0) dir = rand(-1, 1) || 1;
           str.animate(
             {
               translate: [
-                `${rand(-5, 5)}px ${((y+fs)>vh?vh-y:fs) * dir * .3}px`,
-                `${rand(-20, 20)}px ${((y+fs)>vh?vh-y:fs) * dir}px`],
-              opacity: [1,0],
-              transform: ['rotateX(0) rotateY(0)',`rotateX(${rand(1, 500)}deg) rotateY(${rand(1, 500)}deg)`]
+                `${rand(-5, 5)}px ${((y + fs) > vh ? vh - y : fs) * dir * .3}px`,
+                `${rand(-20, 20)}px ${((y + fs) > vh ? vh - y : fs) * dir}px`],
+              opacity: [1, 0],
+              transform: ['rotateX(0) rotateY(0)', `rotateX(${rand(1, 500)}deg) rotateY(${rand(1, 500)}deg)`]
             }, {
-              duration: delay,
-              fill: 'forwards',
-              rangeStart: ["cover 0% ", "cover 40%"],
-              rangeEnd: ["cover 40% ", "cover 100%"]
+            duration: delay,
+            fill: 'forwards',
+            rangeStart: ["cover 0% ", "cover 40%"],
+            rangeEnd: ["cover 40% ", "cover 100%"]
           });
-          setTimeout(() => {
-              str.remove();
-            }, delay);
-        }
+          setTimeout(() => { str.remove(); }, delay);
+        };
       addEventListener("mousemove", (e) => {
-        const {clientX, clientY} = e;
-        if(shouldDraw(clientX, clientY)){
+        const { clientX, clientY } = e;
+        if (shouldDraw(clientX, clientY)) {
           addStr(clientX, clientY);
           x1 = clientX;
           y1 = clientY;
         }
       });
     }
+
+    // Initial theme on load (time-based unless user saved a preference).
+    applyTheme(resolveTheme());
+
+    // Toggle button: manual override that wins over the time check.
+    (function () {
+      const btn = document.getElementById('themeToggleBtn');
+      if (!btn) return;
+      btn.addEventListener('click', function () {
+        const next = document.body.classList.contains('night-theme') ? 'light' : 'dark';
+        setThemePref(next);
+        applyTheme(next);
+      });
+    })();
   </script>
   <!-- <script>
       document.addEventListener("DOMContentLoaded", function (event) {
@@ -3019,4 +3083,3 @@
 </body>
 
 </html>
-

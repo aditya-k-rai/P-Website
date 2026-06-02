@@ -342,8 +342,8 @@ header .logo {
 }
 
 .header-logo-img {
-  width: 50px;
-  height: 50px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
   object-fit: cover;
   opacity: 0;
@@ -441,7 +441,7 @@ nav {
 .nav-links li a {
   position: relative;
   text-decoration: none;
-  color: rgba(255, 255, 255, 0.88);
+  color: #1f2937;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.2px;
@@ -450,12 +450,12 @@ nav {
   border-radius: 999px;
   display: inline-block;
   transition: color 0.25s ease, background 0.25s ease, transform 0.25s ease;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 .nav-links li a:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.18);
+  color: #111827;
+  background: rgba(255, 255, 255, 0.45);
   transform: translateY(-1px);
 }
 
@@ -464,9 +464,9 @@ nav {
 }
 
 .nav-links li a.is-active {
-  color: var(--red, #e84949);
-  background: rgba(0, 0, 0, 0.28);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  color: #e84949;
+  background: rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.6);
 }
 
 .nav-social-icons {
@@ -878,6 +878,10 @@ nav {
   overflow: hidden;
 }
 
+.projectSection + .projectSection {
+  margin-top: 0;
+}
+
 .projectTitle {
   font-size: 90px;
   line-height: 100%;
@@ -891,6 +895,7 @@ nav {
   align-items: center;
   justify-content: center;
   position: relative;
+  border-top: 1px solid #2f2b28;
   border-bottom: 1px solid #2f2b28;
 }
 
@@ -1578,13 +1583,13 @@ nav {
   --left: -200rem;
   position: relative;
   min-width: calc(10rem * var(--total));
-  height: 22rem;
+  height: 11rem;
 }
 
 .pb-carousel-item {
   position: absolute;
-  width: 18rem;
-  height: 21rem;
+  width: 9rem;
+  height: 10.5rem;
   left: 100%;
   display: flex;
   justify-content: center;
@@ -1621,21 +1626,21 @@ nav {
 /* Responsive - Tablet */
 @media (max-width: 900px) {
   .pb-carousel-section { padding: 30px 0 0; }
-  .pb-carousel-track { height: 18rem; }
-  .pb-carousel-item { width: 14rem; height: 17rem; }
+  .pb-carousel-track { height: 9rem; }
+  .pb-carousel-item { width: 7rem; height: 8.5rem; }
 }
 
 /* Responsive - Mobile */
 @media (max-width: 600px) {
   .pb-carousel-section { padding: 24px 0 0; }
-  .pb-carousel-track { height: 15rem; }
-  .pb-carousel-item { width: 12rem; height: 14rem; }
+  .pb-carousel-track { height: 7.5rem; }
+  .pb-carousel-item { width: 6rem; height: 7rem; }
 }
 
 @media (max-width: 480px) {
   .pb-carousel-section { padding: 20px 0 0; }
-  .pb-carousel-track { height: 13rem; }
-  .pb-carousel-item { width: 10rem; height: 12rem; }
+  .pb-carousel-track { height: 6.5rem; }
+  .pb-carousel-item { width: 5rem; height: 6rem; }
 }
 
 /* Night theme - Carousel */
@@ -3192,7 +3197,7 @@ nav {
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(20px, 3vw, 40px) clamp(14px, 4vw, 48px) clamp(40px, 5vw, 70px);
+  padding: clamp(20px, 3vw, 40px) clamp(14px, 4vw, 48px) clamp(20px, 2vw, 30px);
   box-sizing: border-box;
 }
 
@@ -3201,6 +3206,30 @@ nav {
   max-width: 620px;
   margin: 0 auto;
   justify-self: start;
+}
+
+.about-user-image {
+  position: absolute;
+  right: clamp(-80px, -5vw, 0px);
+  bottom: 0;
+  width: 35%;
+  max-width: 500px;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3));
+  transition: transform 0.3s ease, filter 0.3s ease;
+  margin: 0;
+  z-index: 1;
+}
+
+.about-user-image:hover {
+  transform: scale(1.05);
+  filter: drop-shadow(0 25px 50px rgba(192, 132, 252, 0.4));
+}
+
+#about {
+  position: relative;
 }
 
 .tv-frame {
@@ -3251,11 +3280,30 @@ nav {
     order: -1;
     justify-self: center;
   }
+  .about-user-image {
+    position: static;
+    width: 60%;
+    max-width: 300px;
+    margin: clamp(20px, 3vw, 30px) auto 0;
+  }
   .about-copy {
     margin: 0 auto;
   }
   .ak-resume {
     text-align: left;
+  }
+}
+
+/* Smartphone: Image below NJMS, above profile */
+@media (max-width: 600px) {
+  .about-user-image {
+    display: block;
+    width: 70%;
+    max-width: 280px;
+    margin: 0 auto -25px;
+    position: static !important;
+    right: auto;
+    bottom: auto;
   }
 }
 
@@ -3697,6 +3745,122 @@ nav {
   .ak-projects-grid { grid-template-columns: 1fr; }
   .ak-tab { padding: 10px 10px; font-size: 12px; }
 }
+
+/* --- About Resume · Light Theme Overrides (cream section bg) --- */
+/* Scoped with body:not(.night-theme) so the dark base styles take over
+   when the user/time switches into night mode. */
+body:not(.night-theme) #about .ak-name {
+  background: linear-gradient(90deg, #1a1a2e 0%, #6d28d9 45%, #1a1a2e 100%);
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+body:not(.night-theme) #about .ak-role {
+  color: #27272a;
+}
+
+body:not(.night-theme) #about .ak-mini-chip {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.18);
+  color: #27272a;
+}
+
+body:not(.night-theme) #about .ak-mini-chip--link:hover {
+  background: rgba(124, 58, 237, 0.1);
+  border-color: rgba(124, 58, 237, 0.6);
+  color: #1e1b4b;
+  box-shadow: 0 6px 16px -6px rgba(124, 58, 237, 0.45);
+}
+
+body:not(.night-theme) #about .ak-panel-title {
+  color: #6d28d9;
+  border-bottom-color: rgba(109, 40, 217, 0.3);
+}
+
+body:not(.night-theme) #about .ak-panel-title::after {
+  background: linear-gradient(90deg, #e84949, #6d28d9);
+}
+
+body:not(.night-theme) #about .ak-para {
+  color: #27272a;
+}
+
+body:not(.night-theme) #about .ak-section-label {
+  color: #3f3f46;
+}
+
+body:not(.night-theme) #about .ak-interests-tags span {
+  background: linear-gradient(135deg, rgba(232, 73, 73, 0.14), rgba(109, 40, 217, 0.18));
+  border-color: rgba(0, 0, 0, 0.15);
+  color: #18181b;
+}
+
+body:not(.night-theme) #about .ak-interests-tags span:hover {
+  border-color: rgba(109, 40, 217, 0.6);
+  box-shadow: 0 6px 16px -6px rgba(109, 40, 217, 0.45);
+}
+
+body:not(.night-theme) #about .ak-skill-pills span {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #27272a;
+}
+
+body:not(.night-theme) #about .ak-skill-pills span:hover {
+  background: rgba(109, 40, 217, 0.14);
+  border-color: rgba(109, 40, 217, 0.6);
+  color: #1e1b4b;
+  box-shadow: 0 4px 12px -4px rgba(109, 40, 217, 0.4);
+}
+
+body:not(.night-theme) #about .ak-timeline::before {
+  background: linear-gradient(to bottom, #e84949, #6d28d9, rgba(109, 40, 217, 0.3));
+}
+
+body:not(.night-theme) #about .ak-t-dot {
+  border-color: #f5f0eb;
+}
+
+body:not(.night-theme) #about .ak-t-role {
+  color: #0f172a;
+  text-shadow: none;
+}
+
+body:not(.night-theme) #about .ak-t-period {
+  color: #3f3f46;
+}
+
+body:not(.night-theme) #about .ak-t-company {
+  color: #27272a;
+}
+
+body:not(.night-theme) #about .ak-tab {
+  color: #52525b;
+}
+
+body:not(.night-theme) #about .ak-tab:hover {
+  color: #27272a;
+}
+
+body:not(.night-theme) #about .ak-tab.active {
+  color: #18181b;
+}
+
+body:not(.night-theme) #about .ak-tabs {
+  border-bottom-color: rgba(0, 0, 0, 0.12);
+}
+
+body:not(.night-theme) #about .about-copy {
+  color: #27272a;
+}
+
+/* --- About Resume · Dark Theme (night-theme on dark section bg) --- */
+body.night-theme #about .ak-t-dot {
+  border-color: #181818;
+}
 /* About Section End */
 
 /* IT Specialist Section Start */
@@ -3978,6 +4142,50 @@ nav {
 }
 /* IT Specialist Section End */
 
+/* ── Companies & Collaborations Section ── */
+#companiesCollaboration {
+  padding: clamp(40px, 6vw, 80px) 0;
+  background: #0b0b18;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#companiesCollaboration .projectTitle {
+  position: relative;
+  z-index: 2;
+  margin-bottom: clamp(20px, 3vw, 30px);
+}
+
+.cc-wrap {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(12px, 4vw, 24px);
+  box-sizing: border-box;
+}
+
+.cc-intro {
+  text-align: center;
+  color: #c0c0c0;
+  font-size: clamp(12px, 1.6vw, 15px);
+  margin: 0 0 clamp(30px, 4vw, 40px);
+  line-height: 1.5;
+  position: relative;
+  z-index: 2;
+}
+
+#cc-gallery-wrapper {
+  position: relative;
+  z-index: 2;
+}
+
+#cc-gallery {
+  --vg-gap: 0.05rem;
+}
+
+/* ── Companies & Collaborations Section End ── */
+
 /* Skill Section Start  */
 .skillContainer {
   position: relative;
@@ -4252,8 +4460,8 @@ footer {
     gap: 0.5rem;
   }
   .header-logo-img {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
   }
   .nav-links {
     gap: 0.7rem;
@@ -4402,8 +4610,8 @@ footer {
     margin: 0 4px !important;
   }
   .header-logo-img {
-    width: 32px !important;
-    height: 32px !important;
+    width: 25px !important;
+    height: 25px !important;
   }
 }
 
@@ -4827,6 +5035,50 @@ footer {
   }
 }
 
+/* Theme Toggle Button — shares the .section-nav-btn base, swaps sun/moon icon */
+.theme-toggle-btn {
+  color: #b45309;
+  position: relative;
+}
+
+.theme-toggle-btn .theme-icon-sun,
+.theme-toggle-btn .theme-icon-moon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+  transition: opacity 0.35s ease, transform 0.45s cubic-bezier(.4,.1,.3,1.3);
+}
+
+/* Light mode (default): show sun */
+.theme-toggle-btn .theme-icon-sun { opacity: 1; }
+.theme-toggle-btn .theme-icon-moon {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4) rotate(-90deg);
+}
+
+/* Dark mode: show moon, button uses pale gold */
+body.night-theme .theme-toggle-btn {
+  color: #fcd34d;
+  background: rgba(20, 20, 30, 0.85);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+body.night-theme .theme-toggle-btn:hover {
+  background: rgba(30, 30, 45, 0.95);
+}
+
+body.night-theme .theme-toggle-btn .theme-icon-sun {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4) rotate(90deg);
+}
+
+body.night-theme .theme-toggle-btn .theme-icon-moon {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) rotate(0deg);
+}
+
 .share-toggle-btn {
   position: fixed;
   bottom: 30px;
@@ -4966,8 +5218,8 @@ footer {
     gap: 0.3rem;
   }
   .header-logo-img {
-    width: 28px !important;
-    height: 28px !important;
+    width: 22px !important;
+    height: 22px !important;
   }
   nav {
     gap: 0.5rem;
