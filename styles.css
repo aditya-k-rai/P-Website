@@ -94,6 +94,57 @@
 .water-base-fill { fill: #b0c4d8; }
 .night-theme .water-base-fill { fill: #3a5f7a; }
 
+body,
+#wrapper,
+header,
+.pb-carousel-section,
+#companiesCollaboration,
+.skillContainer,
+.servicesSection,
+footer,
+.glass-nav .glass-overlay,
+.projectTitle,
+.projectHeading,
+.projectSubHeading,
+.cc-intro,
+.skillHeading,
+.skillSubHeading p,
+.serviceTitle,
+.serviceCard,
+.serviceCard h3,
+.serviceCard p {
+  transition:
+    background 0.45s ease,
+    background-color 0.45s ease,
+    color 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body,
+  #wrapper,
+  header,
+  .pb-carousel-section,
+  #companiesCollaboration,
+  .skillContainer,
+  .servicesSection,
+  footer,
+  .glass-nav .glass-overlay,
+  .projectTitle,
+  .projectHeading,
+  .projectSubHeading,
+  .cc-intro,
+  .skillHeading,
+  .skillSubHeading p,
+  .serviceTitle,
+  .serviceCard,
+  .serviceCard h3,
+  .serviceCard p {
+    transition-duration: 0.01ms;
+  }
+}
+
 .chooser {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -1556,6 +1607,262 @@ nav {
 .night-theme .gfx-gallery-logos .gfx-logo-item { background: #2a2a2a; }
 
 /* ── Poster & Banner 3D Carousel ── */
+.poster-effect-section {
+  position: relative;
+  overflow: hidden;
+  background: #ececec;
+  border-radius: 0;
+  padding: 40px 4% 34px;
+  font-family: "Bricolage Grotesque", "Be Vietnam Pro", sans-serif;
+}
+
+.poster-effect-section .pb-title,
+.poster-effect-section .pb-desc {
+  position: relative;
+  z-index: 2;
+}
+
+.poster-effect-section .pb-title {
+  color: #1a1a2e;
+}
+
+.poster-effect-section .pb-desc {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.poster-effect-carousel {
+  --poster-step: clamp(76px, 11vw, 150px);
+  position: relative;
+  min-height: clamp(340px, 46vw, 560px);
+  display: grid;
+  place-items: center;
+  padding: 10px 0 76px;
+  color: #262626;
+  user-select: none;
+  perspective: 1200px;
+}
+
+.poster-effect-stage {
+  position: relative;
+  width: min(86vw, 920px);
+  height: clamp(260px, 36vw, 430px);
+  transform-style: preserve-3d;
+}
+
+.poster-effect-slide {
+  --offset: 0;
+  --abs-offset: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: clamp(150px, 20vw, 250px);
+  aspect-ratio: 3 / 4;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  cursor: pointer;
+  transform:
+    translateX(calc(-50% + (var(--offset) * var(--poster-step))))
+    rotateY(calc(var(--offset) * -54deg))
+    scale(calc(1 - (min(var(--abs-offset), 4) * 0.08)));
+  transform-origin: center center;
+  opacity: calc(1 - (min(var(--abs-offset), 5) * 0.12));
+  filter: saturate(calc(1 - (min(var(--abs-offset), 4) * 0.08))) blur(calc(min(var(--abs-offset), 4) * 0.45px));
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.8s cubic-bezier(.2,.75,.25,1.15),
+    opacity 0.45s ease,
+    filter 0.45s ease,
+    box-shadow 0.45s ease;
+  z-index: calc(50 - var(--abs-offset));
+  will-change: transform, opacity, filter;
+}
+
+.poster-effect-slide.is-active {
+  opacity: 1;
+  filter: none;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.28);
+}
+
+.poster-effect-slide:focus-visible {
+  outline: 3px solid #e84949;
+  outline-offset: 5px;
+}
+
+.poster-effect-slide img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.poster-effect-caption {
+  min-height: 22px;
+  margin-top: 12px;
+  font-size: clamp(12px, 1.5vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  color: #333;
+  transition: opacity 0.25s ease, filter 0.25s ease, color 0.35s ease;
+}
+
+.poster-effect-controls {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: fit-content;
+  max-width: calc(100% - 28px);
+  padding: 7px 10px;
+  border: 1px solid rgba(180, 180, 180, 0.75);
+  border-radius: 999px;
+  background: rgba(240, 240, 240, 0.62);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  z-index: 4;
+}
+
+.poster-effect-nav {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  color: #444;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.poster-effect-nav:hover {
+  background: rgba(255, 255, 255, 0.82);
+  color: #111;
+  transform: translateY(-1px);
+}
+
+.poster-effect-nav:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+  transform: none;
+}
+
+.poster-effect-dots {
+  width: min(180px, 38vw);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+}
+
+.poster-effect-dot {
+  width: 8px;
+  height: 8px;
+  border: 0;
+  border-radius: 999px;
+  padding: 0;
+  background: currentColor;
+  color: rgba(40, 40, 40, 0.35);
+  cursor: pointer;
+  transition: width 0.3s ease, color 0.3s ease, transform 0.2s ease;
+}
+
+.poster-effect-dot.is-active {
+  width: 28px;
+  color: #333;
+}
+
+.poster-effect-dot:hover {
+  transform: scale(1.15);
+}
+
+.night-theme .poster-effect-section {
+  background: linear-gradient(180deg, #181818 0%, #1f1f1f 50%, #181818 100%);
+}
+
+.night-theme .poster-effect-section .pb-title {
+  color: #f0f0f0;
+}
+
+.night-theme .poster-effect-section .pb-desc,
+.night-theme .poster-effect-caption {
+  color: #bbb;
+}
+
+.night-theme .poster-effect-controls {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(24, 24, 30, 0.72);
+}
+
+.night-theme .poster-effect-nav {
+  color: #eee;
+}
+
+.night-theme .poster-effect-nav:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.night-theme .poster-effect-dot {
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.night-theme .poster-effect-dot.is-active {
+  color: #f0f0f0;
+}
+
+@media (max-width: 760px) {
+  .poster-effect-section { padding: 30px 3% 28px; }
+  .poster-effect-carousel {
+    --poster-step: clamp(54px, 16vw, 88px);
+    min-height: 360px;
+    padding-bottom: 72px;
+  }
+  .poster-effect-stage {
+    height: 270px;
+  }
+  .poster-effect-slide {
+    width: clamp(124px, 42vw, 172px);
+  }
+  .poster-effect-controls {
+    gap: 8px;
+  }
+  .poster-effect-dots {
+    width: min(148px, 40vw);
+    gap: 5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .poster-effect-carousel {
+    min-height: 330px;
+  }
+  .poster-effect-stage {
+    height: 240px;
+  }
+  .poster-effect-slide {
+    width: 132px;
+  }
+  .poster-effect-dot {
+    width: 7px;
+    height: 7px;
+  }
+  .poster-effect-dot.is-active {
+    width: 22px;
+  }
+}
+
 .pb-carousel-section {
   position: relative;
   overflow: hidden;
@@ -1606,7 +1913,7 @@ nav {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  background-color: #f5f0eb;
+  background-color: transparent;
   transform: rotateY(-45deg);
   transition: 0.5s ease-in-out;
   mask: linear-gradient(black 85%, transparent 100%);
@@ -1647,7 +1954,7 @@ nav {
 .night-theme .pb-carousel-section { background: linear-gradient(180deg, #181818 0%, #1f1f1f 50%, #181818 100%); }
 .night-theme .pb-carousel-section .pb-title { color: #f0f0f0; }
 .night-theme .pb-carousel-section .pb-desc { color: #bbb; }
-.night-theme .pb-carousel-item img { background-color: #1a1a1a; }
+.night-theme .pb-carousel-item img { background-color: transparent; }
 
 /* ── Vertical 3D Gallery (Poster Designs) ── */
 .vg-wrapper {
@@ -2223,6 +2530,11 @@ nav {
 #advertisements {
   position: relative;
   isolation: isolate;
+  background: #0a0e27;
+  transition: none;
+}
+
+body.night-theme #advertisements {
   background: #0a0e27;
 }
 
@@ -4157,6 +4469,10 @@ body.night-theme #about .ak-t-dot {
   margin-bottom: clamp(20px, 3vw, 30px);
 }
 
+#companiesCollaboration .pb-carousel-track {
+  --left: -42rem;
+}
+
 .cc-wrap {
   width: 100%;
   max-width: 1200px;
@@ -4175,6 +4491,14 @@ body.night-theme #about .ak-t-dot {
   z-index: 2;
 }
 
+.night-theme #companiesCollaboration {
+  background: #0b0b18;
+}
+
+.night-theme #companiesCollaboration .cc-intro {
+  color: #bbb;
+}
+
 #cc-gallery-wrapper {
   position: relative;
   z-index: 2;
@@ -4186,6 +4510,66 @@ body.night-theme #about .ak-t-dot {
 
 /* ── Companies & Collaborations Section End ── */
 
+/* Let's Connect Creation Section Start */
+.lets-connect-section {
+  background: #0b0b18;
+  padding: clamp(28px, 5vw, 70px) 0;
+  overflow: hidden;
+}
+
+.lets-connect-shell {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 1128 / 191;
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.lets-connect-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 0;
+  background: transparent;
+}
+
+.lets-connect-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  cursor: crosshair;
+}
+
+.lets-connect-canvas.is-active {
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .lets-connect-section {
+    padding: clamp(22px, 7vw, 42px) 0;
+  }
+
+  .lets-connect-shell {
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .lets-connect-shell {
+    width: 100%;
+  }
+}
+/* Let's Connect Creation Section End */
+
 /* Skill Section Start  */
 .skillContainer {
   position: relative;
@@ -4193,6 +4577,8 @@ body.night-theme #about .ak-t-dot {
   padding: 5rem;
   margin: 10rem auto;
   gap: 30px;
+  background: #0b0b18;
+  color: #f5f0eb;
 }
 
 .leftSkillContainer {
@@ -4219,6 +4605,7 @@ body.night-theme #about .ak-t-dot {
 }
 .skillSubHeading p {
   margin: 15px 0;
+  color: #c0c0c0;
 }
 .rightSkillContainer {
   display: flex;

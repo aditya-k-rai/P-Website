@@ -997,6 +997,68 @@ screen {
   margin: 1rem;
 }
 
+.tv-video-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease, filter 0.45s ease;
+}
+
+.tv-video-frame video {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.08);
+}
+
+.tv-video-frame:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(255, 255, 255, 0.08) 0,
+      rgba(255, 255, 255, 0.08) 0.2rem,
+      rgba(0, 0, 0, 0.08) 0.2rem,
+      rgba(0, 0, 0, 0.08) 0.45rem
+    ),
+    radial-gradient(ellipse at center, transparent 58%, rgba(0, 0, 0, 0.28));
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+}
+
+crt > div,
+crt test,
+tune {
+  display: none !important;
+}
+
+body:has(#on-off:checked) .tv-video-frame {
+  opacity: 0.95;
+}
+
+body:has(#tune1:checked) .tv-video-frame video {
+  filter: saturate(1.08) contrast(1.08);
+}
+
+body:has(#tune2:checked) .tv-video-frame video {
+  filter: saturate(1.2) contrast(1.18) hue-rotate(8deg);
+}
+
+body:has(#tune3:checked) .tv-video-frame video {
+  filter: saturate(0.92) contrast(1.28) brightness(1.08);
+}
+
+body:has(#tune4:checked) .tv-video-frame video {
+  filter: saturate(1.35) contrast(1.08) hue-rotate(-12deg);
+}
+
 screen > u > u {
   margin: auto;
   filter: blur(1rem);
@@ -1399,6 +1461,9 @@ light u:nth-of-type(5) > u:nth-of-type(6) {
   <set>
     <crt>
       <screen>
+        <div class="tv-video-frame">
+          <video id="tv-video" src="./Images/Graphics/Video%20TV.mp4" preload="metadata" loop playsinline muted></video>
+        </div>
         <u>
           <u></u> <u></u> <u></u> <u></u>
         </u>
@@ -1491,7 +1556,6 @@ light u:nth-of-type(5) > u:nth-of-type(6) {
               <label for="tune3"></label>
               <label for="tune4"></label>
             </dial>
-            <label for="unclick"></label>
           </u>
         </div>
       </knobs>
@@ -1500,11 +1564,97 @@ light u:nth-of-type(5) > u:nth-of-type(6) {
 </content>
 
 <input type="checkbox" name="tv" id="on-off" />
-<input type="radio" name="tv" id="tune1" />
-<input type="radio" name="tv" id="tune2" />
-<input type="radio" name="tv" id="tune3" />
-<input type="radio" name="tv" id="tune4" />
-<input type="radio" name="tv" id="unclick" checked />
+<input type="radio" name="vol" id="vol1" />
+<input type="radio" name="vol" id="vol2" checked />
+<input type="radio" name="vol" id="vol3" />
+<input type="radio" name="vol" id="vol4" />
+<input type="radio" name="tuning" id="tune1" />
+<input type="radio" name="tuning" id="tune2" />
+<input type="radio" name="tuning" id="tune3" checked />
+<input type="radio" name="tuning" id="tune4" />
+
+<script>
+(function () {
+  var video = document.getElementById('tv-video');
+  var power = document.getElementById('on-off');
+  if (!video || !power) return;
+
+  var volumeMap = {
+    vol1: { volume: 0, muted: true },
+    vol2: { volume: 0.35, muted: false },
+    vol3: { volume: 0.7, muted: false },
+    vol4: { volume: 1, muted: false }
+  };
+
+  var speedMap = {
+    tune1: 0.85,
+    tune2: 1,
+    tune3: 1.15,
+    tune4: 1.35
+  };
+
+  function playVideo() {
+    if (!power.checked) return;
+    video.muted = true;
+    var promise = video.play();
+    if (promise && promise.then) {
+      promise.then(syncVolume).catch(function () {});
+    } else {
+      syncVolume();
+    }
+  }
+
+  function syncPower() {
+    if (power.checked) playVideo();
+    else video.pause();
+  }
+
+  function syncVolume() {
+    Object.keys(volumeMap).forEach(function (id) {
+      var input = document.getElementById(id);
+      if (!input || !input.checked) return;
+      video.volume = volumeMap[id].volume;
+      video.muted = volumeMap[id].muted;
+    });
+  }
+
+  function syncTuning(id) {
+    if (!speedMap[id]) return;
+    video.playbackRate = speedMap[id];
+    if (video.duration && Number.isFinite(video.duration)) {
+      var tuneNumber = parseInt(id.replace('tune', ''), 10);
+      video.currentTime = Math.max(0, video.duration * ((tuneNumber - 1) / 4));
+    }
+    playVideo();
+  }
+
+  power.addEventListener('change', syncPower);
+
+  Object.keys(volumeMap).forEach(function (id) {
+    var input = document.getElementById(id);
+    if (input) input.addEventListener('change', syncVolume);
+  });
+
+  Object.keys(speedMap).forEach(function (id) {
+    var input = document.getElementById(id);
+    if (input) {
+      input.addEventListener('change', function () {
+        if (input.checked) syncTuning(id);
+      });
+    }
+  });
+
+  video.addEventListener('loadedmetadata', function () {
+    syncVolume();
+    var checkedTune = document.querySelector('input[type="radio"][name="tuning"]:checked');
+    if (checkedTune) syncTuning(checkedTune.id);
+    syncPower();
+  });
+
+  syncVolume();
+  syncPower();
+})();
+</script>
 
 </body>
 </html>

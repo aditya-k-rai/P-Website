@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="./styles.css" />
 
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -23,6 +24,16 @@
 </head>
 
 <body>
+  <script>
+    (function () {
+      try {
+        var pref = localStorage.getItem('themePref');
+        var hour = new Date().getHours();
+        var mode = (pref === 'dark' || pref === 'light') ? pref : ((hour >= 18 || hour < 9) ? 'dark' : 'light');
+        if (mode === 'dark') document.body.classList.add('night-theme');
+      } catch (e) {}
+    })();
+  </script>
   <!-- Loading Screen -->
   <div class="loader-screen" id="loader">
     <div class="loader-content">
@@ -697,23 +708,57 @@
       </div>
 
       <!-- Division 2: Posters & Banners -->
-      <div class="gfx-division pb-carousel-section" id="gfx-posters">
+      <div class="gfx-division poster-effect-section" id="gfx-posters">
         <h3 class="gfx-division-title pb-title">Posters &amp; Banners</h3>
         <p class="gfx-division-desc pb-desc">Eye-catching poster and banner designs</p>
 
-        <div class="pb-carousel-track" style="--time: 39s; --total: 12;">
-          <div class="pb-carousel-item" style="--i: 1;"><img src="Images/Graphics/Banners%20%26%20Posters/2.jpg" alt="Banner Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 2;"><img src="Images/Graphics/Banners%20%26%20Posters/3.jpg" alt="Banner Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 3;"><img src="Images/Graphics/Banners%20%26%20Posters/4.jpg" alt="Banner Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 4;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250204-0007.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 5;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250204-0008.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 6;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0004.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 7;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0005.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 8;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0006.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 9;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0008.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 10;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0009.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 11;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0010.jpg" alt="Poster Design" loading="lazy"></div>
-          <div class="pb-carousel-item" style="--i: 12;"><img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0001.jpg" alt="Poster Design" loading="lazy"></div>
+        <div class="poster-effect-carousel" data-active="3">
+          <div class="poster-effect-stage" aria-live="polite">
+            <button class="poster-effect-slide" type="button" data-title="Banner Design" data-index="0">
+              <img src="Images/Graphics/Banners%20%26%20Posters/2.jpg" alt="Banner Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Banner Design" data-index="1">
+              <img src="Images/Graphics/Banners%20%26%20Posters/3.jpg" alt="Banner Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Banner Design" data-index="2">
+              <img src="Images/Graphics/Banners%20%26%20Posters/4.jpg" alt="Banner Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="3">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250204-0007.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="4">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250204-0008.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="5">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0004.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="6">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0005.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="7">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0006.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="8">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0008.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="9">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0009.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="10">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0010.jpg" alt="Poster Design" loading="lazy">
+            </button>
+            <button class="poster-effect-slide" type="button" data-title="Poster Design" data-index="11">
+              <img src="Images/Graphics/Banners%20%26%20Posters/mulberrystreet.bistro-20250205-0001.jpg" alt="Poster Design" loading="lazy">
+            </button>
+          </div>
+
+          <div class="poster-effect-caption">Poster Design</div>
+
+          <div class="poster-effect-controls" aria-label="Poster carousel controls">
+            <button class="poster-effect-nav" type="button" data-poster-prev aria-label="Previous poster">&#10094;</button>
+            <div class="poster-effect-dots" aria-label="Choose poster"></div>
+            <button class="poster-effect-nav" type="button" data-poster-next aria-label="Next poster">&#10095;</button>
+          </div>
         </div>
       </div>
 
@@ -1160,18 +1205,29 @@
         <p class="cc-intro">Collaborated with and contributed to multiple companies and organizations, bringing technical expertise and innovative solutions across various industries and projects.</p>
       </div>
 
-      <div class="pb-carousel-track" style="--time: 30s; --total: 8;">
-        <div class="pb-carousel-item" style="--i: 1;"><img src="Images/Graphics/Icons/Company%20Icons/Aarna%20Logo.jpg" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 2;"><img src="Images/Graphics/Icons/Company%20Icons/County%20In%20Hotel.png" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 3;"><img src="Images/Graphics/Icons/Company%20Icons/Fab%20Bakers%20Logo.jpg" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 4;"><img src="Images/Graphics/Icons/Company%20Icons/Godrej%20Properties%20Logo.png" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 5;"><img src="Images/Graphics/Icons/Company%20Icons/Greater%20Noida%20Properties%20Dealer%20Logo.png" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 6;"><img src="Images/Graphics/Icons/Company%20Icons/Mulberry%20Street.jpg" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 7;"><img src="Images/Graphics/Icons/Company%20Icons/Ryoto%20Image%20Logo.jpg" alt="Company Logo" loading="lazy"></div>
-        <div class="pb-carousel-item" style="--i: 8;"><img src="Images/Graphics/Icons/Company%20Icons/The%20Choclate%20Room%20Logo.png" alt="Company Logo" loading="lazy"></div>
+      <div class="pb-carousel-track" style="--time: 34s; --total: 10;">
+        <div class="pb-carousel-item" style="--i: 1;"><img src="Images/Graphics/Icons/Company%20Icons/6.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 2;"><img src="Images/Graphics/Icons/Company%20Icons/7.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 3;"><img src="Images/Graphics/Icons/Company%20Icons/8.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 4;"><img src="Images/Graphics/Icons/Company%20Icons/9.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 5;"><img src="Images/Graphics/Icons/Company%20Icons/10.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 6;"><img src="Images/Graphics/Icons/Company%20Icons/11.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 7;"><img src="Images/Graphics/Icons/Company%20Icons/12.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 8;"><img src="Images/Graphics/Icons/Company%20Icons/13.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 9;"><img src="Images/Graphics/Icons/Company%20Icons/14.png" alt="Company Logo" loading="lazy"></div>
+        <div class="pb-carousel-item" style="--i: 10;"><img src="Images/Graphics/Icons/Company%20Icons/15.png" alt="Company Logo" loading="lazy"></div>
       </div>
     </section>
     <!-- Companies & Collaborations Section End -->
+
+    <!-- Let's Connect Creation Section Start -->
+    <section id="letsConnectCreation" class="lets-connect-section">
+      <div class="lets-connect-shell">
+        <img src="Images/Graphics/Let%27s%20connect%20for%20Creation.png" alt="Let's connect for creation" class="lets-connect-image" loading="lazy" decoding="async" />
+        <canvas id="lets-connect-canvas" class="lets-connect-canvas" data-img="Images/Graphics/Let%27s%20connect%20for%20Creation.png" aria-label="Let's connect for creation"></canvas>
+      </div>
+    </section>
+    <!-- Let's Connect Creation Section End -->
 
     <!-- Skill Section Start  -->
     <section class="skillContainer" id="skills">
@@ -1503,6 +1559,346 @@
           });
         });
       });
+    })();
+  </script>
+
+  <!-- Posters & Banners 3D Focus Carousel -->
+  <script>
+    (function () {
+      function initPosterEffectCarousel() {
+        var carousel = document.querySelector('.poster-effect-carousel');
+        if (!carousel) return;
+
+        var slides = Array.prototype.slice.call(carousel.querySelectorAll('.poster-effect-slide'));
+        var dotsWrap = carousel.querySelector('.poster-effect-dots');
+        var caption = carousel.querySelector('.poster-effect-caption');
+        var prevBtn = carousel.querySelector('[data-poster-prev]');
+        var nextBtn = carousel.querySelector('[data-poster-next]');
+        if (!slides.length || !dotsWrap || !prevBtn || !nextBtn) return;
+
+        var autoplayTimer = null;
+        var AUTOPLAY_MS = 1000;
+        var activeIndex = Math.min(
+          Math.max(parseInt(carousel.getAttribute('data-active'), 10) || 0, 0),
+          slides.length - 1
+        );
+
+        slides.forEach(function (_, index) {
+          var dot = document.createElement('button');
+          dot.type = 'button';
+          dot.className = 'poster-effect-dot';
+          dot.setAttribute('aria-label', 'Show poster ' + (index + 1));
+          dot.addEventListener('click', function () { setActive(index); });
+          dotsWrap.appendChild(dot);
+        });
+
+        var dots = Array.prototype.slice.call(dotsWrap.querySelectorAll('.poster-effect-dot'));
+
+        function normalizeIndex(index) {
+          return (index + slides.length) % slides.length;
+        }
+
+        function getLoopOffset(index) {
+          var offset = index - activeIndex;
+          var half = slides.length / 2;
+          if (offset > half) offset -= slides.length;
+          if (offset < -half) offset += slides.length;
+          return offset;
+        }
+
+        function setActive(nextIndex) {
+          activeIndex = normalizeIndex(nextIndex);
+          carousel.setAttribute('data-active', activeIndex);
+
+          slides.forEach(function (slide, index) {
+            var offset = getLoopOffset(index);
+            var absOffset = Math.abs(offset);
+            slide.style.setProperty('--offset', offset);
+            slide.style.setProperty('--abs-offset', absOffset);
+            slide.style.zIndex = String(80 - absOffset);
+            slide.classList.toggle('is-active', index === activeIndex);
+            slide.setAttribute('aria-pressed', index === activeIndex ? 'true' : 'false');
+          });
+
+          dots.forEach(function (dot, index) {
+            dot.classList.toggle('is-active', index === activeIndex);
+            dot.setAttribute('aria-current', index === activeIndex ? 'true' : 'false');
+          });
+
+          if (caption) {
+            caption.style.opacity = '0';
+            caption.style.filter = 'blur(2px)';
+            window.setTimeout(function () {
+              caption.textContent = slides[activeIndex].getAttribute('data-title') || 'Poster Design';
+              caption.style.opacity = '1';
+              caption.style.filter = 'blur(0)';
+            }, 130);
+          }
+
+          prevBtn.disabled = false;
+          nextBtn.disabled = false;
+        }
+
+        slides.forEach(function (slide, index) {
+          slide.addEventListener('click', function () { setActive(index); });
+        });
+
+        prevBtn.addEventListener('click', function () { setActive(activeIndex - 1); });
+        nextBtn.addEventListener('click', function () { setActive(activeIndex + 1); });
+
+        carousel.addEventListener('keydown', function (e) {
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            setActive(activeIndex - 1);
+          }
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            setActive(activeIndex + 1);
+          }
+        });
+
+        function startAutoplay() {
+          if (autoplayTimer) return;
+          autoplayTimer = window.setInterval(function () {
+            setActive(activeIndex + 1);
+          }, AUTOPLAY_MS);
+        }
+
+        function stopAutoplay() {
+          if (!autoplayTimer) return;
+          window.clearInterval(autoplayTimer);
+          autoplayTimer = null;
+        }
+
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting && !document.hidden) startAutoplay();
+              else stopAutoplay();
+            });
+          }, { threshold: 0.35 });
+          observer.observe(carousel);
+        } else {
+          startAutoplay();
+        }
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) stopAutoplay();
+          else {
+            var rect = carousel.getBoundingClientRect();
+            if (rect.bottom > 0 && rect.top < window.innerHeight) startAutoplay();
+          }
+        });
+
+        setActive(activeIndex);
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPosterEffectCarousel);
+      else initPosterEffectCarousel();
+    })();
+  </script>
+
+  <!-- Let's Connect Canvas Grid Effect -->
+  <script>
+    (function () {
+      function initLetsConnectCanvas() {
+        var canvas = document.getElementById('lets-connect-canvas');
+        if (!canvas || !canvas.getContext) return;
+
+        var ctx = canvas.getContext('2d');
+        var img = new Image();
+        var boxes = [];
+        var rafId = 0;
+        var running = false;
+        var isVisible = false;
+        var activeTimer = 0;
+        var pendingActivation = 0;
+        var scrollRaf = 0;
+        var rect = canvas.getBoundingClientRect();
+        var viewW = 1128;
+        var viewH = 191;
+        var boxSize = 28;
+        var radius = 230;
+        var pointer = {
+          x: viewW / 2,
+          y: viewH / 2,
+          tx: viewW / 2,
+          ty: viewH / 2
+        };
+
+        function clamp(min, max, value) {
+          return Math.max(min, Math.min(max, value));
+        }
+
+        function rebuildBoxes() {
+          boxes = [];
+          boxSize = Math.max(18, Math.round(viewW / 40));
+          radius = Math.max(viewW * 0.16, viewH * 1.1);
+          for (var x = 0; x < viewW; x += boxSize) {
+            for (var y = 0; y < viewH; y += boxSize) {
+              boxes.push({ x: x, y: y });
+            }
+          }
+        }
+
+        function resizeCanvas() {
+          rect = canvas.getBoundingClientRect();
+          if (!img.naturalWidth || !img.naturalHeight) return;
+          viewW = img.naturalWidth;
+          viewH = img.naturalHeight;
+          canvas.width = viewW;
+          canvas.height = viewH;
+          rebuildBoxes();
+        }
+
+        function drawCell(cell) {
+          var dx = cell.x - pointer.x;
+          var dy = cell.y - pointer.y;
+          var distance = Math.hypot(dx, dy);
+          var strength = 1 - clamp(0, 1, distance / radius);
+          if (strength < 0.001) return;
+
+          var cellW = Math.min(boxSize, viewW - cell.x);
+          var cellH = Math.min(boxSize, viewH - cell.y);
+          var shrinkW = cellW * strength * 0.86;
+          var shrinkH = cellH * strength * 0.86;
+          var srcX = clamp(0, viewW - 1, cell.x + shrinkW / 2);
+          var srcY = clamp(0, viewH - 1, cell.y + shrinkH / 2);
+          var srcW = Math.max(1, cellW - shrinkW);
+          var srcH = Math.max(1, cellH - shrinkH);
+
+          ctx.drawImage(img, srcX, srcY, srcW, srcH, cell.x, cell.y, cellW, cellH);
+
+          ctx.beginPath();
+          ctx.arc(cell.x, cell.y, boxSize * 0.13 * strength, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        function render() {
+          if (!running) return;
+          pointer.x += (pointer.tx - pointer.x) * 0.12;
+          pointer.y += (pointer.ty - pointer.y) * 0.12;
+          ctx.globalAlpha = 1;
+          ctx.clearRect(0, 0, viewW, viewH);
+          ctx.drawImage(img, 0, 0, viewW, viewH);
+          ctx.fillStyle = '#fff';
+          boxes.forEach(drawCell);
+          rafId = window.requestAnimationFrame(render);
+        }
+
+        function start() {
+          if (running) return;
+          running = true;
+          render();
+        }
+
+        function stop() {
+          running = false;
+          if (rafId) window.cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
+
+        function isCanvasInView() {
+          rect = canvas.getBoundingClientRect();
+          return rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth;
+        }
+
+        function deactivate() {
+          pendingActivation = 0;
+          canvas.classList.remove('is-active');
+          stop();
+        }
+
+        function activate(duration) {
+          isVisible = isCanvasInView();
+          if (!isVisible || document.hidden) return;
+          if (!img.naturalWidth) {
+            pendingActivation = duration || 850;
+            return;
+          }
+          canvas.classList.add('is-active');
+          start();
+          window.clearTimeout(activeTimer);
+          activeTimer = window.setTimeout(deactivate, duration || 850);
+        }
+
+        function activateFromScroll(duration) {
+          if (scrollRaf) return;
+          scrollRaf = window.requestAnimationFrame(function () {
+            scrollRaf = 0;
+            isVisible = isCanvasInView();
+            if (!isVisible) {
+              deactivate();
+              return;
+            }
+            updatePointerFromViewport();
+            activate(duration || 650);
+          });
+        }
+
+        function updatePointer(e) {
+          rect = canvas.getBoundingClientRect();
+          pointer.tx = ((e.clientX - rect.left) / Math.max(1, rect.width)) * viewW;
+          pointer.ty = ((e.clientY - rect.top) / Math.max(1, rect.height)) * viewH;
+          activate(850);
+        }
+
+        function updatePointerFromViewport() {
+          rect = canvas.getBoundingClientRect();
+          var x = clamp(rect.left, rect.right, window.innerWidth / 2);
+          var y = clamp(rect.top, rect.bottom, window.innerHeight / 2);
+          pointer.tx = ((x - rect.left) / Math.max(1, rect.width)) * viewW;
+          pointer.ty = ((y - rect.top) / Math.max(1, rect.height)) * viewH;
+        }
+
+        img.onload = function () {
+          resizeCanvas();
+          ctx.drawImage(img, 0, 0, viewW, viewH);
+          canvas.classList.add('is-ready');
+          if (pendingActivation) {
+            activate(pendingActivation);
+          }
+        };
+        img.src = canvas.getAttribute('data-img');
+
+        canvas.addEventListener('pointermove', updatePointer);
+        canvas.addEventListener('touchmove', function (e) {
+          if (e.touches && e.touches[0]) updatePointer(e.touches[0]);
+        }, { passive: true });
+        canvas.addEventListener('pointerenter', updatePointer);
+        canvas.addEventListener('pointerleave', function () {
+          pointer.tx = viewW / 2;
+          pointer.ty = viewH / 2;
+        });
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', function () {
+          activateFromScroll(650);
+        }, { passive: true });
+        document.addEventListener('scroll', function () {
+          activateFromScroll(650);
+        }, { passive: true, capture: true });
+
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              isVisible = entry.isIntersecting;
+              if (isVisible && !document.hidden) activateFromScroll(650);
+              if (!isVisible) deactivate();
+            });
+          }, { threshold: 0.1 });
+          observer.observe(canvas);
+        } else {
+          isVisible = true;
+        }
+
+        document.addEventListener('visibilitychange', function () {
+          if (document.hidden) deactivate();
+        });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLetsConnectCanvas);
+      else initLetsConnectCanvas();
     })();
   </script>
 
