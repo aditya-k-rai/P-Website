@@ -1633,6 +1633,7 @@ nav {
 
 .poster-effect-carousel {
   --poster-step: clamp(76px, 11vw, 150px);
+  --poster-tilt: -54deg;
   position: relative;
   min-height: clamp(340px, 46vw, 560px);
   display: grid;
@@ -1665,7 +1666,7 @@ nav {
   cursor: pointer;
   transform:
     translateX(calc(-50% + (var(--offset) * var(--poster-step))))
-    rotateY(calc(var(--offset) * -54deg))
+    rotateY(calc(var(--offset) * var(--poster-tilt)))
     scale(calc(1 - (min(var(--abs-offset), 4) * 0.08)));
   transform-origin: center center;
   opacity: calc(1 - (min(var(--abs-offset), 5) * 0.12));
@@ -6017,4 +6018,234 @@ body.night-theme .theme-toggle-btn .theme-icon-moon {
 @media (max-width: 480px) {
   .shloka-flip-front { font-size: 1.15rem; line-height: 2; }
   .shloka-meaning { font-size: 1rem; }
+}
+
+/* Final responsive optimization overrides */
+@media (max-width: 1024px) {
+  #gfx-posters.poster-effect-section {
+    padding: 34px 0 30px;
+  }
+
+  #gfx-posters .poster-effect-carousel {
+    --poster-step: clamp(68px, 10vw, 116px);
+    min-height: clamp(330px, 48vw, 470px);
+    padding-bottom: 72px;
+  }
+
+  #gfx-posters .poster-effect-stage {
+    width: 100vw;
+    max-width: 820px;
+    height: clamp(250px, 36vw, 360px);
+  }
+
+  #gfx-posters .poster-effect-slide {
+    width: clamp(140px, 21vw, 210px);
+  }
+
+  #companiesCollaboration {
+    padding: clamp(34px, 5vw, 64px) 0;
+  }
+
+  #companiesCollaboration .projectTitle {
+    font-size: clamp(56px, 10vw, 90px);
+    padding: clamp(30px, 5vw, 50px) 10px clamp(20px, 3vw, 30px);
+  }
+
+  #companiesCollaboration .pb-carousel-track {
+    --left: -34rem;
+    min-width: calc(8rem * var(--total));
+    height: 8.5rem;
+  }
+
+  #companiesCollaboration .pb-carousel-item {
+    width: 6.25rem;
+    height: 7.25rem;
+    align-items: center;
+  }
+
+  #companiesCollaboration .pb-carousel-item img {
+    mask: none;
+    -webkit-mask: none;
+    transform: rotateY(-38deg);
+  }
+
+  #companiesCollaboration .pb-carousel-item:hover img {
+    transform: rotateY(0deg) translateY(-0.5rem);
+  }
+
+  #letsConnectCreation.lets-connect-section {
+    padding: clamp(24px, 4vw, 48px) 0;
+  }
+
+  #letsConnectCreation .lets-connect-shell {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    aspect-ratio: 1128 / 191;
+  }
+}
+
+@media (max-width: 768px) {
+  #gfx-posters .poster-effect-carousel {
+    --poster-step: clamp(54px, 13vw, 84px);
+    --poster-tilt: -42deg;
+    min-height: clamp(310px, 62vw, 380px);
+    perspective: 980px;
+  }
+
+  #gfx-posters .poster-effect-stage {
+    height: clamp(232px, 50vw, 292px);
+  }
+
+  #gfx-posters .poster-effect-slide {
+    width: clamp(126px, 31vw, 176px);
+    border-radius: 8px;
+  }
+
+  #companiesCollaboration .projectTitle {
+    font-size: clamp(44px, 11vw, 72px);
+    line-height: 0.98;
+  }
+
+  #companiesCollaboration .cc-intro {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  #companiesCollaboration .pb-carousel-track {
+    --left: -30rem;
+    min-width: calc(7rem * var(--total));
+    height: 7.25rem;
+  }
+
+  #companiesCollaboration .pb-carousel-item {
+    width: 5.15rem;
+    height: 6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  #gfx-posters.poster-effect-section {
+    padding: 24px 0 22px;
+  }
+
+  #gfx-posters .poster-effect-carousel {
+    --poster-step: clamp(42px, 14vw, 66px);
+    --poster-tilt: -34deg;
+    min-height: clamp(286px, 82vw, 340px);
+    padding: 2px 0 66px;
+    perspective: 850px;
+  }
+
+  #gfx-posters .poster-effect-stage {
+    width: 100vw;
+    height: clamp(212px, 64vw, 262px);
+  }
+
+  #gfx-posters .poster-effect-slide {
+    width: clamp(116px, 38vw, 152px);
+    filter: saturate(calc(1 - (min(var(--abs-offset), 4) * 0.06))) blur(calc(min(var(--abs-offset), 4) * 0.25px));
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  }
+
+  #gfx-posters .poster-effect-slide.is-active {
+    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.28);
+  }
+
+  #gfx-posters .poster-effect-caption {
+    margin-top: 6px;
+  }
+
+  #gfx-posters .poster-effect-controls {
+    bottom: 12px;
+    gap: 6px;
+    max-width: calc(100vw - 18px);
+    padding: 6px 8px;
+  }
+
+  #gfx-posters .poster-effect-nav {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  #gfx-posters .poster-effect-dots {
+    width: 132px;
+    gap: 4px;
+  }
+
+  #gfx-posters .poster-effect-dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  #gfx-posters .poster-effect-dot.is-active {
+    width: 20px;
+  }
+
+  #companiesCollaboration {
+    padding: 30px 0 28px;
+  }
+
+  #companiesCollaboration .projectTitle {
+    font-size: clamp(32px, 12vw, 54px);
+    line-height: 0.95;
+    padding: 24px 8px 18px;
+  }
+
+  #companiesCollaboration .pb-carousel-track {
+    --left: -26rem;
+    min-width: calc(6rem * var(--total));
+    height: 6.25rem;
+  }
+
+  #companiesCollaboration .pb-carousel-item {
+    width: 4.35rem;
+    height: 5rem;
+  }
+
+  #companiesCollaboration .pb-carousel-item img {
+    transform: rotateY(-32deg);
+  }
+
+  #companiesCollaboration .pb-carousel-item:hover img {
+    transform: rotateY(0deg) translateY(-0.35rem);
+  }
+
+  #letsConnectCreation.lets-connect-section {
+    padding: 20px 0;
+  }
+
+  #letsConnectCreation .lets-connect-shell {
+    width: 100vw;
+    margin-inline: calc(50% - 50vw);
+    aspect-ratio: 1128 / 191;
+  }
+}
+
+@media (max-width: 380px) {
+  #gfx-posters .poster-effect-carousel {
+    --poster-step: 43px;
+    min-height: 284px;
+  }
+
+  #gfx-posters .poster-effect-stage {
+    height: 208px;
+  }
+
+  #gfx-posters .poster-effect-slide {
+    width: 116px;
+  }
+
+  #companiesCollaboration .projectTitle {
+    font-size: clamp(29px, 11.5vw, 42px);
+  }
+
+  #companiesCollaboration .pb-carousel-track {
+    height: 5.6rem;
+  }
+
+  #companiesCollaboration .pb-carousel-item {
+    width: 3.9rem;
+    height: 4.55rem;
+  }
 }
