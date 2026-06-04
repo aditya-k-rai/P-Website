@@ -89,15 +89,22 @@
         <span class="glass-filter" aria-hidden="true"></span>
         <span class="glass-overlay" aria-hidden="true"></span>
         <span class="glass-specular" aria-hidden="true"></span>
+        <span class="glass-glare-wrap" aria-hidden="true"><span class="glass-glare"></span></span>
         <ul class="nav-links">
-          <li><a href="#about">About</a></li>
-          <li><a href="#projects">Websites</a></li>
-          <li><a href="#graphics">Graphics</a></li>
-          <li><a href="#socialmedia">Social Media</a></li>
-          <li><a href="#advertisements">Ads</a></li>
-          <li><a href="#itSpecialist">IT Specialist</a></li>
-          <li><a href="#skills">Skills</a></li>
+          <span class="nav-active-pill" aria-hidden="true"></span>
+          <li><a href="#about" class="is-active"><i class="fa-regular fa-user" aria-hidden="true"></i><span>About</span></a></li>
+          <li><a href="#projects"><i class="fa-solid fa-code" aria-hidden="true"></i><span>Websites</span></a></li>
+          <li><a href="#graphics"><i class="fa-regular fa-image" aria-hidden="true"></i><span>Graphics</span></a></li>
+          <li><a href="#socialmedia"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i><span>Social</span></a></li>
+          <li><a href="#advertisements"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i><span>Ads</span></a></li>
+          <li><a href="#itSpecialist"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i><span>IT</span></a></li>
+          <li><a href="#skills"><i class="fa-solid fa-list" aria-hidden="true"></i><span>Skills</span></a></li>
         </ul>
+        <span class="nav-divider" aria-hidden="true"></span>
+        <button class="nav-theme-btn" id="navThemeToggleBtn" type="button" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
+          <i class="fa-regular fa-sun nav-theme-sun" aria-hidden="true"></i>
+          <i class="fa-regular fa-moon nav-theme-moon" aria-hidden="true"></i>
+        </button>
       </nav>
 
       <!-- SVG lens filter for the liquid-glass nav -->
@@ -1416,130 +1423,47 @@
     </footer>
   </div>
 
-  <!-- Section Navigation (left side) -->
-  <div class="section-nav" id="sectionNav" aria-label="Section navigation">
-    <button class="section-nav-btn theme-toggle-btn" id="themeToggleBtn" title="Toggle light / dark mode" aria-label="Toggle light / dark mode">
-      <svg class="theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
-        <circle cx="12" cy="12" r="4" fill="currentColor"/>
-        <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <line x1="12" y1="2" x2="12" y2="5"/>
-          <line x1="12" y1="19" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="5" y2="12"/>
-          <line x1="19" y1="12" x2="22" y2="12"/>
-          <line x1="4.5" y1="4.5" x2="6.6" y2="6.6"/>
-          <line x1="17.4" y1="17.4" x2="19.5" y2="19.5"/>
-          <line x1="4.5" y1="19.5" x2="6.6" y2="17.4"/>
-          <line x1="17.4" y1="6.6" x2="19.5" y2="4.5"/>
-        </g>
-      </svg>
-      <svg class="theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" fill="currentColor"/>
-      </svg>
-    </button>
-    <button class="section-nav-btn" id="sectionNavUp" title="Tap: previous section • Hold: go to top" aria-label="Previous section (hold to go to top)">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button class="section-nav-btn" id="sectionNavDown" title="Tap: next section • Hold: go to bottom" aria-label="Next section (hold to go to bottom)">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-  </div>
+  <!-- Resume Download Floating Action -->
+  <a class="resume-download-fab" id="resumeDownloadFab" href="Images/Graphics/AKR%20Web%20Developer%20Resume.pdf" download="Aditya Kumar Rai Resume.pdf" aria-label="Download Aditya Kumar Rai Resume">
+    <span class="resume-fab-glow" aria-hidden="true"></span>
+    <span class="resume-fab-icon" aria-hidden="true">
+      <i class="fa-solid fa-arrow-down"></i>
+      <i class="fa-solid fa-file-lines"></i>
+    </span>
+    <span class="resume-fab-progress" aria-hidden="true"></span>
+  </a>
 
-  <!-- Section Navigation Script -->
+  <!-- Resume Download Animation Script -->
   <script>
     (function () {
-      var upBtn = document.getElementById('sectionNavUp');
-      var downBtn = document.getElementById('sectionNavDown');
-      if (!upBtn || !downBtn) return;
+      var resumeBtn = document.getElementById('resumeDownloadFab');
+      if (!resumeBtn) return;
 
-      var HOLD_MS = 500;
+      resumeBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+        if (resumeBtn.classList.contains('is-downloading')) return;
 
-      function getAnchors() {
-        return Array.prototype.slice.call(
-          document.querySelectorAll('#wrapper > section, #wrapper > footer')
-        );
-      }
+        var href = resumeBtn.getAttribute('href');
+        var filename = resumeBtn.getAttribute('download') || 'Aditya Kumar Rai Resume.pdf';
+        resumeBtn.classList.add('is-downloading');
+        resumeBtn.setAttribute('aria-label', 'Downloading Aditya Kumar Rai Resume');
 
-      function currentIndex(anchors) {
-        var y = window.scrollY + window.innerHeight * 0.25;
-        var idx = 0;
-        for (var i = 0; i < anchors.length; i++) {
-          if (anchors[i].offsetTop <= y) idx = i;
-        }
-        return idx;
-      }
+        window.setTimeout(function () {
+          var link = document.createElement('a');
+          link.href = href;
+          link.download = filename;
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+          resumeBtn.classList.add('is-complete');
+          resumeBtn.classList.remove('is-downloading');
+          resumeBtn.setAttribute('aria-label', 'Download Aditya Kumar Rai Resume');
+        }, 780);
 
-      function scrollToEl(el) {
-        if (!el) return;
-        window.scrollTo({ top: el.offsetTop, behavior: 'smooth' });
-      }
-
-      function goPrev() {
-        var anchors = getAnchors();
-        var i = currentIndex(anchors);
-        scrollToEl(anchors[Math.max(0, i - 1)]);
-      }
-
-      function goNext() {
-        var anchors = getAnchors();
-        var i = currentIndex(anchors);
-        scrollToEl(anchors[Math.min(anchors.length - 1, i + 1)]);
-      }
-
-      function goTop() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      function goBottom() {
-        var h = Math.max(
-          document.body.scrollHeight,
-          document.documentElement.scrollHeight
-        );
-        window.scrollTo({ top: h, behavior: 'smooth' });
-      }
-
-      function attachHold(btn, onTap, onHold) {
-        var holdTimer = null;
-        var didHold = false;
-
-        function begin() {
-          didHold = false;
-          btn.classList.add('is-pressed');
-          clearTimeout(holdTimer);
-          holdTimer = setTimeout(function () {
-            didHold = true;
-            btn.classList.add('is-held');
-            onHold();
-          }, HOLD_MS);
-        }
-
-        function finish() {
-          clearTimeout(holdTimer);
-          btn.classList.remove('is-pressed', 'is-held');
-        }
-
-        btn.addEventListener('pointerdown', function (e) {
-          if (e.pointerType === 'mouse' && e.button !== 0) return;
-          begin();
-        });
-        btn.addEventListener('pointerup', finish);
-        btn.addEventListener('pointerleave', finish);
-        btn.addEventListener('pointercancel', finish);
-
-        btn.addEventListener('click', function (e) {
-          if (didHold) {
-            didHold = false;
-            e.preventDefault();
-            e.stopPropagation();
-            return;
-          }
-          onTap();
-        });
-
-        btn.addEventListener('contextmenu', function (e) { e.preventDefault(); });
-      }
-
-      attachHold(upBtn, goPrev, goTop);
-      attachHold(downBtn, goNext, goBottom);
+        window.setTimeout(function () {
+          resumeBtn.classList.remove('is-complete');
+        }, 2200);
+      });
     })();
   </script>
 
@@ -2609,6 +2533,95 @@
         setThemePref(next);
         applyTheme(next);
       });
+    })();
+  </script>
+  <script>
+    (function () {
+      function initLiquidNav() {
+        var nav = document.querySelector('.glass-nav');
+        var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
+        var pill = document.querySelector('.nav-active-pill');
+        var glare = document.querySelector('.glass-glare');
+        var navThemeBtn = document.getElementById('navThemeToggleBtn');
+        var wrapper = document.getElementById('wrapper');
+        if (!nav || !links.length || !pill) return;
+
+        function setActive(link, smooth) {
+          if (!link) return;
+          links.forEach(function (item) {
+            item.classList.toggle('is-active', item === link);
+          });
+          if (!smooth) {
+            pill.style.transition = 'none';
+          } else {
+            pill.style.transition = '';
+          }
+          pill.style.width = link.offsetWidth + 'px';
+          pill.style.transform = 'translateX(' + link.offsetLeft + 'px)';
+          pill.style.opacity = '1';
+          if (!smooth) {
+            void pill.offsetWidth;
+            pill.style.transition = '';
+          }
+        }
+
+        function getSectionTop(section) {
+          var wrapperRect = wrapper ? wrapper.getBoundingClientRect() : { top: 0 };
+          var sectionRect = section.getBoundingClientRect();
+          return sectionRect.top - wrapperRect.top;
+        }
+
+        function syncToScroll() {
+          var active = links[0];
+          var current = wrapper ? wrapper.scrollTop : window.scrollY;
+          links.forEach(function (link) {
+            var id = link.getAttribute('href').slice(1);
+            var section = document.getElementById(id);
+            if (!section) return;
+            var sectionTop = getSectionTop(section) + current;
+            if (current >= sectionTop - 170) active = link;
+          });
+          setActive(active, true);
+        }
+
+        links.forEach(function (link) {
+          link.addEventListener('click', function () {
+            setActive(link, true);
+          });
+        });
+
+        nav.addEventListener('mousemove', function (event) {
+          if (!glare) return;
+          var rect = nav.getBoundingClientRect();
+          glare.style.setProperty('--x', (event.clientX - rect.left) + 'px');
+          glare.style.setProperty('--y', (event.clientY - rect.top) + 'px');
+        });
+
+        if (navThemeBtn) {
+          navThemeBtn.addEventListener('click', function () {
+            var next = document.body.classList.contains('night-theme') ? 'light' : 'dark';
+            if (typeof setThemePref === 'function') setThemePref(next);
+            if (typeof applyTheme === 'function') applyTheme(next);
+            window.setTimeout(function () {
+              setActive(document.querySelector('.nav-links a.is-active') || links[0], true);
+            }, 80);
+          });
+        }
+
+        var scroller = wrapper || window;
+        scroller.addEventListener('scroll', syncToScroll, { passive: true });
+        window.addEventListener('resize', function () {
+          setActive(document.querySelector('.nav-links a.is-active') || links[0], false);
+        });
+
+        window.setTimeout(function () {
+          setActive(document.querySelector('.nav-links a.is-active') || links[0], false);
+          syncToScroll();
+        }, 80);
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLiquidNav);
+      else initLiquidNav();
     })();
   </script>
   <!-- <script>
