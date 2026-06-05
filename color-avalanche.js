@@ -1,5 +1,5 @@
 (function () {
-  var section = document.getElementById('colorAvalanche');
+  var section = document.getElementById('skills') || document.getElementById('colorAvalanche');
   var sceneContainer = document.getElementById('ca-scene-container');
   if (!section || !sceneContainer || typeof Matter === 'undefined') return;
 

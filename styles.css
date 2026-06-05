@@ -21,10 +21,38 @@
     margin-right: 0;
   }
 }
-.night-theme nav ul.nav-links li a {
-  color: #fff !important;
-}
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+
+:root {
+  --liquid-bg-color: #e5e5ea;
+  --liquid-blob-1: #ff2a5f;
+  --liquid-blob-2: #007aff;
+  --liquid-blob-3: #ff9500;
+  --liquid-blob-opacity: 0.7;
+  --liquid-blob-1-soft: rgba(255, 42, 95, 0.7);
+  --liquid-blob-2-soft: rgba(0, 122, 255, 0.7);
+  --liquid-blob-3-soft: rgba(255, 149, 0, 0.7);
+  --liquid-hero-mesh-image:
+    radial-gradient(50vw 50vw at -10% -10%, var(--liquid-blob-1-soft), transparent 62%),
+    radial-gradient(45vw 45vw at 110% 110%, var(--liquid-blob-2-soft), transparent 64%),
+    radial-gradient(35vw 35vw at 40% 30%, var(--liquid-blob-3-soft), transparent 62%);
+}
+
+body.night-theme,
+.night-theme {
+  --liquid-bg-color: #000000;
+  --liquid-blob-1: #bf5af2;
+  --liquid-blob-2: #0a84ff;
+  --liquid-blob-3: #ff375f;
+  --liquid-blob-opacity: 0.5;
+  --liquid-blob-1-soft: rgba(191, 90, 242, 0.62);
+  --liquid-blob-2-soft: rgba(10, 132, 255, 0.64);
+  --liquid-blob-3-soft: rgba(255, 55, 95, 0.5);
+  --liquid-hero-mesh-image:
+    radial-gradient(72vw 82vw at 8% 58%, var(--liquid-blob-1-soft), transparent 72%),
+    radial-gradient(74vw 76vw at 94% 42%, var(--liquid-blob-2-soft), transparent 74%),
+    radial-gradient(58vw 58vw at 52% 84%, var(--liquid-blob-3-soft), transparent 70%);
+}
 
 .star {
   transform-style: preserve-3d;
@@ -374,6 +402,9 @@ footer,
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
+  background-color: var(--liquid-bg-color);
+  background-image: var(--liquid-hero-mesh-image);
+  background-attachment: fixed;
 }
 
 /* Header Start  */
@@ -385,11 +416,35 @@ header {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  background: transparent;
+}
+
+body.night-theme header,
+.night-theme header {
+  background: transparent;
 }
 
 header .logo {
   display: flex;
   align-items: center;
+}
+
+.logo-home-link {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.logo-home-link:focus-visible {
+  outline: 2px solid #4e45d5;
+  outline-offset: 4px;
 }
 
 .header-logo-img {
@@ -433,43 +488,45 @@ nav {
 
 /* Apple-style liquid glass navigation */
 .glass-nav {
-  --nav-glass-bg: rgba(255, 248, 239, 0.38);
-  --nav-glass-border: rgba(255, 255, 255, 0.62);
-  --nav-glass-shadow: rgba(80, 52, 26, 0.18);
-  --nav-glass-highlight: rgba(255, 255, 255, 0.88);
-  --nav-glass-caustic: rgba(255, 221, 172, 0.34);
-  --nav-reflection-start: rgba(255, 255, 255, 0.66);
+  --nav-glass-bg: rgba(255, 255, 255, 0.15);
+  --nav-glass-border: rgba(255, 255, 255, 0.4);
+  --nav-glass-shadow: rgba(0, 0, 0, 0.1);
+  --nav-glass-highlight: rgba(255, 255, 255, 0.8);
+  --nav-glass-caustic: rgba(255, 255, 255, 0.4);
+  --nav-reflection-start: rgba(255, 255, 255, 0.6);
   --nav-reflection-end: rgba(255, 255, 255, 0);
-  --nav-pill-bg: rgba(255, 255, 255, 0.78);
-  --nav-pill-shadow: 0 8px 18px rgba(94, 62, 25, 0.12), inset 0 1px 1px rgba(255, 255, 255, 0.86);
-  --nav-icon-color: rgba(65, 48, 31, 0.64);
-  --nav-active-color: rgba(18, 18, 18, 0.96);
-  --nav-divider: rgba(75, 54, 34, 0.18);
+  --nav-glare-color: rgba(255, 255, 255, 0.5);
+  --nav-pill-bg: rgba(255, 255, 255, 0.7);
+  --nav-pill-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+  --nav-icon-color: rgba(0, 0, 0, 0.5);
+  --nav-active-color: rgba(0, 0, 0, 0.95);
+  --nav-divider: rgba(0, 0, 0, 0.15);
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  border-radius: 999px;
+  border-radius: 99px;
   overflow: hidden;
   padding: 8px;
   background: var(--nav-glass-bg);
   box-shadow:
-    0 32px 72px -28px var(--nav-glass-shadow),
-    0 12px 28px -14px rgba(94, 62, 25, 0.24),
+    0 40px 80px -20px var(--nav-glass-shadow),
+    0 10px 30px -10px var(--nav-glass-shadow),
     inset 0 2px 3px -1px var(--nav-glass-highlight),
-    inset 0 -2px 5px -1px var(--nav-glass-caustic),
+    inset 0 -2px 4px -1px var(--nav-glass-caustic),
     inset 0 0 0 1px var(--nav-glass-border);
-  backdrop-filter: blur(38px) saturate(190%);
-  -webkit-backdrop-filter: blur(38px) saturate(190%);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.4), box-shadow 0.4s ease, background 0.35s ease;
+  backdrop-filter: blur(50px) saturate(200%);
+  -webkit-backdrop-filter: blur(50px) saturate(200%);
+  transition: all 0.5s ease;
   isolation: isolate;
+  z-index: 10;
 }
 
 .glass-nav:hover {
   box-shadow:
-    0 36px 80px -28px var(--nav-glass-shadow),
-    0 16px 34px -14px rgba(94, 62, 25, 0.28),
+    0 40px 80px -20px var(--nav-glass-shadow),
+    0 10px 30px -10px var(--nav-glass-shadow),
     inset 0 2px 3px -1px var(--nav-glass-highlight),
-    inset 0 -2px 5px -1px var(--nav-glass-caustic),
+    inset 0 -2px 4px -1px var(--nav-glass-caustic),
     inset 0 0 0 1px var(--nav-glass-border);
 }
 
@@ -485,22 +542,16 @@ nav {
 }
 
 .glass-nav .glass-filter {
-  z-index: 0;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  filter: url(#glassLensFilter) saturate(145%) brightness(1.08);
+  display: none;
 }
 
 .glass-nav .glass-overlay {
   z-index: 1;
-  background:
-    linear-gradient(90deg, rgba(255, 221, 205, 0.22), rgba(255, 194, 83, 0.2)),
-    var(--nav-glass-bg);
+  background: var(--nav-glass-bg);
 }
 
 .glass-nav .glass-specular {
-  z-index: 4;
-  box-shadow: inset 1px 1px 0 var(--nav-glass-highlight), inset 0 0 8px rgba(255, 255, 255, 0.28);
+  display: none;
 }
 
 .glass-nav::before {
@@ -510,14 +561,15 @@ nav {
   left: 1px;
   right: 1px;
   height: 46%;
-  border-radius: 999px 999px 24px 24px / 999px 999px 12px 12px;
+  border-radius: 99px 99px 24px 24px / 99px 99px 12px 12px;
   background: linear-gradient(180deg, var(--nav-reflection-start) 0%, var(--nav-reflection-end) 100%);
   pointer-events: none;
-  z-index: 5;
+  z-index: 6;
+  transition: background 0.5s ease;
 }
 
 .glass-nav .glass-glare-wrap {
-  z-index: 3;
+  z-index: 5;
   overflow: hidden;
 }
 
@@ -525,9 +577,9 @@ nav {
   position: absolute;
   inset: 0;
   opacity: 0;
-  background: radial-gradient(circle 90px at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.46), transparent 100%);
+  background: radial-gradient(circle 90px at var(--x, 50%) var(--y, 50%), var(--nav-glare-color), transparent 100%);
   mix-blend-mode: overlay;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.3s ease;
 }
 
 .glass-nav:hover .glass-glare {
@@ -536,7 +588,7 @@ nav {
 
 .nav-links {
   position: relative;
-  z-index: 6;
+  z-index: 3;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -575,16 +627,16 @@ nav {
   text-decoration: none;
   color: var(--nav-icon-color);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
   line-height: 1;
   height: 44px;
-  padding: 0 15px;
-  border-radius: 999px;
+  padding: 0 20px;
+  border-radius: 99px;
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: color 0.25s ease, transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: color 0.3s ease, transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
   text-shadow: none;
   -webkit-tap-highlight-color: transparent;
   white-space: nowrap;
@@ -613,16 +665,17 @@ nav {
 
 .nav-divider {
   position: relative;
-  z-index: 6;
+  z-index: 3;
   width: 1px;
   height: 24px;
-  margin: 0 6px;
+  margin: 0 4px;
   background: var(--nav-divider);
+  transition: background 0.5s ease;
 }
 
 .nav-theme-btn {
   position: relative;
-  z-index: 6;
+  z-index: 3;
   width: 44px;
   height: 44px;
   border: 0;
@@ -634,6 +687,7 @@ nav {
   cursor: pointer;
   transition: color 0.25s ease, transform 0.2s cubic-bezier(0.32, 0.72, 0, 1);
   -webkit-tap-highlight-color: transparent;
+  margin-left: 2px;
 }
 
 .nav-theme-btn:hover {
@@ -655,24 +709,55 @@ nav {
   transform: rotate(-90deg) scale(0);
 }
 
-body.night-theme .glass-nav {
-  --nav-glass-bg: rgba(30, 30, 35, 0.48);
-  --nav-glass-border: rgba(255, 255, 255, 0.16);
-  --nav-glass-shadow: rgba(0, 0, 0, 0.72);
+body.night-theme .glass-nav,
+.night-theme .glass-nav {
+  --nav-glass-bg: rgba(30, 30, 35, 0.45);
+  --nav-glass-border: rgba(255, 255, 255, 0.15);
+  --nav-glass-shadow: rgba(0, 0, 0, 0.8);
   --nav-glass-highlight: rgba(255, 255, 255, 0.25);
-  --nav-glass-caustic: rgba(255, 255, 255, 0.08);
-  --nav-reflection-start: rgba(255, 255, 255, 0.16);
-  --nav-pill-bg: rgba(255, 255, 255, 0.13);
-  --nav-pill-shadow: 0 8px 20px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.16);
-  --nav-icon-color: rgba(255, 255, 255, 0.62);
+  --nav-glass-caustic: rgba(255, 255, 255, 0.05);
+  --nav-reflection-start: rgba(255, 255, 255, 0.15);
+  --nav-reflection-end: rgba(255, 255, 255, 0);
+  --nav-glare-color: rgba(255, 255, 255, 0.15);
+  --nav-pill-bg: rgba(60, 60, 65, 0.8);
+  --nav-pill-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  --nav-icon-color: rgba(255, 255, 255, 0.5);
   --nav-active-color: #ffffff;
-  --nav-divider: rgba(255, 255, 255, 0.16);
+  --nav-divider: rgba(255, 255, 255, 0.15);
+  background: var(--nav-glass-bg);
+  color: var(--nav-icon-color);
+  box-shadow:
+    0 40px 80px -20px var(--nav-glass-shadow),
+    0 10px 30px -10px var(--nav-glass-shadow),
+    inset 0 2px 3px -1px var(--nav-glass-highlight),
+    inset 0 -2px 4px -1px var(--nav-glass-caustic),
+    inset 0 0 0 1px var(--nav-glass-border);
 }
 
-body.night-theme .glass-nav .glass-overlay {
-  background:
-    linear-gradient(90deg, rgba(191, 90, 242, 0.13), rgba(10, 132, 255, 0.12)),
-    var(--nav-glass-bg);
+body.night-theme .glass-nav .glass-overlay,
+.night-theme .glass-nav .glass-overlay {
+  background: var(--nav-glass-bg);
+}
+
+body.night-theme .glass-nav .glass-specular,
+.night-theme .glass-nav .glass-specular {
+  box-shadow: inset 1px 1px 0 rgba(255, 255, 255, 0.25), inset 0 0 8px rgba(255, 255, 255, 0.05);
+}
+
+body.night-theme .glass-nav::before,
+.night-theme .glass-nav::before {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.night-theme .glass-glare,
+.night-theme .glass-glare {
+  background: radial-gradient(circle 90px at var(--x, 50%) var(--y, 50%), rgba(255, 255, 255, 0.15), transparent 100%);
+}
+
+body.night-theme .nav-active-pill,
+.night-theme .nav-active-pill {
+  background: rgba(60, 60, 65, 0.8);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 
 body.night-theme .nav-theme-sun {
@@ -685,12 +770,15 @@ body.night-theme .nav-theme-moon {
   transform: rotate(0deg) scale(1);
 }
 
-body.night-theme .glass-nav .nav-links li a {
+body.night-theme .glass-nav .nav-links li a,
+.night-theme .glass-nav .nav-links li a {
   color: var(--nav-icon-color) !important;
 }
 
 body.night-theme .glass-nav .nav-links li a:hover,
-body.night-theme .glass-nav .nav-links li a.is-active {
+.night-theme .glass-nav .nav-links li a:hover,
+body.night-theme .glass-nav .nav-links li a.is-active,
+.night-theme .glass-nav .nav-links li a.is-active {
   color: var(--nav-active-color) !important;
 }
 
@@ -810,15 +898,44 @@ body.night-theme .glass-nav .nav-links li a.is-active {
 /* Hero Section Start  */
 .heroSection {
   gap: 5rem;
-  margin: 4rem auto;
+  margin: 0 auto;
   padding: 0 1rem;
-  padding-bottom: 8rem;
+  padding-top: 8.5rem;
+  padding-bottom: clamp(3rem, 5vw, 5rem);
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   width: 1200px;
   max-width: 100%;
+  isolation: isolate;
+  background: transparent;
+}
+
+.heroSection::before {
+  content: "";
+  position: absolute;
+  top: -4rem;
+  bottom: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  background-color: var(--liquid-bg-color);
+  background-image: var(--liquid-hero-mesh-image);
+  background-attachment: fixed;
+  z-index: 0;
+}
+
+body.night-theme .heroSection::before,
+.night-theme .heroSection::before {
+  background-color: #000000;
+  background-image: var(--liquid-hero-mesh-image);
+}
+
+.heroSection > .infoContainer,
+.heroSection > .orbit-hero-right {
+  position: relative;
+  z-index: 1;
 }
 
 .infoContainer {
@@ -833,24 +950,31 @@ body.night-theme .glass-nav .nav-links li a.is-active {
   user-select: none;
   font-size: 6em;
   color: #e7e7e7;
-  bottom: -16%;
+  bottom: 0;
   left: 0;
   font-weight: bold;
 }
 
-/* Water effect SVG in hero */
 .water-text-svg {
-  font-size: unset;
-  width: 720px;
-  height: 120px;
+  width: min(720px, calc(100vw - 2rem));
+  height: clamp(70px, 8vw, 105px);
   overflow: visible;
+  pointer-events: none;
+  z-index: 1;
 }
 
 @media (max-width: 768px) {
-  .water-text-svg { width: 360px; height: 60px; }
+  .water-text-svg {
+    width: min(360px, calc(100vw - 1rem));
+    height: 58px;
+  }
 }
+
 @media (max-width: 480px) {
-  .water-text-svg { width: 260px; height: 45px; }
+  .water-text-svg {
+    width: min(260px, calc(100vw - 1rem));
+    height: 42px;
+  }
 }
 
 .absolute {
@@ -1108,8 +1232,13 @@ body.night-theme .glass-nav .nav-links li a.is-active {
   position: relative;
   border-radius: 50%;
   border: 1px solid rgba(232, 73, 73, 0.15);
-  background: radial-gradient(closest-side, rgba(78, 69, 213, 0.05), transparent);
+  background: #f5f5f6;
   animation: orbitSpinRight 40s linear infinite;
+}
+
+body.night-theme .orbit-animation-ring {
+  border: 1px solid rgba(232, 73, 73, 0.15);
+  background: radial-gradient(circle, #0a0a0e 0%, #111116 52%, #6d6d72 72%, #f5f5f6 100%);
 }
 
 .orbit-glow {
@@ -1120,8 +1249,12 @@ body.night-theme .glass-nav .nav-links li a.is-active {
   width: var(--orbit-size);
   height: var(--orbit-size);
   border-radius: 50%;
-  box-shadow: 0 0 100px -20px rgba(232, 73, 73, 0.1);
+  box-shadow: none;
   pointer-events: none;
+}
+
+body.night-theme .orbit-glow {
+  box-shadow: none;
 }
 
 .orbit-slot {
@@ -1199,6 +1332,10 @@ body.night-theme .glass-nav .nav-links li a.is-active {
 }
 
 .projectSection + .projectSection {
+  margin-top: 0;
+}
+
+#graphics {
   margin-top: 0;
 }
 
@@ -3812,6 +3949,7 @@ body.night-theme #advertisements {
 
 #about {
   position: relative;
+  margin-top: 0;
 }
 
 .tv-frame {

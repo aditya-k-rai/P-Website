@@ -83,7 +83,9 @@
     <!-- Header Start -->
     <header>
       <div class="logo">
-        <img src="./Images/userAsset/ALRLogo.png" alt="ALR" class="header-logo-img" />
+        <a href="#home" class="logo-home-link" aria-label="Go to home section">
+          <img src="./Images/userAsset/ALRLogo.png" alt="ALR" class="header-logo-img" />
+        </a>
       </div>
       <nav class="glass-nav">
         <span class="glass-filter" aria-hidden="true"></span>
@@ -94,11 +96,11 @@
           <span class="nav-active-pill" aria-hidden="true"></span>
           <li><a href="#about" class="is-active"><i class="fa-regular fa-user" aria-hidden="true"></i><span>About</span></a></li>
           <li><a href="#projects"><i class="fa-solid fa-code" aria-hidden="true"></i><span>Websites</span></a></li>
+          <li><a href="#skills"><i class="fa-solid fa-list" aria-hidden="true"></i><span>Skills</span></a></li>
           <li><a href="#graphics"><i class="fa-regular fa-image" aria-hidden="true"></i><span>Graphics</span></a></li>
           <li><a href="#socialmedia"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i><span>Social</span></a></li>
           <li><a href="#advertisements"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i><span>Ads</span></a></li>
           <li><a href="#itSpecialist"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i><span>IT</span></a></li>
-          <li><a href="#skills"><i class="fa-solid fa-list" aria-hidden="true"></i><span>Skills</span></a></li>
         </ul>
         <span class="nav-divider" aria-hidden="true"></span>
         <button class="nav-theme-btn" id="navThemeToggleBtn" type="button" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
@@ -121,8 +123,8 @@
     <!-- Header End  -->
 
     <!-- Hero Section Start  -->
-    <section class="heroSection">
-      <svg class="fadedText absolute water-text-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 720 120" style="padding-bottom: 16px;">
+    <section class="heroSection" id="home">
+      <svg class="fadedText absolute water-text-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 720 105">
         <defs>
           <pattern id="water" width=".25" height="1.1" patternContentUnits="objectBoundingBox">
             <path fill="#0077be" d="M0.25,1H0c0,0,0-0.659,0-0.916c0.083-0.303,0.158,0.334,0.25,0C0.25,0.327,0.25,1,0.25,1z"/>
@@ -611,7 +613,7 @@
     <!-- Project Section End  -->
 
     <!-- Color Avalanche Section Start -->
-    <section class="color-avalanche-section" id="colorAvalanche">
+    <section class="color-avalanche-section" id="skills">
       <div class="ca-ui-layer">
         <h2 class="ca-title">Skills Achived</h2>
         <p class="ca-desc">Drag, throw, and explore the Skills Named Colors Blocks.</p>
@@ -1237,7 +1239,7 @@
     <!-- Let's Connect Creation Section End -->
 
     <!-- Skill Section Start  -->
-    <section class="skillContainer" id="skills">
+    <section class="skillContainer" id="techStack">
       <div class="skillFadedText absolute">Skills</div>
       <div class="leftSkillContainer">
         <h2 class="skillHeading"><span>M</span>e and <br />MyTech Stack</h2>
@@ -2429,12 +2431,8 @@
   <script src="./hero-shards.js"></script>
   <script src="https://kit.fontawesome.com/58a810656e.js" crossorigin="anonymous"></script>
   <script>
-    // Theme: auto by time, or manual override (persists in localStorage).
-    function isNightTime() {
-      const now = new Date();
-      const hour = now.getHours();
-      return (hour >= 18 || hour < 9); // 6pm to 9am
-    }
+    // Theme: saved user choice first, then device theme, with light as fallback.
+    const deviceThemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     function getThemePref() {
       try { return localStorage.getItem('themePref'); } catch (e) { return null; }
     }
@@ -2444,7 +2442,7 @@
     function resolveTheme() {
       const pref = getThemePref();
       if (pref === 'dark' || pref === 'light') return pref;
-      return isNightTime() ? 'dark' : 'light';
+      return deviceThemeQuery && deviceThemeQuery.matches ? 'dark' : 'light';
     }
     function applyTheme(mode) {
       if (mode === 'dark') {
@@ -2453,11 +2451,14 @@
       } else {
         document.body.classList.remove('night-theme');
       }
-      const btn = document.getElementById('themeToggleBtn');
-      if (btn) {
+      const buttons = [
+        document.getElementById('themeToggleBtn'),
+        document.getElementById('navThemeToggleBtn')
+      ].filter(Boolean);
+      buttons.forEach(function (btn) {
         btn.setAttribute('aria-pressed', mode === 'dark' ? 'true' : 'false');
         btn.title = mode === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
-      }
+      });
     }
 
     // Star trail (night only) — attach mousemove once, but suppress when not in night mode.
@@ -2521,10 +2522,23 @@
       });
     }
 
-    // Initial theme on load (time-based unless user saved a preference).
+    // Initial theme on load.
     applyTheme(resolveTheme());
 
-    // Toggle button: manual override that wins over the time check.
+    if (deviceThemeQuery) {
+      var handleDeviceThemeChange = function () {
+        if (getThemePref() !== 'dark' && getThemePref() !== 'light') {
+          applyTheme(resolveTheme());
+        }
+      };
+      if (typeof deviceThemeQuery.addEventListener === 'function') {
+        deviceThemeQuery.addEventListener('change', handleDeviceThemeChange);
+      } else if (typeof deviceThemeQuery.addListener === 'function') {
+        deviceThemeQuery.addListener(handleDeviceThemeChange);
+      }
+    }
+
+    // Toggle button: manual override that wins over the device theme.
     (function () {
       const btn = document.getElementById('themeToggleBtn');
       if (!btn) return;
@@ -2537,6 +2551,23 @@
   </script>
   <script>
     (function () {
+      function initLogoHomeLink() {
+        var logoLink = document.querySelector('.logo-home-link');
+        var wrapper = document.getElementById('wrapper');
+        if (!logoLink || !wrapper) return;
+        logoLink.addEventListener('click', function (event) {
+          event.preventDefault();
+          wrapper.scrollTo({ top: 0, behavior: 'smooth' });
+          if (history.pushState) history.pushState(null, '', '#home');
+        });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLogoHomeLink);
+      else initLogoHomeLink();
+    })();
+  </script>
+  <script>
+    (function () {
       function initLiquidNav() {
         var nav = document.querySelector('.glass-nav');
         var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a[href^="#"]'));
@@ -2544,10 +2575,18 @@
         var glare = document.querySelector('.glass-glare');
         var navThemeBtn = document.getElementById('navThemeToggleBtn');
         var wrapper = document.getElementById('wrapper');
+        var navScrollLink = null;
+        var navScrollTarget = 0;
+        var navScrollTimer = null;
+        var navScrollFrame = null;
         if (!nav || !links.length || !pill) return;
 
         function setActive(link, smooth) {
           if (!link) return;
+          var navList = pill.parentElement;
+          var listRect = navList.getBoundingClientRect();
+          var linkRect = link.getBoundingClientRect();
+          var pillX = linkRect.left - listRect.left + navList.scrollLeft;
           links.forEach(function (item) {
             item.classList.toggle('is-active', item === link);
           });
@@ -2557,8 +2596,15 @@
             pill.style.transition = '';
           }
           pill.style.width = link.offsetWidth + 'px';
-          pill.style.transform = 'translateX(' + link.offsetLeft + 'px)';
+          pill.style.transform = 'translateX(' + pillX + 'px)';
           pill.style.opacity = '1';
+          if (window.matchMedia('(max-width: 1180px)').matches && navList.scrollWidth > navList.clientWidth + 1) {
+            var targetScroll = pillX - ((navList.clientWidth - link.offsetWidth) / 2);
+            navList.scrollTo({
+              left: Math.max(0, targetScroll),
+              behavior: smooth ? 'smooth' : 'auto'
+            });
+          }
           if (!smooth) {
             void pill.offsetWidth;
             pill.style.transition = '';
@@ -2571,22 +2617,97 @@
           return sectionRect.top - wrapperRect.top;
         }
 
+        function setScrollTop(value) {
+          if (wrapper) wrapper.scrollTo({ top: value, behavior: 'auto' });
+          else window.scrollTo({ top: value, behavior: 'auto' });
+        }
+
+        function smoothScrollTo(target, link) {
+          var start = wrapper ? wrapper.scrollTop : window.scrollY;
+          var distance = target - start;
+          var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var duration = reduceMotion ? 0 : Math.min(950, Math.max(520, Math.abs(distance) * 0.18));
+          var startTime = performance.now();
+          var previousScrollBehavior = wrapper ? wrapper.style.scrollBehavior : document.documentElement.style.scrollBehavior;
+          if (wrapper) wrapper.style.scrollBehavior = 'auto';
+          else document.documentElement.style.scrollBehavior = 'auto';
+          window.clearTimeout(navScrollTimer);
+          if (navScrollFrame) window.cancelAnimationFrame(navScrollFrame);
+          navScrollLink = link;
+          navScrollTarget = target;
+          if (!duration || Math.abs(distance) < 2) {
+            setScrollTop(target);
+            if (wrapper) wrapper.style.scrollBehavior = previousScrollBehavior;
+            else document.documentElement.style.scrollBehavior = previousScrollBehavior;
+            navScrollLink = null;
+            syncToScroll();
+            return;
+          }
+
+          function step(now) {
+            var progress = Math.min(1, (now - startTime) / duration);
+            var eased = 1 - Math.pow(1 - progress, 3);
+            setScrollTop(start + (distance * eased));
+            setActive(link, true);
+            if (progress < 1) {
+              navScrollFrame = window.requestAnimationFrame(step);
+            } else {
+              setScrollTop(target);
+              if (wrapper) wrapper.style.scrollBehavior = previousScrollBehavior;
+              else document.documentElement.style.scrollBehavior = previousScrollBehavior;
+              navScrollFrame = null;
+              navScrollLink = null;
+              syncToScroll();
+            }
+          }
+
+          navScrollFrame = window.requestAnimationFrame(step);
+        }
+
         function syncToScroll() {
           var active = links[0];
           var current = wrapper ? wrapper.scrollTop : window.scrollY;
-          links.forEach(function (link) {
+          if (navScrollLink) {
+            setActive(navScrollLink, true);
+            if (Math.abs(current - navScrollTarget) <= 3) {
+              navScrollLink = null;
+            } else {
+              return;
+            }
+          }
+          var sections = links.map(function (link) {
             var id = link.getAttribute('href').slice(1);
             var section = document.getElementById(id);
-            if (!section) return;
-            var sectionTop = getSectionTop(section) + current;
-            if (current >= sectionTop - 170) active = link;
+            if (!section) return null;
+            return {
+              link: link,
+              top: getSectionTop(section) + current
+            };
+          }).filter(Boolean).sort(function (a, b) {
+            return a.top - b.top;
+          });
+          sections.forEach(function (item) {
+            if (current >= item.top - 170) active = item.link;
           });
           setActive(active, true);
         }
 
         links.forEach(function (link) {
-          link.addEventListener('click', function () {
+          link.addEventListener('click', function (event) {
+            var id = link.getAttribute('href').slice(1);
+            var section = document.getElementById(id);
+            if (!section) return;
+            event.preventDefault();
+            var current = wrapper ? wrapper.scrollTop : window.scrollY;
+            var offset = window.innerWidth <= 820 ? 76 : 90;
+            var maxScroll = wrapper
+              ? wrapper.scrollHeight - wrapper.clientHeight
+              : document.documentElement.scrollHeight - window.innerHeight;
+            navScrollTarget = Math.max(0, Math.min(maxScroll, getSectionTop(section) + current - offset));
+            navScrollLink = link;
             setActive(link, true);
+            if (history.pushState) history.pushState(null, '', '#' + id);
+            smoothScrollTo(navScrollTarget, link);
           });
         });
 
