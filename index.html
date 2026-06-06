@@ -1279,107 +1279,323 @@
     <!-- Hobbies Section Start -->
     <section id="hobbies" class="hobbies-section">
       <div class="hobbies-copy">
-        <p class="hobbies-kicker">Beyond the screen</p>
+        <p class="hobbies-kicker">After hours signal</p>
         <h2 class="hobbies-title">Hobbies</h2>
         <p class="hobbies-lead">
-          I keep my creative side moving through video experiments, visual edits, tech exploration, and learning tools that make ideas feel alive.
+          I like watching movies and series, listening to music, and exploring technology. The TV is tuned like a personal watchlist channel with classic films, binge-worthy shows, music moods, and tech rabbit holes.
         </p>
-        <div class="hobbies-grid" aria-label="Hobbies list">
-          <span>Video Editing</span>
-          <span>Graphics Design</span>
-          <span>AI Experiments</span>
-          <span>Cybersecurity Labs</span>
-          <span>Tech Repair</span>
-          <span>Content Creation</span>
+        <div class="hobbies-grid" aria-label="Hobbies categories">
+          <div class="hobby-group hobby-group-watch">
+            <div class="hobby-group-head">
+              <span class="hobby-group-label">Watchlist</span>
+              <span class="hobby-group-line" aria-hidden="true"></span>
+            </div>
+            <div class="hobby-group-cards">
+              <article class="hobby-card">
+                <i class="fa-solid fa-clapperboard" aria-hidden="true"></i>
+                <div>
+                  <h3>Movies</h3>
+                  <p>IMDb-style all-time picks, thrillers, sci-fi, crime, and emotional classics.</p>
+                </div>
+              </article>
+              <article class="hobby-card">
+                <i class="fa-solid fa-tv" aria-hidden="true"></i>
+                <div>
+                  <h3>Series</h3>
+                  <p>Long-form stories with strong writing, suspense, character arcs, and world-building.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+          <div class="hobby-group hobby-group-explore">
+            <div class="hobby-group-head">
+              <span class="hobby-group-label">Listen &amp; Explore</span>
+              <span class="hobby-group-line" aria-hidden="true"></span>
+            </div>
+            <div class="hobby-group-cards">
+              <article class="hobby-card">
+                <i class="fa-solid fa-headphones" aria-hidden="true"></i>
+                <div>
+                  <h3>Music</h3>
+                  <p>Focus playlists, cinematic soundtracks, lo-fi nights, and high-energy coding loops.</p>
+                </div>
+              </article>
+              <article class="hobby-card">
+                <i class="fa-solid fa-microchip" aria-hidden="true"></i>
+                <div>
+                  <h3>Technology</h3>
+                  <p>AI tools, cybersecurity labs, gadgets, automation, repairs, and new web ideas.</p>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="hobbies-ticker" aria-label="Hobbies highlights">
+          <span>IMDb Top 250 inspired</span>
+          <span>Series queue</span>
+          <span>Music mode</span>
+          <span>Tech watch</span>
         </div>
       </div>
       <div class="hobbies-tv-wrap">
-        <iframe class="tv-frame" src="./tv.html" title="Interactive hobbies TV set" loading="lazy" scrolling="no"></iframe>
+        <iframe class="tv-frame" src="./tv.html?mode=hobbies" title="Interactive hobbies TV watchlist" loading="lazy" scrolling="no"></iframe>
+      </div>
+      <div class="music-flow-section" aria-labelledby="musicFlowTitle">
+        <div class="music-flow-head">
+          <div>
+            <p class="music-flow-kicker">Music map</p>
+            <h3 id="musicFlowTitle">Select a sound lane</h3>
+          </div>
+          <div class="music-flow-selector" aria-label="Music type selector">
+            <button type="button" class="music-flow-chip is-active" data-music-target="dhh" aria-pressed="true">DHH</button>
+            <button type="button" class="music-flow-chip" data-music-target="gangsta" aria-pressed="false">Gangsta Style</button>
+            <button type="button" class="music-flow-chip" data-music-target="hiphop" aria-pressed="false">Hip-Hop</button>
+            <button type="button" class="music-flow-chip" data-music-target="melody" aria-pressed="false">Melody / Soft</button>
+            <button type="button" class="music-flow-chip" data-music-target="rap" aria-pressed="false">Rap</button>
+            <button type="button" class="music-flow-chip" data-music-target="jazz" aria-pressed="false">Jazz</button>
+            <button type="button" class="music-flow-chip" data-music-target="folk" aria-pressed="false">Folk</button>
+          </div>
+        </div>
+        <div class="music-flow-scroll" tabindex="0" aria-label="Scrollable music style flowchart">
+          <div class="music-flow-canvas">
+            <svg class="music-flow-lines" viewBox="0 0 1850 540" aria-hidden="true">
+              <path class="music-line-path" d="M 80 270 L 220 270" />
+              <path class="music-line-path" d="M 220 270 L 520 270" />
+              <path class="music-line-path" d="M 520 270 C 650 270, 665 150, 820 150" />
+              <path class="music-line-path" d="M 520 270 C 650 270, 665 410, 820 410" />
+              <path class="music-line-path" d="M 520 270 L 1080 270" />
+              <path class="music-line-path" d="M 1080 270 C 1195 270, 1215 150, 1380 150" />
+              <path class="music-line-path" d="M 1080 270 C 1195 270, 1215 410, 1380 410" />
+              <path class="music-line-path" d="M 1380 150 C 1495 150, 1515 150, 1700 150" />
+              <path class="music-line-path" d="M 1380 410 C 1495 410, 1515 410, 1700 410" />
+            </svg>
+
+            <span class="music-clay music-dot" style="left:80px;top:270px;"></span>
+            <button type="button" class="music-clay music-plus" data-music-target="dhh" style="left:220px;top:270px;" aria-label="Select DHH">+</button>
+            <span class="music-clay music-dot" style="left:380px;top:270px;"></span>
+
+            <article class="music-clay music-root-card" style="left:520px;top:270px;">
+              <div class="music-card-art music-card-art-root">
+                <span class="music-card-overlay"></span>
+                <span class="music-card-icon"><i class="fa-solid fa-headphones-simple" aria-hidden="true"></i></span>
+                <strong>Music Taste</strong>
+              </div>
+              <div class="music-card-stats">
+                <span>Flow</span>
+                <span>Beats</span>
+                <span>Mood</span>
+              </div>
+            </article>
+
+            <button type="button" class="music-clay music-plus" data-music-target="dhh" style="left:690px;top:150px;" aria-label="Select DHH">+</button>
+            <button type="button" class="music-clay music-plus" data-music-target="hiphop" style="left:760px;top:270px;" aria-label="Select Hip-Hop">+</button>
+            <button type="button" class="music-clay music-plus" data-music-target="gangsta" style="left:690px;top:410px;" aria-label="Select Gangsta Style">+</button>
+
+            <button type="button" class="music-clay music-card is-active" data-music-card="dhh" style="left:820px;top:150px;" aria-pressed="true">
+              <div class="music-card-art music-card-art-dhh">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>01</span><span>Desi bars</span></div>
+                <strong>DHH</strong>
+              </div>
+              <div class="music-card-stats"><span>Hindi</span><span>Punjabi</span><span>Street</span></div>
+            </button>
+
+            <button type="button" class="music-clay music-card" data-music-card="gangsta" style="left:820px;top:410px;" aria-pressed="false">
+              <div class="music-card-art music-card-art-gangsta">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>02</span><span>Heavy</span></div>
+                <strong>Gangsta Style</strong>
+              </div>
+              <div class="music-card-stats"><span>Bass</span><span>Grit</span><span>Night</span></div>
+            </button>
+
+            <button type="button" class="music-clay music-card" data-music-card="hiphop" style="left:1080px;top:270px;" aria-pressed="false">
+              <div class="music-card-art music-card-art-hiphop">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>03</span><span>Groove</span></div>
+                <strong>Hip-Hop</strong>
+              </div>
+              <div class="music-card-stats"><span>Beats</span><span>Flow</span><span>Culture</span></div>
+            </button>
+
+            <button type="button" class="music-clay music-card" data-music-card="melody" style="left:1380px;top:150px;" aria-pressed="false">
+              <div class="music-card-art music-card-art-melody">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>04</span><span>Soft</span></div>
+                <strong>Melody / Soft</strong>
+              </div>
+              <div class="music-card-stats"><span>Calm</span><span>Focus</span><span>Feel</span></div>
+            </button>
+
+            <button type="button" class="music-clay music-card" data-music-card="rap" style="left:1380px;top:410px;" aria-pressed="false">
+              <div class="music-card-art music-card-art-rap">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>05</span><span>Fast</span></div>
+                <strong>Rap</strong>
+              </div>
+              <div class="music-card-stats"><span>Lyrics</span><span>Punch</span><span>Energy</span></div>
+            </button>
+
+            <span class="music-clay music-dot" style="left:1240px;top:270px;"></span>
+            <button type="button" class="music-clay music-plus" data-music-target="melody" style="left:1240px;top:150px;" aria-label="Select Melody / Soft">+</button>
+            <button type="button" class="music-clay music-plus" data-music-target="rap" style="left:1240px;top:410px;" aria-label="Select Rap">+</button>
+            <button type="button" class="music-clay music-plus" data-music-target="jazz" style="left:1540px;top:150px;" aria-label="Select Jazz">+</button>
+            <button type="button" class="music-clay music-plus" data-music-target="folk" style="left:1540px;top:410px;" aria-label="Select Folk">+</button>
+
+            <button type="button" class="music-clay music-card" data-music-card="jazz" style="left:1700px;top:150px;" aria-pressed="false">
+              <div class="music-card-art music-card-art-jazz">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>06</span><span>Smooth</span></div>
+                <strong>Jazz</strong>
+              </div>
+              <div class="music-card-stats"><span>Sax</span><span>Soul</span><span>Late</span></div>
+            </button>
+
+            <button type="button" class="music-clay music-card" data-music-card="folk" style="left:1700px;top:410px;" aria-pressed="false">
+              <div class="music-card-art music-card-art-folk">
+                <span class="music-card-overlay"></span>
+                <div class="music-card-badges"><span>07</span><span>Roots</span></div>
+                <strong>Folk</strong>
+              </div>
+              <div class="music-card-stats"><span>Local</span><span>Warm</span><span>Story</span></div>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
     <!-- Hobbies Section End -->
 
-    <!-- Skill Section Start  -->
-    <section class="skillContainer" id="techStack">
-      <div class="skillFadedText absolute">Skills</div>
-      <div class="leftSkillContainer">
-        <h2 class="skillHeading"><span>M</span>e and <br />MyTech Stack</h2>
-        <div class="skillSubHeading">
-          <p>
-            Hello Everyone, I'm Aditya Rai, currently pursuing my Bachelor of Computer Application (BCA). I am passionate about exploring and expanding my knowledge in computer applications and become Full-stack Developer. With a solid foundation in computer science, I have a deep understanding of how computers, software, applications, and hardware function.
-
-          </p>
-          <p>
-            My programming skills extend to languages such as,C, C++, Java, and HTML ,CSS and Js and I have a good grasp of Data Structures,Algorithms , and Database Management Systems (DBMS). I also have Basic knowledge of web development and have been exploring  applications like Premiere Pro and Canva. I believe in continuous learning and staying updated with the latest trends in technology. Excited about the possibilities in the world of computer science, I am eager to contribute my skills and knowledge to meaningful projects.
-
-          </p>
-          <p>
-            I have a keen interest in cybersecurity, particularly in exploring penetration testing tools and ethical hacking. I have a basic knowledge in Kali Linux OS, with a focus on using tools like Nmap for network scanning, BeEF for exploiting web browser vulnerabilities, and Wireshark for network security analysis. Im intrested to learn about the other development tools and tech like - Git,React,Bootstrap,NodeJs,Docker,meterialUI and other js Frameworks.
-
-          </p>
-        </div>
-      </div>
-
-      <div class="rightSkillContainer">
-        <img src="./Images/userAsset/blob%20vector.png" class="blobStyle" alt="" />
-
-        <img src="./Images/stack/HTML.png" alt="" class="skillsLogo" />
-        <img src="./Images/stack/CSS.png" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Javascript.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/React.png" alt="" class="skillsLogo" />
-        <img src="./Images/stack/NodeJs.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Next.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Redux.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Tailwind.png" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Bootstrap.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/MaterialUI.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Express.png" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Git.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Github.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Graphql.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/MongoDB.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Vercel.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Bash.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/Docker.svg" alt="" class="skillsLogo" />
-        <img src="./Images/stack/meta.png" alt="Meta" class="skillsLogo" />
-        <img src="./Images/stack/wordpress.png" alt="WordPress" class="skillsLogo" />
-        <img src="./Images/stack/adwords.png" alt="Adwords" class="skillsLogo" />
-        <img src="./Images/stack/video%20editing.png" alt="Video Editing" class="skillsLogo" />
-      </div>
-    </section>
-    <!-- Skill Section End  -->
-
     <!-- Services/What I Offer Section Start  -->
     <section class="servicesSection" id="services">
       <div class="container">
-        <h2 class="serviceTitle">What I Offer</h2>
-        
-   
-        <div class="servicesContainer">
-          <div class="serviceCard">
-            <i class="fa-solid fa-code serviceIcon"></i>
-            <h3>Front-end Web Development</h3>
-            <p>Building responsive, modern, and interactive websites using HTML, CSS, JavaScript, React, and more.</p>
+        <div class="serviceHeader">
+          <h2 class="serviceTitle">What I Offer</h2>
+          <p class="serviceLead">A focused set of services built like a modular card lab: web interfaces, design, security basics, marketing, and visual content.</p>
+        </div>
+        <div class="servicesContainer shape-grid">
+          <div class="ux-parent ux-parent--mint">
+            <div class="ux-card">
+              <div class="ux-logo" aria-hidden="true">
+                <span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span>
+                <span class="ux-circle"><i class="fa-solid fa-code"></i></span>
+              </div>
+              <div class="ux-glass"></div>
+              <div class="ux-content">
+                <span class="ux-title">Front-end Web Development</span>
+                <span class="ux-text">Responsive, modern, and interactive websites using HTML, CSS, JavaScript, React, and more.</span>
+              </div>
+              <div class="ux-bottom">
+                <div class="ux-social" aria-hidden="true">
+                  <span class="ux-social-btn"><i class="fa-brands fa-html5"></i></span>
+                  <span class="ux-social-btn"><i class="fa-brands fa-css3-alt"></i></span>
+                  <span class="ux-social-btn"><i class="fa-brands fa-js"></i></span>
+                </div>
+                <div class="ux-more">
+                  <span class="ux-more-btn">01</span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="serviceCard">
-            <i class="fa-solid fa-paint-brush serviceIcon"></i>
-            <h3>UI/UX Design</h3>
-            <p>Designing user-friendly interfaces and experiences for web and mobile applications.</p>
+
+          <div class="ux-parent ux-parent--violet ux-parent--cut">
+            <div class="ux-card">
+              <div class="ux-logo" aria-hidden="true">
+                <span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span>
+                <span class="ux-circle"><i class="fa-solid fa-paint-brush"></i></span>
+              </div>
+              <div class="ux-glass"></div>
+              <div class="ux-content">
+                <span class="ux-title">UI/UX Design</span>
+                <span class="ux-text">User-friendly interfaces and experiences for web and mobile applications.</span>
+              </div>
+              <div class="ux-bottom">
+                <div class="ux-social" aria-hidden="true">
+                  <span class="ux-social-btn"><i class="fa-solid fa-pen-nib"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-layer-group"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
+                </div>
+                <div class="ux-more">
+                  <span class="ux-more-btn">02</span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="serviceCard">
-            <i class="fa-solid fa-lock serviceIcon"></i>
-            <h3>Basic Cybersecurity</h3>
-            <p>Offering basic penetration testing, vulnerability scanning, and security analysis for web projects.</p>
+
+          <div class="ux-parent ux-parent--solar">
+            <div class="ux-card">
+              <div class="ux-logo" aria-hidden="true">
+                <span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span>
+                <span class="ux-circle"><i class="fa-solid fa-lock"></i></span>
+              </div>
+              <div class="ux-glass"></div>
+              <div class="ux-content">
+                <span class="ux-title">Basic Cybersecurity</span>
+                <span class="ux-text">Basic penetration testing, vulnerability scanning, and security analysis for web projects.</span>
+              </div>
+              <div class="ux-bottom">
+                <div class="ux-social" aria-hidden="true">
+                  <span class="ux-social-btn"><i class="fa-solid fa-shield-halved"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-bug"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
+                </div>
+                <div class="ux-more">
+                  <span class="ux-more-btn">03</span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="serviceCard">
-            <i class="fa-solid fa-bullhorn serviceIcon"></i>
-            <h3>Digital Marketing</h3>
-            <p>Promoting brands and projects through social media, SEO, and digital campaigns.</p>
+
+          <div class="ux-parent ux-parent--wide ux-parent--ocean ux-parent--span-2">
+            <div class="ux-card">
+              <div class="ux-logo" aria-hidden="true">
+                <span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span>
+                <span class="ux-circle"><i class="fa-solid fa-bullhorn"></i></span>
+              </div>
+              <div class="ux-glass"></div>
+              <div class="ux-content">
+                <span class="ux-title">Digital Marketing</span>
+                <span class="ux-text">Brand growth through social media, SEO, paid campaigns, analytics, and consistent performance tracking.</span>
+              </div>
+              <div class="ux-bottom">
+                <div class="ux-social" aria-hidden="true">
+                  <span class="ux-social-btn"><i class="fa-solid fa-chart-line"></i></span>
+                  <span class="ux-social-btn"><i class="fa-brands fa-google"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-hashtag"></i></span>
+                </div>
+                <div class="ux-more">
+                  <span class="ux-more-btn">04</span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="serviceCard">
-            <i class="fa-solid fa-photo-film serviceIcon"></i>
-            <h3>Graphics and Video Editing</h3>
-            <p>Designing graphics, editing videos, and creating visual content for web and social media using tools like Canva and Premiere Pro.</p>
+
+          <div class="ux-parent ux-parent--prism">
+            <div class="ux-card">
+              <div class="ux-logo" aria-hidden="true">
+                <span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span><span class="ux-circle"></span>
+                <span class="ux-circle"><i class="fa-solid fa-photo-film"></i></span>
+              </div>
+              <div class="ux-glass"></div>
+              <div class="ux-content">
+                <span class="ux-title">Graphics and Video Editing</span>
+                <span class="ux-text">Graphics, edits, reels, and visual content for web and social media using Canva and Premiere Pro.</span>
+              </div>
+              <div class="ux-bottom">
+                <div class="ux-social" aria-hidden="true">
+                  <span class="ux-social-btn"><i class="fa-solid fa-scissors"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-image"></i></span>
+                  <span class="ux-social-btn"><i class="fa-solid fa-play"></i></span>
+                </div>
+                <div class="ux-more">
+                  <span class="ux-more-btn">05</span>
+                  <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2528,6 +2744,63 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
   <script src="./hero-shards.js"></script>
   <script src="https://kit.fontawesome.com/58a810656e.js" crossorigin="anonymous"></script>
+  <script>
+    (function () {
+      var section = document.querySelector('.music-flow-section');
+      if (!section) return;
+
+      var scroller = section.querySelector('.music-flow-scroll');
+      var cards = Array.prototype.slice.call(section.querySelectorAll('[data-music-card]'));
+      var triggers = Array.prototype.slice.call(section.querySelectorAll('[data-music-target]'));
+
+      function setMusicType(type, shouldScroll) {
+        var activeCard = null;
+        cards.forEach(function (card) {
+          var isActive = card.getAttribute('data-music-card') === type;
+          card.classList.toggle('is-active', isActive);
+          card.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          if (isActive) activeCard = card;
+        });
+
+        triggers.forEach(function (trigger) {
+          var isActive = trigger.getAttribute('data-music-target') === type;
+          trigger.classList.toggle('is-active', isActive);
+          if (trigger.classList.contains('music-flow-chip')) {
+            trigger.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          }
+        });
+
+        if (shouldScroll && activeCard && scroller) {
+          var targetLeft = activeCard.offsetLeft - (scroller.clientWidth / 2) + (activeCard.offsetWidth / 2);
+          scroller.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
+        }
+      }
+
+      triggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          setMusicType(trigger.getAttribute('data-music-target'), true);
+        });
+      });
+
+      cards.forEach(function (card) {
+        card.addEventListener('click', function () {
+          setMusicType(card.getAttribute('data-music-card'), true);
+        });
+      });
+
+      if (scroller) {
+        scroller.addEventListener('wheel', function (event) {
+          if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+          event.preventDefault();
+          scroller.scrollLeft += event.deltaY;
+        }, { passive: false });
+      }
+
+      window.setTimeout(function () {
+        setMusicType('dhh', true);
+      }, 250);
+    })();
+  </script>
   <script>
     // Theme: saved user choice first, then device theme, with light as fallback.
     const deviceThemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
