@@ -20,7 +20,20 @@
   <link rel="shortcut icon" href="./Images/userAsset/icon.ico" type="image/x-icon" />
 
   <!-- Three.js for Advertisement section liquid-gradient background -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    window.loadThreeFallback = function () {
+      if (window.THREE || document.querySelector('script[data-three-fallback]')) return;
+      var script = document.createElement('script');
+      script.src = './vendor/three.r128.min.js';
+      script.defer = true;
+      script.dataset.threeFallback = 'true';
+      document.head.appendChild(script);
+    };
+    window.setTimeout(function () {
+      if (!window.THREE) window.loadThreeFallback();
+    }, 2500);
+  </script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" onerror="window.loadThreeFallback()"></script>
 </head>
 
 <body>
@@ -1884,6 +1897,7 @@
         var canvas = document.getElementById('lg-canvas');
         var section = document.getElementById('advertisements');
         if (!canvas || !section) return;
+        var wrapper = document.getElementById('wrapper');
 
         function TouchTexture() {
           this.size = 64;
@@ -2098,8 +2112,24 @@
           renderer.render(scene, camera);
           rafId = requestAnimationFrame(tick);
         }
-        function start() { if (running) return; running = true; clock.getDelta(); tick(); }
-        function stop() { running = false; if (rafId) cancelAnimationFrame(rafId); }
+        function renderOnce() {
+          tt.update();
+          renderer.render(scene, camera);
+        }
+        function start() {
+          if (running) return;
+          running = true;
+          section.classList.add('lg-running');
+          resize();
+          clock.getDelta();
+          tick();
+        }
+        function stop() {
+          running = false;
+          section.classList.remove('lg-running');
+          if (rafId) cancelAnimationFrame(rafId);
+          rafId = 0;
+        }
 
         var resizeTO;
         function resize() {
@@ -2125,22 +2155,40 @@
           tt.addTouch({ x: (t.clientX - r.left) / r.width, y: 1 - (t.clientY - r.top) / r.height });
         }, { passive: true });
 
-        if ('IntersectionObserver' in window) {
-          var io = new IntersectionObserver(function (entries) {
-            entries.forEach(function (en) {
-              if (en.isIntersecting && !document.hidden) start();
-              else stop();
-            });
-          }, { threshold: 0 });
-          io.observe(section);
-        } else { start(); }
-        document.addEventListener('visibilitychange', function () {
-          if (document.hidden) stop();
-          else {
-            var r = section.getBoundingClientRect();
-            if (r.bottom > 0 && r.top < window.innerHeight) start();
+        function isSectionVisible() {
+          var rect = section.getBoundingClientRect();
+          var root = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+          return rect.bottom > root.top - 120 && rect.top < root.bottom + 120;
+        }
+        function syncRunningState() {
+          if (document.hidden) {
+            stop();
+          } else if (isSectionVisible()) {
+            start();
+          } else {
+            stop();
           }
-        });
+        }
+        var syncQueued = false;
+        function queueSyncRunningState() {
+          if (syncQueued) return;
+          syncQueued = true;
+          requestAnimationFrame(function () {
+            syncQueued = false;
+            syncRunningState();
+          });
+        }
+
+        if ('IntersectionObserver' in window) {
+          var io = new IntersectionObserver(function () {
+            syncRunningState();
+          }, { root: wrapper || null, rootMargin: '120px 0px', threshold: 0 });
+          io.observe(section);
+        }
+        if (wrapper) wrapper.addEventListener('scroll', queueSyncRunningState, { passive: true });
+        window.addEventListener('scroll', queueSyncRunningState, { passive: true });
+        window.addEventListener('resize', queueSyncRunningState);
+        document.addEventListener('visibilitychange', syncRunningState);
 
         // Controls: scheme buttons
         var schemeBtns = section.querySelectorAll('.lg-color-btn');
@@ -2229,6 +2277,8 @@
 
         setScheme(1);
         resize();
+        renderOnce();
+        syncRunningState();
       }
 
       if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
