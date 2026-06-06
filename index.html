@@ -249,8 +249,33 @@
       <h2 class="projectTitle text-effect"><span class="te-line"><span class="te-base">About</span><span class="te-fade"> Me</span></span><span class="te-hover">About Me</span></h2>
 
       <div class="about-grid">
-        <div class="about-tv-wrap">
-          <iframe class="tv-frame" src="./tv.html" title="Interactive TV set" loading="lazy" scrolling="no"></iframe>
+        <div class="about-phone-wrap" aria-label="BlackBerry style phone with Aditya about video">
+          <div class="bb-phone-3d">
+            <span class="bb-side-button bb-vol-up"></span>
+            <span class="bb-side-button bb-silent"></span>
+            <span class="bb-side-button bb-vol-down"></span>
+            <span class="bb-speaker"></span>
+            <span class="bb-camera"></span>
+            <span class="bb-led"></span>
+            <div class="bb-brand">BlackBerry</div>
+            <div class="bb-screen">
+              <video class="bb-screen-video" src="Images/Graphics/Aditya%20About%20Video.mp4" autoplay muted loop playsinline preload="metadata"></video>
+            </div>
+            <div class="bb-keyboard">
+              <div class="bb-key-row">
+                <span>Q<small>#</small></span><span>W<small>1</small></span><span>E<small>2</small></span><span>R<small>3</small></span><span>T<small>(</small></span><span>Z<small>)</small></span><span>U<small>_</small></span><span class="bb-volume-off" data-bb-control="mute" role="button" tabindex="0" aria-label="Mute video">I<small>-</small></span><span class="bb-volume-on" data-bb-control="sound" role="button" tabindex="0" aria-label="Turn video volume on">O<small>+</small></span><span data-bb-control="privacy" role="button" tabindex="0" aria-label="Toggle privacy screen">P<small>@</small></span>
+              </div>
+              <div class="bb-key-row">
+                <span>A<small>*</small></span><span>S<small>4</small></span><span>D<small>5</small></span><span>F<small>6</small></span><span>G<small>/</small></span><span>H<small>:</small></span><span>J<small>;</small></span><span>K<small>'</small></span><span>L<small>"</small></span><span class="bb-key-wide">⌫</span>
+              </div>
+              <div class="bb-key-row">
+                <span class="bb-key-wide">alt</span><span>Y<small>7</small></span><span>X<small>8</small></span><span>C<small>9</small></span><span>V<small>?</small></span><span>B<small>!</small></span><span>N<small>,</small></span><span>M<small>.</small></span><span>€</span><span class="bb-key-wide">↵</span>
+              </div>
+              <div class="bb-key-row bb-key-row-bottom">
+                <span class="bb-key-wide">⇧</span><span class="bb-key-wide">mic</span><span class="bb-space" data-bb-control="play" role="button" tabindex="0" aria-label="Play or pause video"></span><span class="bb-key-wide">sym</span><span class="bb-key-wide">⇧</span>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="about-copy ak-resume">
           <div class="ak-head">
@@ -1237,6 +1262,29 @@
       </div>
     </section>
     <!-- Let's Connect Creation Section End -->
+
+    <!-- Hobbies Section Start -->
+    <section id="hobbies" class="hobbies-section">
+      <div class="hobbies-copy">
+        <p class="hobbies-kicker">Beyond the screen</p>
+        <h2 class="hobbies-title">Hobbies</h2>
+        <p class="hobbies-lead">
+          I keep my creative side moving through video experiments, visual edits, tech exploration, and learning tools that make ideas feel alive.
+        </p>
+        <div class="hobbies-grid" aria-label="Hobbies list">
+          <span>Video Editing</span>
+          <span>Graphics Design</span>
+          <span>AI Experiments</span>
+          <span>Cybersecurity Labs</span>
+          <span>Tech Repair</span>
+          <span>Content Creation</span>
+        </div>
+      </div>
+      <div class="hobbies-tv-wrap">
+        <iframe class="tv-frame" src="./tv.html" title="Interactive hobbies TV set" loading="lazy" scrolling="no"></iframe>
+      </div>
+    </section>
+    <!-- Hobbies Section End -->
 
     <!-- Skill Section Start  -->
     <section class="skillContainer" id="techStack">
@@ -2551,6 +2599,261 @@
   </script>
   <script>
     (function () {
+      function initBlackBerryPhoneControls() {
+        var phones = Array.prototype.slice.call(document.querySelectorAll('.bb-phone-3d'));
+        var wrapper = document.getElementById('wrapper');
+        var userHasInteracted = false;
+        if (!phones.length) return;
+
+        function markInteraction() {
+          userHasInteracted = true;
+          document.removeEventListener('pointerdown', markInteraction);
+          document.removeEventListener('keydown', markInteraction);
+          document.removeEventListener('touchstart', markInteraction);
+        }
+
+        document.addEventListener('pointerdown', markInteraction, { passive: true });
+        document.addEventListener('keydown', markInteraction);
+        document.addEventListener('touchstart', markInteraction, { passive: true });
+
+        phones.forEach(function (phone) {
+          var video = phone.querySelector('.bb-screen-video');
+          var playKey = phone.querySelector('[data-bb-control="play"]');
+          var soundKey = phone.querySelector('[data-bb-control="sound"]');
+          var muteKey = phone.querySelector('[data-bb-control="mute"]');
+          var privacyKey = phone.querySelector('[data-bb-control="privacy"]');
+          var phoneWrap = phone.closest('.about-phone-wrap');
+          var aboutSection = phone.closest('#about');
+          if (!video || !playKey || !soundKey || !muteKey || !privacyKey) return;
+          var privacyEnabled = true;
+          var targetRx = 7;
+          var targetRy = -14;
+          var targetRz = -2;
+          var targetPriv = 0;
+          var rx = targetRx;
+          var ry = targetRy;
+          var rz = targetRz;
+          var priv = 0;
+          var hasMovedPhone = false;
+          var phoneTime = Math.random() * 10;
+
+          function lerp(a, b, t) {
+            return a + (b - a) * t;
+          }
+
+          function setPrivacyEnabled(next) {
+            privacyEnabled = next;
+            privacyKey.classList.toggle('is-active', privacyEnabled);
+            privacyKey.setAttribute('aria-pressed', privacyEnabled ? 'true' : 'false');
+            if (!privacyEnabled) {
+              targetPriv = 0;
+              priv = 0;
+              phone.style.setProperty('--bb-privacy-opacity', '0');
+            }
+          }
+
+          function syncKeys() {
+            playKey.classList.toggle('is-active', !video.paused);
+            soundKey.classList.toggle('is-active', !video.muted && video.volume > 0);
+            muteKey.classList.toggle('is-active', video.muted || video.volume === 0);
+            privacyKey.classList.toggle('is-active', privacyEnabled);
+          }
+
+          function togglePlay() {
+            if (video.paused) {
+              video.play().catch(function () {});
+            } else {
+              video.pause();
+            }
+            window.setTimeout(syncKeys, 60);
+          }
+
+          function volumeOn() {
+            video.muted = false;
+            if (video.volume === 0) video.volume = 0.65;
+            video.play().catch(function () {});
+            syncKeys();
+          }
+
+          function volumeOff() {
+            video.muted = true;
+            syncKeys();
+          }
+
+          function playWithAudio() {
+            video.volume = video.volume || 0.75;
+            video.muted = false;
+            var playAttempt = video.play();
+            if (playAttempt && typeof playAttempt.catch === 'function') {
+              playAttempt.catch(function () {
+                video.muted = true;
+                video.play().catch(function () {});
+              }).finally(function () {
+                window.setTimeout(syncKeys, 80);
+              });
+            } else {
+              window.setTimeout(syncKeys, 80);
+            }
+          }
+
+          function pauseAndMute() {
+            video.pause();
+            video.muted = true;
+            syncKeys();
+          }
+
+          function updatePhoneMotionFromPoint(clientX, clientY) {
+            hasMovedPhone = true;
+            var rect = phoneWrap ? phoneWrap.getBoundingClientRect() : phone.getBoundingClientRect();
+            var cx = rect.left + rect.width / 2;
+            var cy = rect.top + rect.height / 2;
+            var dx = clientX - cx;
+            var dy = clientY - cy;
+            var maxDist = Math.max(150, Math.min(rect.width, rect.height) * 0.62);
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var normDist = Math.min(dist / maxDist, 1);
+            var maxTilt = 42;
+            targetRy = -14 + Math.max(-maxTilt, Math.min(maxTilt, (dx / maxDist) * maxTilt));
+            targetRx = 7 + Math.max(-maxTilt, Math.min(maxTilt, -(dy / maxDist) * maxTilt));
+            targetRz = -2 + Math.max(-7, Math.min(7, (dx / maxDist) * 7));
+            targetPriv = privacyEnabled ? Math.pow(normDist, 1.3) * 0.92 : 0;
+          }
+
+          function resetPhoneMotion() {
+            hasMovedPhone = false;
+            targetRx = 7;
+            targetRy = -14;
+            targetRz = -2;
+            targetPriv = 0;
+          }
+
+          function animatePhoneMotion() {
+            if (!hasMovedPhone && privacyEnabled) {
+              phoneTime += 0.012;
+              var idleX = Math.cos(phoneTime * 0.8) * 12;
+              var idleY = Math.sin(phoneTime) * 22;
+              targetRx = 7 + idleX;
+              targetRy = -14 + idleY;
+              targetRz = -2 + Math.sin(phoneTime * 0.7) * 2;
+              var idleDist = Math.min(Math.sqrt(idleX * idleX + idleY * idleY) / 38, 1);
+              targetPriv = Math.pow(idleDist, 1.3) * 0.52;
+            }
+            rx = lerp(rx, targetRx, 0.08);
+            ry = lerp(ry, targetRy, 0.08);
+            rz = lerp(rz, targetRz, 0.08);
+            priv = lerp(priv, privacyEnabled ? targetPriv : 0, 0.1);
+            phone.style.setProperty('--bb-rx', rx.toFixed(2) + 'deg');
+            phone.style.setProperty('--bb-ry', ry.toFixed(2) + 'deg');
+            phone.style.setProperty('--bb-rz', rz.toFixed(2) + 'deg');
+            phone.style.setProperty('--bb-privacy-opacity', priv.toFixed(3));
+            window.requestAnimationFrame(animatePhoneMotion);
+          }
+
+          playKey.addEventListener('click', togglePlay);
+          soundKey.addEventListener('click', volumeOn);
+          muteKey.addEventListener('click', volumeOff);
+          privacyKey.addEventListener('click', function () {
+            setPrivacyEnabled(!privacyEnabled);
+            syncKeys();
+          });
+          [playKey, soundKey, muteKey, privacyKey].forEach(function (key) {
+            key.addEventListener('keydown', function (event) {
+              if (event.key === 'Enter' || event.code === 'Space') {
+                event.preventDefault();
+                key.click();
+              }
+            });
+          });
+          video.addEventListener('play', syncKeys);
+          video.addEventListener('pause', syncKeys);
+          video.addEventListener('volumechange', syncKeys);
+          setPrivacyEnabled(true);
+          syncKeys();
+          animatePhoneMotion();
+
+          function handlePhonePointerMove(event) {
+            updatePhoneMotionFromPoint(event.clientX, event.clientY);
+          }
+
+          if (phoneWrap) {
+            phoneWrap.addEventListener('pointermove', handlePhonePointerMove);
+            phoneWrap.addEventListener('pointerleave', resetPhoneMotion);
+          }
+
+          if (aboutSection) {
+            aboutSection.addEventListener('pointermove', handlePhonePointerMove);
+          }
+
+          document.addEventListener('mousemove', function (event) {
+            var aboutRect = aboutSection ? aboutSection.getBoundingClientRect() : phone.getBoundingClientRect();
+            var rootRect = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+            if (aboutRect.bottom < rootRect.top || aboutRect.top > rootRect.bottom) return;
+            updatePhoneMotionFromPoint(event.clientX, event.clientY);
+          });
+
+          phone.addEventListener('touchmove', function (event) {
+            if (!event.touches || !event.touches.length) return;
+            updatePhoneMotionFromPoint(event.touches[0].clientX, event.touches[0].clientY);
+          }, { passive: true });
+
+          if (aboutSection && 'IntersectionObserver' in window) {
+            window.portfolioPlayAboutPhoneWithAudio = playWithAudio;
+            var aboutObserver = new IntersectionObserver(function (entries) {
+              entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                  playWithAudio();
+                } else {
+                  pauseAndMute();
+                }
+              });
+            }, {
+              root: wrapper || null,
+              threshold: 0.45
+            });
+            aboutObserver.observe(aboutSection);
+
+            document.addEventListener('pointerdown', function () {
+              var rect = aboutSection.getBoundingClientRect();
+              var rootRect = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+              var isAboutVisible = rect.bottom > rootRect.top && rect.top < rootRect.bottom;
+              if (isAboutVisible && video.muted) playWithAudio();
+            }, { passive: true });
+          }
+        });
+
+        document.addEventListener('keydown', function (event) {
+          var phone = document.querySelector('#about .bb-phone-3d');
+          if (!phone) return;
+          var rect = phone.getBoundingClientRect();
+          var isVisible = rect.bottom > 0 && rect.top < window.innerHeight;
+          if (!isVisible) return;
+          var target = event.target;
+          if (target && /INPUT|TEXTAREA|SELECT/.test(target.tagName)) return;
+          var video = phone.querySelector('.bb-screen-video');
+          var privacyKey = phone.querySelector('[data-bb-control="privacy"]');
+          if (!video) return;
+          if (event.code === 'Space') {
+            event.preventDefault();
+            if (video.paused) video.play().catch(function () {});
+            else video.pause();
+          } else if (event.key === '+' || event.key === '=') {
+            video.muted = false;
+            if (video.volume === 0) video.volume = 0.65;
+            video.play().catch(function () {});
+          } else if (event.key === '-' || event.key === '_') {
+            video.muted = true;
+          } else if ((event.key || '').toLowerCase() === 'p' && privacyKey) {
+            privacyKey.click();
+          }
+        });
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initBlackBerryPhoneControls);
+      else initBlackBerryPhoneControls();
+    })();
+  </script>
+  <script>
+    (function () {
       function initLogoHomeLink() {
         var logoLink = document.querySelector('.logo-home-link');
         var wrapper = document.getElementById('wrapper');
@@ -2698,6 +3001,9 @@
             var section = document.getElementById(id);
             if (!section) return;
             event.preventDefault();
+            if (id === 'about' && typeof window.portfolioPlayAboutPhoneWithAudio === 'function') {
+              window.portfolioPlayAboutPhoneWithAudio();
+            }
             var current = wrapper ? wrapper.scrollTop : window.scrollY;
             var offset = window.innerWidth <= 820 ? 76 : 90;
             var maxScroll = wrapper
