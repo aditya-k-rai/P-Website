@@ -3771,18 +3771,22 @@ body.night-theme #advertisements {
   filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
 }
 
-.projectSkillsContainer--lotwaala {
+.projectSkillsContainer--lotwaala,
+.projectSkillsContainer--colourtribe,
+.projectSkillsContainer--silveri {
   right: 0;
-  max-width: min(100%, 320px);
+  max-width: min(100%, 360px);
   flex-wrap: nowrap;
-  gap: 0.35em;
+  gap: 0.25em;
   align-items: center;
   justify-content: flex-end;
 }
 
-.projectSkillsContainer--lotwaala .projectSkill {
-  width: 26px;
-  height: 26px;
+.projectSkillsContainer--lotwaala .projectSkill,
+.projectSkillsContainer--colourtribe .projectSkill,
+.projectSkillsContainer--silveri .projectSkill {
+  width: 24px;
+  height: 24px;
 }
 
 /* --- Description: BELOW card, bottom-left, slide DOWN on hover --- */
@@ -3893,7 +3897,7 @@ body.night-theme #advertisements {
 .projectContainer.galleryGrid {
   display: grid !important;
   grid-template-columns: repeat(2, 1fr);
-  gap: 100px 40px;
+  gap: 116px 40px;
   padding: 60px 5% 100px;
 }
 
@@ -4282,6 +4286,8 @@ body.night-theme #advertisements {
   display: block;
   background: transparent;
   overflow: hidden;
+  border-radius: 24px;
+  clip-path: inset(0 round 24px);
   color-scheme: dark;
 }
 
@@ -7257,7 +7263,7 @@ footer {
 @media (max-width: 900px) {
   .projectContainer.galleryGrid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 80px 20px;
+    gap: 100px 20px;
     padding: 40px 3% 70px;
   }
   .projectContainer.galleryGrid .projectCard {
@@ -7280,7 +7286,7 @@ footer {
 @media (max-width: 600px) {
   .projectContainer.galleryGrid {
     grid-template-columns: 1fr;
-    gap: 80px;
+    gap: 96px;
     padding: 20px 5% 50px;
   }
   .projectContainer.galleryGrid .projectCard {
@@ -8194,7 +8200,7 @@ body.night-theme .resume-fab-status {
 
   /* ── Gallery Grid ── */
   .projectContainer.galleryGrid {
-    gap: 60px;
+    gap: 92px;
     padding: 15px 4% 40px;
   }
   .projectContainer.galleryGrid .projectHeading {
