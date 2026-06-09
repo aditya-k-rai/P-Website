@@ -1747,6 +1747,7 @@ light u:nth-of-type(5) > u:nth-of-type(6) {
   nextPreload.preload = 'auto';
   nextPreload.muted = true;
   nextPreload.playsInline = true;
+  var pausedByParent = false;
 
   function updateChannelLabel() {
     var channel = playlist[channelIndex];
@@ -1813,7 +1814,7 @@ light u:nth-of-type(5) > u:nth-of-type(6) {
   }
 
   function playCurrent() {
-    if (!power.checked) return;
+    if (!power.checked || pausedByParent) return;
     syncVolume();
     requestPlayback();
   }
@@ -1846,7 +1847,20 @@ light u:nth-of-type(5) > u:nth-of-type(6) {
 
   power.addEventListener('change', syncPower);
 
+  window.addEventListener('message', function (event) {
+    var data = event.data || {};
+    if (!data || data.type !== 'portfolio-tv-media') return;
+    if (data.action === 'pause') {
+      pausedByParent = true;
+      video.pause();
+    } else if (data.action === 'resume') {
+      pausedByParent = false;
+      if (power.checked) playCurrent();
+    }
+  });
+
   bindControlClick('[for="on-off"]', function () {
+    pausedByParent = false;
     power.checked = !power.checked;
     syncPower();
   });

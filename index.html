@@ -277,7 +277,7 @@
             <span class="bb-led"></span>
             <div class="bb-brand">BlackBerry</div>
             <div class="bb-screen">
-              <video class="bb-screen-video" src="Images/Graphics/Aditya%20About%20Video.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              <video class="bb-screen-video" src="Images/Graphics/Aditya%20About%20Video.mp4" muted loop playsinline preload="metadata"></video>
             </div>
             <div class="bb-keyboard">
               <div class="bb-key-row">
@@ -2889,6 +2889,7 @@
       var section = document.querySelector('.music-flow-section');
       if (!section) return;
 
+      var wrapper = document.getElementById('wrapper');
       var scroller = section.querySelector('.music-flow-scroll');
       var cards = Array.prototype.slice.call(section.querySelectorAll('[data-music-card]'));
       var triggers = Array.prototype.slice.call(section.querySelectorAll('[data-music-target]'));
@@ -2896,6 +2897,8 @@
       var audioCtx = null;
       var activePreview = null;
       var stopPreviewTimer = 0;
+      var isMusicSectionActive = false;
+      var musicSoundEnabled = false;
       var soundLabels = {
         dhh: 'DHH',
         gangsta: 'Gangsta',
@@ -2956,7 +2959,11 @@
       }
 
       function playMusicPreview(card) {
-        if (!card) return;
+        if (!musicSoundEnabled) {
+          stopMusicPreview();
+          return;
+        }
+        if (!card || !isMusicSectionActive) return;
         window.clearTimeout(stopPreviewTimer);
         var profile = soundProfiles[card.getAttribute('data-music-sound') || 'dhh'] || soundProfiles.dhh;
         stopMusicPreview();
@@ -3051,6 +3058,21 @@
           event.preventDefault();
           scroller.scrollLeft += event.deltaY;
         }, { passive: false });
+      }
+
+      if ('IntersectionObserver' in window) {
+        var musicObserver = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            isMusicSectionActive = entry.isIntersecting && entry.intersectionRatio >= 0.28;
+            if (!isMusicSectionActive) stopMusicPreview();
+          });
+        }, {
+          root: wrapper || null,
+          threshold: [0, 0.28, 0.45]
+        });
+        musicObserver.observe(section);
+      } else {
+        isMusicSectionActive = true;
       }
 
       window.setTimeout(function () {
@@ -3202,6 +3224,8 @@
           var soundKey = phone.querySelector('[data-bb-control="sound"]');
           var muteKey = phone.querySelector('[data-bb-control="mute"]');
           var aboutSection = phone.closest('#about');
+          var isAboutActive = false;
+          var wantsAudio = true;
           if (!video || !playKey || !soundKey || !muteKey) return;
 
           function syncKeys() {
@@ -3211,6 +3235,7 @@
           }
 
           function togglePlay() {
+            if (!isAboutActive) return;
             if (video.paused) {
               video.play().catch(function () {});
             } else {
@@ -3220,25 +3245,31 @@
           }
 
           function volumeOn() {
+            wantsAudio = true;
+            if (!isAboutActive) {
+              syncKeys();
+              return;
+            }
+            video.volume = video.volume || 0.65;
             video.muted = false;
-            if (video.volume === 0) video.volume = 0.65;
             video.play().catch(function () {});
             syncKeys();
           }
 
           function volumeOff() {
+            wantsAudio = false;
             video.muted = true;
             syncKeys();
           }
 
-          function playWithAudio() {
+          function playForActiveSection() {
+            if (!isAboutActive) return;
             video.volume = video.volume || 0.75;
-            video.muted = false;
+            video.muted = !wantsAudio;
             var playAttempt = video.play();
             if (playAttempt && typeof playAttempt.catch === 'function') {
               playAttempt.catch(function () {
-                video.muted = true;
-                video.play().catch(function () {});
+                syncKeys();
               }).finally(function () {
                 window.setTimeout(syncKeys, 80);
               });
@@ -3270,26 +3301,35 @@
           syncKeys();
 
           if (aboutSection && 'IntersectionObserver' in window) {
-            window.portfolioPlayAboutPhoneWithAudio = playWithAudio;
+            window.portfolioPlayAboutPhoneWithAudio = function () {
+              wantsAudio = true;
+              playForActiveSection();
+            };
             var aboutObserver = new IntersectionObserver(function (entries) {
               entries.forEach(function (entry) {
-                if (entry.isIntersecting) {
-                  playWithAudio();
+                if (entry.isIntersecting && entry.intersectionRatio >= 0.25) {
+                  isAboutActive = true;
+                  playForActiveSection();
                 } else {
+                  isAboutActive = false;
                   pauseAndMute();
                 }
               });
             }, {
               root: wrapper || null,
-              threshold: 0.45
+              threshold: [0, 0.25, 0.45]
             });
             aboutObserver.observe(aboutSection);
 
             document.addEventListener('pointerdown', function () {
               var rect = aboutSection.getBoundingClientRect();
               var rootRect = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
-              var isAboutVisible = rect.bottom > rootRect.top && rect.top < rootRect.bottom;
-              if (isAboutVisible && video.muted) playWithAudio();
+              var visibleHeight = Math.min(rect.bottom, rootRect.bottom) - Math.max(rect.top, rootRect.top);
+              var isAboutVisible = visibleHeight > Math.min(rect.height, rootRect.bottom - rootRect.top) * 0.25;
+              if (isAboutVisible) {
+                isAboutActive = true;
+                playForActiveSection();
+              }
             }, { passive: true });
           }
         });
@@ -3845,15 +3885,18 @@
       var muteBtn = carouselEl.querySelector('.sm-carousel__btn--mute');
       var indicator = carouselEl.querySelector('.sm-carousel__indicator');
       var activeSection = carouselEl.closest('.sm-division') || carouselEl;
+      var wrapper = document.getElementById('wrapper');
+      var navLinks = document.querySelector('.nav-links');
       var total = cards.length;
       if (total === 0) return;
 
       var activeIndex = 0;
       var isPlaying = true;   // auto-advance state
-      var isMuted = true;     // audio state
+      var isMuted = false;    // audio state
       var autoTimer = null;
       var isHovering = false; // hover-to-play-full state
       var isSectionActive = false;
+      var visibilityFrame = 0;
 
       function getActiveVideo() {
         var card = cards[activeIndex];
@@ -3873,15 +3916,39 @@
 
       function setMuted(nextMuted) {
         isMuted = nextMuted;
-        cards.forEach(function (card, i) {
+        cards.forEach(function (card) {
           var video = card.querySelector('.sm-carousel__video');
           if (!video) return;
-          video.muted = nextMuted || i !== activeIndex;
+          video.muted = nextMuted;
         });
         updateMuteButton();
       }
 
+      function playSectionVideos(withSound) {
+        cards.forEach(function (card) {
+          var video = card.querySelector('.sm-carousel__video');
+          if (!video) return;
+          video.volume = video.volume || 0.75;
+          video.muted = !withSound;
+          video.loop = true;
+          var playAttempt = video.play();
+          if (playAttempt !== undefined) {
+            playAttempt.catch(function () {
+              video.muted = true;
+            });
+          }
+        });
+      }
+
+      function muteSectionVideos() {
+        cards.forEach(function (card) {
+          var video = card.querySelector('.sm-carousel__video');
+          if (video) video.muted = true;
+        });
+      }
+
       function claimActiveAudio() {
+        if (!isSectionActive || !isPlaying) return;
         if (activeAudioCarousel !== carouselEl) {
           activeAudioCarousel = carouselEl;
           document.querySelectorAll('.sm-carousel').forEach(function (otherCarousel) {
@@ -3891,29 +3958,70 @@
           });
         }
         setMuted(false);
-        var video = getActiveVideo();
-        if (!video) return;
-        video.volume = video.volume || 0.75;
-        video.muted = false;
-        var playAttempt = video.play();
-        if (playAttempt !== undefined) {
-          playAttempt.catch(function () {
-            video.muted = true;
-            isMuted = true;
-            updateMuteButton();
-            video.play().catch(function () {});
-          });
-        }
+        playSectionVideos(true);
       }
 
       function releaseActiveAudio() {
         if (activeAudioCarousel === carouselEl) activeAudioCarousel = null;
-        setMuted(true);
+        muteSectionVideos();
       }
 
       function syncSectionAudio() {
         if (isSectionActive && isPlaying) claimActiveAudio();
         else releaseActiveAudio();
+      }
+
+      function pauseSectionMedia() {
+        isHovering = false;
+        stopAutoTimer();
+        releaseActiveAudio();
+        cards.forEach(function (card) {
+          var v = card.querySelector('.sm-carousel__video');
+          if (!v) return;
+          v.pause();
+          v.muted = true;
+          v.loop = true;
+        });
+      }
+
+      function setSectionActive(nextActive) {
+        if (!nextActive) {
+          isSectionActive = false;
+          pauseSectionMedia();
+          return;
+        }
+        if (nextActive === isSectionActive) return;
+        isSectionActive = nextActive;
+        isMuted = false;
+        updateMuteButton();
+        updatePositions();
+        if (isPlaying) {
+          syncSectionAudio();
+          startAutoTimer();
+        }
+      }
+
+      function isInActiveBand() {
+        var activeNav = document.querySelector('.nav-links a.is-active');
+        if (activeNav && activeNav.getAttribute('href') !== '#socialmedia') return false;
+        var rect = activeSection.getBoundingClientRect();
+        var rootRect = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+        var rootHeight = Math.max(1, rootRect.bottom - rootRect.top);
+        var bandTop = rootRect.top + (rootHeight * 0.28);
+        var bandBottom = rootRect.top + (rootHeight * 0.72);
+        return rect.top < bandBottom && rect.bottom > bandTop;
+      }
+
+      function syncSectionVisibility() {
+        setSectionActive(isInActiveBand());
+      }
+
+      function scheduleSectionVisibility() {
+        if (visibilityFrame) return;
+        visibilityFrame = window.requestAnimationFrame(function () {
+          visibilityFrame = 0;
+          syncSectionVisibility();
+        });
       }
 
       carouselEl.addEventListener('sm-carousel:release-audio', releaseActiveAudio);
@@ -3929,7 +4037,7 @@
           var video = card.querySelector('.sm-carousel__video');
           if (!video) return;
 
-          if (diff === 0) {
+          if (isSectionActive && isPlaying) {
             video.muted = isMuted;
             video.loop = !isHovering;
             var p = video.play();
@@ -3959,7 +4067,7 @@
       // ── Auto-advance every 3 seconds ──
       function startAutoTimer() {
         stopAutoTimer();
-        if (isPlaying && !isHovering) {
+        if (isSectionActive && isPlaying && !isHovering) {
           autoTimer = setInterval(function () {
             activeIndex = (activeIndex + 1) % total;
             updatePositions();
@@ -4013,15 +4121,13 @@
           if (isPlaying) {
             playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
             playPauseBtn.setAttribute('aria-label', 'Pause');
-            var v = getActiveVideo();
-            if (v) v.play().catch(function () {});
+            if (isSectionActive) updatePositions();
             syncSectionAudio();
             startAutoTimer();
           } else {
             playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
             playPauseBtn.setAttribute('aria-label', 'Play');
-            var v = getActiveVideo();
-            if (v) v.pause();
+            pauseSectionMedia();
             releaseActiveAudio();
             stopAutoTimer();
           }
@@ -4073,13 +4179,13 @@
             var v = getActiveVideo();
             if (!v) return;
             if (v.paused) {
-              v.play().catch(function () {});
+              if (isSectionActive) updatePositions();
               if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
               isPlaying = true;
               syncSectionAudio();
               startAutoTimer();
             } else {
-              v.pause();
+              pauseSectionMedia();
               if (playPauseBtn) playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
               isPlaying = false;
               releaseActiveAudio();
@@ -4089,36 +4195,62 @@
         });
       });
 
-      // Pause videos when section out of view
+      // Pause videos when section is not the active visible band.
       var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (!entry.isIntersecting) {
-            isSectionActive = false;
-            isHovering = false;
-            stopAutoTimer();
-            releaseActiveAudio();
-            cards.forEach(function (card) {
-              var v = card.querySelector('.sm-carousel__video');
-              if (v) v.pause();
-            });
-          } else {
-            isSectionActive = true;
-            if (isPlaying) {
-              var v = getActiveVideo();
-              if (v) v.play().catch(function () {});
-              syncSectionAudio();
-              startAutoTimer();
-            }
-          }
-        });
-      }, { threshold: 0.45 });
+        scheduleSectionVisibility();
+      }, {
+        root: wrapper || null,
+        threshold: [0, 0.2, 0.45, 0.7]
+      });
       observer.observe(activeSection);
+      (wrapper || window).addEventListener('scroll', scheduleSectionVisibility, { passive: true });
+      window.addEventListener('resize', scheduleSectionVisibility);
+      if (navLinks && 'MutationObserver' in window) {
+        new MutationObserver(scheduleSectionVisibility).observe(navLinks, {
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['class']
+        });
+      }
 
       updatePositions();
-      startAutoTimer();
+      scheduleSectionVisibility();
     }
 
     document.querySelectorAll('.sm-carousel').forEach(initCarousel);
+  })();
+  </script>
+
+  <script>
+  (function () {
+    var wrapper = document.getElementById('wrapper');
+    var hobbiesSection = document.getElementById('hobbies');
+    var tvFrame = document.querySelector('.tv-frame');
+    if (!hobbiesSection || !tvFrame) return;
+
+    function sendTvAction(action) {
+      if (!tvFrame.contentWindow) return;
+      tvFrame.contentWindow.postMessage({
+        type: 'portfolio-tv-media',
+        action: action
+      }, '*');
+    }
+
+    if ('IntersectionObserver' in window) {
+      var tvObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            sendTvAction('resume');
+          } else {
+            sendTvAction('pause');
+          }
+        });
+      }, {
+        root: wrapper || null,
+        threshold: [0, 0.3, 0.55]
+      });
+      tvObserver.observe(hobbiesSection);
+    }
   })();
   </script>
 
