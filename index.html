@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -119,6 +119,8 @@
           <li><a href="#socialmedia"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i><span>Social</span></a></li>
           <li><a href="#advertisements"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i><span>Ads</span></a></li>
           <li><a href="#itSpecialist"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i><span>IT</span></a></li>
+          <li><a href="#hobbies"><i class="fa-solid fa-film" aria-hidden="true"></i><span>Hobby</span></a></li>
+          <li><a href="#services"><i class="fa-solid fa-briefcase" aria-hidden="true"></i><span>Service</span></a></li>
         </ul>
         <span class="nav-divider" aria-hidden="true"></span>
         <button class="nav-theme-btn" id="navThemeToggleBtn" type="button" aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
@@ -1399,32 +1401,20 @@
 
       <div class="hobbies-subsection hobbies-watch-subsection" aria-labelledby="hobbiesWatchTitle">
         <div class="hobbies-copy">
-          <p class="hobbies-kicker">Movies &amp; TV Edits</p>
-          <h3 id="hobbiesWatchTitle" class="hobbies-subtitle">Retro video channels</h3>
+          <h3 id="hobbiesWatchTitle" class="hobbies-subtitle">Watching Movies &amp; Series</h3>
           <p class="hobbies-lead">
-            The TV plays cinematic edits from the video folder. Use the TV power, volume, and tuning controls to start, mute, raise audio, and switch clips.
+            My hobby is watching movies and series in my free time.
           </p>
-          <div class="hobbies-grid" aria-label="Movies and TV show interests">
-            <article class="hobby-card">
-              <i class="fa-solid fa-clapperboard" aria-hidden="true"></i>
-              <div>
-                <h3>Movies</h3>
-                <p>IMDb-style all-time picks, thrillers, sci-fi, crime, action, and emotional classics.</p>
-              </div>
-            </article>
-            <article class="hobby-card">
-              <i class="fa-solid fa-tv" aria-hidden="true"></i>
-              <div>
-                <h3>TV Shows</h3>
-                <p>Long-form stories with suspense, character arcs, world-building, and binge-worthy writing.</p>
-              </div>
-            </article>
-          </div>
-          <div class="hobbies-ticker" aria-label="Watchlist highlights">
-            <span>IMDb Top 250 inspired</span>
-            <span>Series queue</span>
-            <span>Crime thrillers</span>
-            <span>Sci-fi worlds</span>
+          <div class="hobbies-simple-card" aria-label="Watching movies and series hobby">
+            <span class="hobbies-simple-icon"><i class="fa-solid fa-film" aria-hidden="true"></i></span>
+            <div class="hobbies-simple-copy">
+              <strong>My Hobby</strong>
+              <p>Watching movies and series</p>
+            </div>
+            <div class="hobbies-simple-tags">
+              <span><i class="fa-solid fa-clapperboard" aria-hidden="true"></i>Movies</span>
+              <span><i class="fa-solid fa-tv" aria-hidden="true"></i>Series</span>
+            </div>
           </div>
         </div>
         <div class="hobbies-tv-wrap">
@@ -1587,7 +1577,7 @@
     <section class="servicesSection" id="services">
       <div class="container">
         <div class="serviceHeader">
-          <h2 class="serviceTitle">What I Offer</h2>
+          <h2 class="serviceTitle">Service</h2>
           <p class="serviceLead">A focused set of services built like a modular card lab: web interfaces, design, security basics, marketing, and visual content.</p>
         </div>
         <div class="servicesContainer shape-grid">
@@ -3229,12 +3219,23 @@
           if (!video || !playKey || !soundKey || !muteKey) return;
 
           function syncKeys() {
-            playKey.classList.toggle('is-active', !video.paused);
-            soundKey.classList.toggle('is-active', !video.muted && video.volume > 0);
-            muteKey.classList.toggle('is-active', video.muted || video.volume === 0);
+            playKey.setAttribute('aria-pressed', String(!video.paused));
+            soundKey.setAttribute('aria-pressed', String(!video.muted && video.volume > 0));
+            muteKey.setAttribute('aria-pressed', String(video.muted || video.volume === 0));
+          }
+
+          function flashKey(key) {
+            [playKey, soundKey, muteKey].forEach(function (controlKey) {
+              controlKey.classList.remove('is-clicked');
+            });
+            key.classList.add('is-clicked');
+            window.setTimeout(function () {
+              key.classList.remove('is-clicked');
+            }, 180);
           }
 
           function togglePlay() {
+            flashKey(playKey);
             if (!isAboutActive) return;
             if (video.paused) {
               video.play().catch(function () {});
@@ -3245,6 +3246,7 @@
           }
 
           function volumeOn() {
+            flashKey(soundKey);
             wantsAudio = true;
             if (!isAboutActive) {
               syncKeys();
@@ -3257,6 +3259,7 @@
           }
 
           function volumeOff() {
+            flashKey(muteKey);
             wantsAudio = false;
             video.muted = true;
             syncKeys();

@@ -36,6 +36,13 @@
     radial-gradient(50vw 50vw at -10% -10%, var(--liquid-blob-1-soft), transparent 62%),
     radial-gradient(45vw 45vw at 110% 110%, var(--liquid-blob-2-soft), transparent 64%),
     radial-gradient(35vw 35vw at 40% 30%, var(--liquid-blob-3-soft), transparent 62%);
+  --hero-bg-color: #c9d4e6;
+  --hero-mesh-image:
+    radial-gradient(78vw 74vw at -3% 10%, rgba(255, 42, 95, 0.72) 0 28%, rgba(255, 42, 95, 0.46) 46%, transparent 66%),
+    radial-gradient(78vw 74vw at 103% 10%, rgba(0, 122, 255, 0.7) 0 30%, rgba(0, 122, 255, 0.48) 48%, transparent 67%),
+    radial-gradient(66vw 58vw at 50% 88%, rgba(255, 149, 0, 0.58) 0 30%, rgba(255, 149, 0, 0.38) 50%, transparent 68%),
+    radial-gradient(42vw 38vw at 48% 38%, rgba(91, 255, 137, 0.32) 0 28%, transparent 62%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(155, 182, 229, 0.18));
 }
 
 body.night-theme,
@@ -52,6 +59,12 @@ body.night-theme,
     radial-gradient(72vw 82vw at 8% 58%, var(--liquid-blob-1-soft), transparent 72%),
     radial-gradient(74vw 76vw at 94% 42%, var(--liquid-blob-2-soft), transparent 74%),
     radial-gradient(58vw 58vw at 52% 84%, var(--liquid-blob-3-soft), transparent 70%);
+  --hero-bg-color: #01030a;
+  --hero-mesh-image:
+    radial-gradient(76vw 82vw at 8% 56%, rgba(191, 90, 242, 0.78) 0 30%, rgba(191, 90, 242, 0.5) 50%, transparent 70%),
+    radial-gradient(78vw 78vw at 94% 38%, rgba(10, 132, 255, 0.76) 0 30%, rgba(10, 132, 255, 0.5) 50%, transparent 71%),
+    radial-gradient(58vw 58vw at 54% 84%, rgba(255, 55, 95, 0.6) 0 28%, rgba(255, 55, 95, 0.38) 50%, transparent 70%),
+    radial-gradient(44vw 40vw at 48% 20%, rgba(91, 255, 137, 0.24) 0 26%, transparent 64%);
 }
 
 .star {
@@ -902,6 +915,8 @@ body.night-theme .glass-nav .nav-links li a.is-active,
   padding: 0 1rem;
   padding-top: 8.5rem;
   padding-bottom: clamp(3rem, 5vw, 5rem);
+  min-height: 100vh;
+  min-height: 100svh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -920,16 +935,16 @@ body.night-theme .glass-nav .nav-links li a.is-active,
   left: 50%;
   width: 100vw;
   transform: translateX(-50%);
-  background-color: var(--liquid-bg-color);
-  background-image: var(--liquid-hero-mesh-image);
+  background-color: var(--hero-bg-color);
+  background-image: var(--hero-mesh-image);
   background-attachment: fixed;
   z-index: 0;
 }
 
 body.night-theme .heroSection::before,
 .night-theme .heroSection::before {
-  background-color: #000000;
-  background-image: var(--liquid-hero-mesh-image);
+  background-color: var(--hero-bg-color);
+  background-image: var(--hero-mesh-image);
 }
 
 .heroSection > .infoContainer,
@@ -1197,8 +1212,8 @@ body.night-theme .heroSection::before,
   position: relative;
   width: 100%;
   height: 100%;
-  -webkit-mask-image: linear-gradient(to bottom, #000 55%, rgba(0, 0, 0, 0.6) 75%, rgba(0, 0, 0, 0.2) 90%, transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 55%, rgba(0, 0, 0, 0.6) 75%, rgba(0, 0, 0, 0.2) 90%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 69%, rgba(0, 0, 0, 0.72) 84%, rgba(0, 0, 0, 0.28) 95%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 69%, rgba(0, 0, 0, 0.72) 84%, rgba(0, 0, 0, 0.28) 95%, transparent 100%);
 }
 
 .hero-shard-fallback,
@@ -1232,7 +1247,7 @@ body.night-theme .heroSection::before,
   position: relative;
   border-radius: 50%;
   border: 1px solid rgba(232, 73, 73, 0.15);
-  background: #f5f5f6;
+  background: radial-gradient(circle, #77777f 0%, #9a9aa1 22%, #dddddf 58%, #f5f5f6 100%);
   animation: orbitSpinRight 40s linear infinite;
 }
 
@@ -4198,12 +4213,13 @@ body.night-theme #advertisements {
 }
 
 .bb-key-row span[data-bb-control]:hover,
-.bb-key-row span[data-bb-control].is-active {
+.bb-key-row span[data-bb-control].is-clicked {
   color: #ffffff;
   text-shadow: 0 0 7px rgba(255, 255, 255, 0.95);
 }
 
-.bb-key-row span[data-bb-control]:active {
+.bb-key-row span[data-bb-control]:active,
+.bb-key-row span[data-bb-control].is-clicked {
   transform: translateY(1px) scale(0.97);
 }
 
@@ -4286,8 +4302,8 @@ body.night-theme #advertisements {
   display: block;
   background: transparent;
   overflow: hidden;
-  border-radius: 24px;
-  clip-path: inset(0 round 24px);
+  border-radius: 5px;
+  clip-path: inset(0 round 5px);
   color-scheme: dark;
 }
 
@@ -5252,7 +5268,7 @@ body.night-theme #about .ak-t-dot {
 /* Let's Connect Creation Section Start */
 .lets-connect-section {
   background: #0b0b18;
-  padding: clamp(28px, 5vw, 70px) 0;
+  padding: 0;
   overflow: hidden;
 }
 
@@ -5293,7 +5309,7 @@ body.night-theme #about .ak-t-dot {
 
 @media (max-width: 760px) {
   .lets-connect-section {
-    padding: clamp(22px, 7vw, 42px) 0;
+    padding: 0;
   }
 
   .lets-connect-shell {
@@ -5315,7 +5331,7 @@ body.night-theme #about .ak-t-dot {
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(28px, 5vw, 58px);
-  padding: clamp(54px, 7vw, 98px) var(--hobbies-section-pad-x);
+  padding: 0 var(--hobbies-section-pad-x) clamp(54px, 7vw, 98px);
   background:
     radial-gradient(circle at 8% 18%, rgba(232, 73, 73, 0.22), transparent 32%),
     radial-gradient(circle at 78% 80%, rgba(78, 69, 213, 0.24), transparent 38%),
@@ -5330,6 +5346,7 @@ body.night-theme #about .ak-t-dot {
   width: calc(100% + var(--hobbies-section-pad-x) + var(--hobbies-section-pad-x));
   margin-inline: calc(0px - var(--hobbies-section-pad-x));
   margin-bottom: 0;
+  padding: clamp(14px, 2vw, 22px) 0 clamp(22px, 3vw, 30px);
 }
 
 body:not(.night-theme) #hobbies .projectTitle {
@@ -5385,23 +5402,33 @@ body:not(.night-theme) #hobbies .projectTitle .te-fade {
 
 .hobbies-copy {
   max-width: 620px;
+  position: relative;
 }
 
 .hobbies-kicker {
-  margin: 0 0 10px;
-  color: #e84949;
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  margin: 0 0 12px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: rgba(232, 73, 73, 0.12);
+  border: 1px solid rgba(232, 73, 73, 0.26);
+  color: #ff6868;
   font-size: clamp(12px, 1.2vw, 14px);
-  font-weight: 800;
+  font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
 .hobbies-subtitle {
   margin: 0;
-  font-size: clamp(2rem, 4.8vw, 4.25rem);
-  line-height: 0.98;
+  max-width: 10ch;
+  font-size: clamp(2.4rem, 5vw, 4.6rem);
+  line-height: 0.9;
   letter-spacing: 0;
   color: #ffffff;
+  text-wrap: balance;
 }
 
 .hobbies-lead {
@@ -5410,6 +5437,77 @@ body:not(.night-theme) #hobbies .projectTitle .te-fade {
   font-size: clamp(15px, 1.5vw, 18px);
   line-height: 1.65;
   max-width: 58ch;
+}
+
+.hobbies-simple-card {
+  width: min(100%, 520px);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 14px;
+  margin-top: clamp(20px, 3vw, 30px);
+  padding: clamp(16px, 2vw, 20px);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(232, 73, 73, 0.16), rgba(78, 69, 213, 0.14)),
+    rgba(10, 12, 24, 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
+}
+
+.hobbies-simple-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #e84949, #4e45d5);
+  color: #fff;
+  box-shadow: 0 14px 30px rgba(78, 69, 213, 0.24);
+}
+
+.hobbies-simple-icon i {
+  color: #fff;
+  font-size: 20px;
+}
+
+.hobbies-simple-copy strong {
+  display: block;
+  color: #fff;
+  font-size: clamp(16px, 1.6vw, 20px);
+  font-weight: 950;
+}
+
+.hobbies-simple-copy p {
+  margin: 4px 0 0;
+  color: rgba(245, 240, 235, 0.72);
+  font-size: clamp(13px, 1.25vw, 15px);
+  line-height: 1.35;
+}
+
+.hobbies-simple-tags {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hobbies-simple-tags span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: clamp(13px, 1.2vw, 15px);
+  font-weight: 900;
+}
+
+.hobbies-simple-tags i {
+  color: #ff6868;
 }
 
 .hobbies-grid {
@@ -5474,6 +5572,15 @@ body:not(.night-theme) #hobbies .projectTitle .te-fade {
   backdrop-filter: blur(10px);
 }
 
+.hobby-card--feature {
+  grid-column: 1 / -1;
+  min-height: 104px;
+  background:
+    linear-gradient(135deg, rgba(232, 73, 73, 0.18), rgba(78, 69, 213, 0.16)),
+    rgba(10, 12, 24, 0.72);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
 .hobby-card i {
   display: inline-grid;
   place-items: center;
@@ -5513,8 +5620,8 @@ body:not(.night-theme) #hobbies .projectTitle .te-fade {
   min-height: 32px;
   padding: 7px 12px;
   border-radius: 999px;
-  background: rgba(91, 255, 137, 0.08);
-  border: 1px solid rgba(91, 255, 137, 0.2);
+  background: rgba(232, 73, 73, 0.09);
+  border: 1px solid rgba(232, 73, 73, 0.2);
   color: rgba(245, 240, 235, 0.8);
   font-size: 12px;
   font-weight: 800;
@@ -5985,14 +6092,49 @@ body:not(.night-theme) .hobbies-subtitle {
   color: #121217;
 }
 
+body:not(.night-theme) .hobbies-kicker {
+  background: rgba(232, 73, 73, 0.1);
+  border-color: rgba(232, 73, 73, 0.24);
+  color: #e84949;
+}
+
 body:not(.night-theme) .hobbies-lead {
   color: rgba(18, 18, 23, 0.72);
+}
+
+body:not(.night-theme) .hobbies-simple-card {
+  background:
+    linear-gradient(135deg, rgba(232, 73, 73, 0.09), rgba(78, 69, 213, 0.08)),
+    rgba(255, 255, 255, 0.72);
+  border-color: rgba(18, 18, 23, 0.12);
+  box-shadow: 0 18px 42px rgba(39, 52, 89, 0.1);
+}
+
+body:not(.night-theme) .hobbies-simple-copy strong {
+  color: #121217;
+}
+
+body:not(.night-theme) .hobbies-simple-copy p {
+  color: rgba(18, 18, 23, 0.66);
+}
+
+body:not(.night-theme) .hobbies-simple-tags span {
+  background: rgba(255, 255, 255, 0.64);
+  border-color: rgba(18, 18, 23, 0.1);
+  color: #121217;
 }
 
 body:not(.night-theme) .hobby-card {
   background: rgba(255, 255, 255, 0.72);
   border-color: rgba(18, 18, 23, 0.12);
   box-shadow: 0 18px 42px rgba(39, 52, 89, 0.1);
+}
+
+body:not(.night-theme) .hobby-card--feature {
+  background:
+    linear-gradient(135deg, rgba(232, 73, 73, 0.1), rgba(78, 69, 213, 0.1)),
+    rgba(255, 255, 255, 0.74);
+  border-color: rgba(232, 73, 73, 0.16);
 }
 
 body:not(.night-theme) .hobby-group {
@@ -6014,8 +6156,8 @@ body:not(.night-theme) .hobby-card p {
 }
 
 body:not(.night-theme) .hobbies-ticker span {
-  background: rgba(78, 69, 213, 0.08);
-  border-color: rgba(78, 69, 213, 0.18);
+  background: rgba(232, 73, 73, 0.08);
+  border-color: rgba(232, 73, 73, 0.18);
   color: rgba(18, 18, 23, 0.72);
 }
 
@@ -6056,6 +6198,21 @@ body:not(.night-theme) .music-plus.is-active {
   color: #fff;
 }
 
+@media (max-width: 1100px) {
+  .hobbies-watch-subsection {
+    grid-template-columns: 1fr;
+  }
+
+  .hobbies-copy {
+    max-width: 720px;
+  }
+
+  .hobbies-tv-wrap {
+    justify-self: center;
+    max-width: 720px;
+  }
+}
+
 @media (max-width: 900px) {
   .hobbies-watch-subsection {
     grid-template-columns: 1fr;
@@ -6078,7 +6235,7 @@ body:not(.night-theme) .music-plus.is-active {
 
 @media (max-width: 560px) {
   .hobbies-section {
-    padding-block: 42px;
+    padding-block: 0 42px;
   }
 
   .hobbies-grid,
@@ -7007,6 +7164,8 @@ footer {
   .heroSection {
     flex-direction: column;
     width: 100%;
+    min-height: 100vh;
+    min-height: 100svh;
     gap: 2rem;
     padding-bottom: 3rem;
   }
@@ -7103,6 +7262,8 @@ footer {
   .heroSection {
     width: 100%;
     padding: 0 0.2rem;
+    padding-top: 6.5rem;
+    padding-bottom: 3rem;
     gap: 1.2rem;
   }
   /* Orbit responsive - mobile */
@@ -8152,9 +8313,10 @@ body.night-theme .resume-fab-status {
   /* ── Hero Section ── */
   .heroSection {
     padding: 0 0.5rem;
+    padding-top: 6rem;
+    padding-bottom: 3.5rem;
     gap: 0.8rem;
-    margin: 2rem auto;
-    padding-bottom: 4rem;
+    margin: 0 auto;
   }
   .fadedText {
     font-size: 1.6em;
@@ -8596,7 +8758,7 @@ body.night-theme .resume-fab-status {
   }
 
   #letsConnectCreation.lets-connect-section {
-    padding: clamp(24px, 4vw, 48px) 0;
+    padding: 0;
   }
 
   #letsConnectCreation .lets-connect-shell {
@@ -8734,7 +8896,7 @@ body.night-theme .resume-fab-status {
   }
 
   #letsConnectCreation.lets-connect-section {
-    padding: 20px 0;
+    padding: 0;
   }
 
   #letsConnectCreation .lets-connect-shell {
