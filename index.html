@@ -87,6 +87,9 @@
             loader.classList.add('hidden');
             window.__portfolioLoaderHiddenAt = Date.now();
             window.dispatchEvent(new CustomEvent('portfolio:loader-hidden'));
+            setTimeout(function() {
+              loader.setAttribute('hidden', '');
+            }, 700);
           }, 400);
         } else {
           loaderPercent.textContent = Math.floor(progress) + '%';
@@ -1422,153 +1425,27 @@
         </div>
       </div>
 
-      <div class="music-flow-section" aria-labelledby="musicFlowTitle">
-        <div class="music-flow-head">
-          <div>
-            <p class="music-flow-kicker">Music Map</p>
-            <h3 id="musicFlowTitle">Listening lanes</h3>
-            <p class="music-flow-lead">Pick an artist lane to light up the path and hear a short generated preview for that style.</p>
-          </div>
-          <div class="music-flow-controls">
-            <div class="music-now-card" aria-live="polite">
-              <span class="music-now-dot"></span>
-              <div>
-                <span class="music-now-label">Now previewing</span>
-                <strong class="music-now-title">DIVINE - DHH</strong>
-              </div>
-              <span class="music-now-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-            </div>
-            <div class="music-flow-selector" aria-label="Music type selector">
-              <button type="button" class="music-flow-chip is-active" data-music-target="divine" aria-pressed="true">DIVINE</button>
-              <button type="button" class="music-flow-chip" data-music-target="sidhu" aria-pressed="false">Sidhu</button>
-              <button type="button" class="music-flow-chip" data-music-target="emiway" aria-pressed="false">Emiway</button>
-              <button type="button" class="music-flow-chip" data-music-target="arijit" aria-pressed="false">Arijit</button>
-              <button type="button" class="music-flow-chip" data-music-target="king" aria-pressed="false">King</button>
-              <button type="button" class="music-flow-chip" data-music-target="diljit" aria-pressed="false">Diljit</button>
-              <button type="button" class="music-flow-chip" data-music-target="jazz" aria-pressed="false">Jazz</button>
-            </div>
-          </div>
+      <div class="hobbies-subsection cassette-subsection" aria-labelledby="cassetteDeckTitle">
+        <h3 id="cassetteDeckTitle" class="sr-only">4TRACK-CC audio cassette player</h3>
+        <iframe
+          class="fourtrack-source-frame"
+          src="./4track-recorder/index.html"
+          title="4TRACK-CC open-source 4-track recorder"
+          loading="lazy"
+          allow="microphone"
+          scrolling="no"
+        ></iframe>
+        <div class="cassette-track-list" aria-label="Audio cassette tracks">
+          <button type="button" class="cassette-track is-active" data-cassette-audio="./Images/Graphics/Video%20Graphics/Audio%20for%20Caset/Let%20me%20down%20slowly%20X%20main%20dhondney%20ko%20128KBPS.mp3" aria-pressed="true">Let Me Down</button>
+          <button type="button" class="cassette-track" data-cassette-audio="./Images/Graphics/Video%20Graphics/Audio%20for%20Caset/AAJA%20SANAM%20X%20DARKSIDE.mp3" aria-pressed="false">Aaja Sanam</button>
+          <button type="button" class="cassette-track" data-cassette-audio="./Images/Graphics/Video%20Graphics/Audio%20for%20Caset/Die-With-A-Smile-X-Awari-Mashup-Lady-128k.mp3" aria-pressed="false">Smile Awari</button>
+          <button type="button" class="cassette-track" data-cassette-audio="./Images/Graphics/Video%20Graphics/Audio%20for%20Caset/Die-With-A-Smile-X-Teri-Deewani-Mashup-_128k.mp3" aria-pressed="false">Smile Teri</button>
+          <button type="button" class="cassette-track" data-cassette-audio="./Images/Graphics/Video%20Graphics/Audio%20for%20Caset/Mikasha-x-eren-Hindi-song128k.mp3" aria-pressed="false">Mikasha Eren</button>
+          <button type="button" class="cassette-track" disabled>Audio 6</button>
+          <button type="button" class="cassette-track" disabled>Audio 7</button>
+          <button type="button" class="cassette-track" disabled>Audio 8</button>
         </div>
-        <div class="music-flow-scroll" tabindex="0" aria-label="Scrollable music style flowchart">
-          <div class="music-flow-canvas">
-            <svg class="music-flow-lines" viewBox="0 0 1850 540" aria-hidden="true">
-              <path class="music-line-path" d="M 80 270 L 220 270" />
-              <path class="music-line-path" d="M 220 270 L 520 270" />
-              <path class="music-line-path" d="M 520 270 C 650 270, 665 150, 820 150" />
-              <path class="music-line-path" d="M 520 270 C 650 270, 665 410, 820 410" />
-              <path class="music-line-path" d="M 520 270 L 1080 270" />
-              <path class="music-line-path" d="M 1080 270 C 1195 270, 1215 150, 1380 150" />
-              <path class="music-line-path" d="M 1080 270 C 1195 270, 1215 410, 1380 410" />
-              <path class="music-line-path" d="M 1380 150 C 1495 150, 1515 150, 1700 150" />
-              <path class="music-line-path" d="M 1380 410 C 1495 410, 1515 410, 1700 410" />
-            </svg>
-
-            <span class="music-clay music-dot" style="left:80px;top:270px;"></span>
-            <button type="button" class="music-clay music-plus" data-music-target="divine" style="left:220px;top:270px;" aria-label="Select DIVINE">+</button>
-            <span class="music-clay music-dot" style="left:380px;top:270px;"></span>
-
-            <article class="music-clay music-root-card" style="left:520px;top:270px;">
-              <div class="music-card-art music-card-art-root">
-                <span class="music-card-overlay"></span>
-                <span class="music-card-icon"><i class="fa-solid fa-headphones-simple" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Personal mix</span>
-                <strong>Music Taste</strong>
-              </div>
-              <div class="music-card-stats">
-                <span>DHH</span>
-                <span>Rap</span>
-                <span>Melody</span>
-              </div>
-            </article>
-
-            <button type="button" class="music-clay music-plus" data-music-target="divine" style="left:690px;top:150px;" aria-label="Select DIVINE">+</button>
-            <button type="button" class="music-clay music-plus" data-music-target="emiway" style="left:760px;top:270px;" aria-label="Select Emiway">+</button>
-            <button type="button" class="music-clay music-plus" data-music-target="sidhu" style="left:690px;top:410px;" aria-label="Select Sidhu Moose Wala">+</button>
-
-            <button type="button" class="music-clay music-card is-active" data-music-card="divine" data-music-sound="dhh" style="left:820px;top:150px;" aria-pressed="true">
-              <div class="music-card-art music-card-art-dhh">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>01</span><span>DHH</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-microphone-lines" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Mumbai street poetry</span>
-                <strong>DIVINE</strong>
-              </div>
-              <div class="music-card-stats"><span>Street</span><span>Bars</span><span>Mumbai</span></div>
-            </button>
-
-            <button type="button" class="music-clay music-card" data-music-card="sidhu" data-music-sound="gangsta" style="left:820px;top:410px;" aria-pressed="false">
-              <div class="music-card-art music-card-art-gangsta">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>02</span><span>Gangsta</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-compact-disc" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Punjabi bassline</span>
-                <strong>Sidhu Moose Wala</strong>
-              </div>
-              <div class="music-card-stats"><span>Bass</span><span>Punjabi</span><span>Power</span></div>
-            </button>
-
-            <button type="button" class="music-clay music-card" data-music-card="emiway" data-music-sound="hiphop" style="left:1080px;top:270px;" aria-pressed="false">
-              <div class="music-card-art music-card-art-hiphop">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>03</span><span>Hip-Hop</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-wave-square" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Fast hook energy</span>
-                <strong>Emiway Bantai</strong>
-              </div>
-              <div class="music-card-stats"><span>Flow</span><span>Energy</span><span>Rap</span></div>
-            </button>
-
-            <button type="button" class="music-clay music-card" data-music-card="arijit" data-music-sound="melody" style="left:1380px;top:150px;" aria-pressed="false">
-              <div class="music-card-art music-card-art-melody">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>04</span><span>Melody</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-music" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Soft emotional arc</span>
-                <strong>Arijit Singh</strong>
-              </div>
-              <div class="music-card-stats"><span>Calm</span><span>Focus</span><span>Feel</span></div>
-            </button>
-
-            <button type="button" class="music-clay music-card" data-music-card="king" data-music-sound="rap" style="left:1380px;top:410px;" aria-pressed="false">
-              <div class="music-card-art music-card-art-rap">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>05</span><span>Rap</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-record-vinyl" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Pop rap bounce</span>
-                <strong>King</strong>
-              </div>
-              <div class="music-card-stats"><span>Lyrics</span><span>Punch</span><span>Energy</span></div>
-            </button>
-
-            <span class="music-clay music-dot" style="left:1240px;top:270px;"></span>
-            <button type="button" class="music-clay music-plus" data-music-target="arijit" style="left:1240px;top:150px;" aria-label="Select Arijit Singh">+</button>
-            <button type="button" class="music-clay music-plus" data-music-target="king" style="left:1240px;top:410px;" aria-label="Select King">+</button>
-            <button type="button" class="music-clay music-plus" data-music-target="jazz" style="left:1540px;top:150px;" aria-label="Select Jazz">+</button>
-            <button type="button" class="music-clay music-plus" data-music-target="diljit" style="left:1540px;top:410px;" aria-label="Select Diljit Dosanjh">+</button>
-
-            <button type="button" class="music-clay music-card" data-music-card="jazz" data-music-sound="jazz" style="left:1700px;top:150px;" aria-pressed="false">
-              <div class="music-card-art music-card-art-jazz">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>06</span><span>Smooth</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-guitar" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Late-night texture</span>
-                <strong>Jazz Vibes</strong>
-              </div>
-              <div class="music-card-stats"><span>Sax</span><span>Soul</span><span>Late</span></div>
-            </button>
-
-            <button type="button" class="music-clay music-card" data-music-card="diljit" data-music-sound="folk" style="left:1700px;top:410px;" aria-pressed="false">
-              <div class="music-card-art music-card-art-folk">
-                <span class="music-card-overlay"></span>
-                <div class="music-card-badges"><span>07</span><span>Folk</span></div>
-                <span class="music-card-icon"><i class="fa-solid fa-drum" aria-hidden="true"></i></span>
-                <span class="music-card-subtitle">Warm Punjabi groove</span>
-                <strong>Diljit Dosanjh</strong>
-              </div>
-              <div class="music-card-stats"><span>Local</span><span>Warm</span><span>Story</span></div>
-            </button>
-          </div>
-        </div>
+        <p class="cassette-audio-status" aria-live="polite">Ready: Let Me Down</p>
       </div>
     </section>
     <!-- Hobbies Section End -->
@@ -2875,202 +2752,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
   <script src="./hero-shards.js"></script>
   <script>
-    (function () {
-      var section = document.querySelector('.music-flow-section');
-      if (!section) return;
-
-      var wrapper = document.getElementById('wrapper');
-      var scroller = section.querySelector('.music-flow-scroll');
-      var cards = Array.prototype.slice.call(section.querySelectorAll('[data-music-card]'));
-      var triggers = Array.prototype.slice.call(section.querySelectorAll('[data-music-target]'));
-      var nowTitle = section.querySelector('.music-now-title');
-      var audioCtx = null;
-      var activePreview = null;
-      var stopPreviewTimer = 0;
-      var isMusicSectionActive = false;
-      var musicSoundEnabled = false;
-      var soundLabels = {
-        dhh: 'DHH',
-        gangsta: 'Gangsta',
-        hiphop: 'Hip-Hop',
-        melody: 'Melody',
-        rap: 'Rap',
-        jazz: 'Smooth Jazz',
-        folk: 'Folk'
-      };
-      var soundProfiles = {
-        dhh: { wave: 'sawtooth', notes: [130.81, 146.83, 196, 174.61], step: 190, gain: 0.12 },
-        gangsta: { wave: 'square', notes: [98, 98, 130.81, 116.54], step: 230, gain: 0.11 },
-        hiphop: { wave: 'triangle', notes: [123.47, 164.81, 185, 246.94], step: 210, gain: 0.1 },
-        melody: { wave: 'sine', notes: [261.63, 329.63, 392, 493.88], step: 260, gain: 0.09 },
-        rap: { wave: 'sawtooth', notes: [146.83, 146.83, 220, 196], step: 170, gain: 0.1 },
-        jazz: { wave: 'triangle', notes: [196, 246.94, 311.13, 392], step: 310, gain: 0.08 },
-        folk: { wave: 'sine', notes: [174.61, 220, 261.63, 349.23], step: 280, gain: 0.08 }
-      };
-
-      function ensureMusicAudio() {
-        if (!audioCtx) {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        }
-        if (audioCtx.state === 'suspended') audioCtx.resume().catch(function () {});
-        return audioCtx;
-      }
-
-      function stopMusicPreview() {
-        window.clearTimeout(stopPreviewTimer);
-        if (!activePreview) return;
-        activePreview.card.classList.remove('is-playing');
-        window.clearInterval(activePreview.interval);
-        activePreview.nodes.forEach(function (node) {
-          try {
-            if (node.gain) {
-              node.gain.gain.cancelScheduledValues(audioCtx.currentTime);
-              node.gain.gain.setTargetAtTime(0, audioCtx.currentTime, 0.035);
-            }
-            if (node.osc) node.osc.stop(audioCtx.currentTime + 0.12);
-          } catch (e) {}
-        });
-        activePreview = null;
-      }
-
-      function playTone(profile, freq, duration, gainScale) {
-        var ctx = ensureMusicAudio();
-        var osc = ctx.createOscillator();
-        var gain = ctx.createGain();
-        osc.type = profile.wave;
-        osc.frequency.setValueAtTime(freq, ctx.currentTime);
-        gain.gain.setValueAtTime(0, ctx.currentTime);
-        gain.gain.linearRampToValueAtTime(profile.gain * gainScale, ctx.currentTime + 0.018);
-        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-        osc.connect(gain).connect(ctx.destination);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + duration + 0.04);
-        return { osc: osc, gain: gain };
-      }
-
-      function playMusicPreview(card) {
-        if (!musicSoundEnabled) {
-          stopMusicPreview();
-          return;
-        }
-        if (!card || !isMusicSectionActive) return;
-        window.clearTimeout(stopPreviewTimer);
-        var profile = soundProfiles[card.getAttribute('data-music-sound') || 'dhh'] || soundProfiles.dhh;
-        stopMusicPreview();
-        ensureMusicAudio();
-        card.classList.add('is-playing');
-        var nodes = [];
-        var index = 0;
-        function tick() {
-          var note = profile.notes[index % profile.notes.length];
-          nodes.push(playTone(profile, note, Math.min(0.22, profile.step / 1000 * 0.85), 1));
-          if (index % 2 === 0) nodes.push(playTone({ wave: 'sine', gain: profile.gain * 0.55 }, note / 2, 0.12, 1));
-          index += 1;
-          if (nodes.length > 18) nodes.splice(0, nodes.length - 18);
-        }
-        tick();
-        activePreview = {
-          card: card,
-          nodes: nodes,
-          interval: window.setInterval(tick, profile.step)
-        };
-      }
-
-      function setMusicType(type, shouldScroll) {
-        var activeCard = null;
-        cards.forEach(function (card) {
-          var isActive = card.getAttribute('data-music-card') === type;
-          card.classList.toggle('is-active', isActive);
-          card.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-          if (isActive) activeCard = card;
-        });
-
-        triggers.forEach(function (trigger) {
-          var isActive = trigger.getAttribute('data-music-target') === type;
-          trigger.classList.toggle('is-active', isActive);
-          if (trigger.classList.contains('music-flow-chip')) {
-            trigger.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-          }
-        });
-
-        if (activeCard && nowTitle) {
-          var artist = activeCard.querySelector('.music-card-art strong');
-          var soundKey = activeCard.getAttribute('data-music-sound') || 'dhh';
-          nowTitle.textContent = (artist ? artist.textContent : type) + ' - ' + (soundLabels[soundKey] || soundKey);
-        }
-
-        if (shouldScroll && activeCard && scroller) {
-          var targetLeft = activeCard.offsetLeft - (scroller.clientWidth / 2);
-          scroller.scrollTo({ left: Math.max(0, targetLeft), behavior: 'smooth' });
-        }
-        return activeCard;
-      }
-
-      triggers.forEach(function (trigger) {
-        trigger.addEventListener('click', function () {
-          var activeCard = setMusicType(trigger.getAttribute('data-music-target'), true);
-          playMusicPreview(activeCard);
-        });
-      });
-
-      cards.forEach(function (card) {
-        card.addEventListener('click', function () {
-          setMusicType(card.getAttribute('data-music-card'), true);
-          playMusicPreview(card);
-        });
-        card.addEventListener('mouseenter', function () {
-          setMusicType(card.getAttribute('data-music-card'), true);
-          playMusicPreview(card);
-        });
-        card.addEventListener('pointerenter', function () {
-          setMusicType(card.getAttribute('data-music-card'), true);
-          playMusicPreview(card);
-        });
-        card.addEventListener('mouseleave', function () {
-          stopPreviewTimer = window.setTimeout(stopMusicPreview, 650);
-        });
-        card.addEventListener('focus', function () {
-          setMusicType(card.getAttribute('data-music-card'), true);
-          playMusicPreview(card);
-        });
-        card.addEventListener('blur', function () {
-          stopPreviewTimer = window.setTimeout(stopMusicPreview, 450);
-        });
-      });
-
-      section.addEventListener('mouseleave', function () {
-        stopPreviewTimer = window.setTimeout(stopMusicPreview, 450);
-      });
-
-      if (scroller) {
-        scroller.addEventListener('wheel', function (event) {
-          if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
-          event.preventDefault();
-          scroller.scrollLeft += event.deltaY;
-        }, { passive: false });
-      }
-
-      if ('IntersectionObserver' in window) {
-        var musicObserver = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            isMusicSectionActive = entry.isIntersecting && entry.intersectionRatio >= 0.28;
-            if (!isMusicSectionActive) stopMusicPreview();
-          });
-        }, {
-          root: wrapper || null,
-          threshold: [0, 0.28, 0.45]
-        });
-        musicObserver.observe(section);
-      } else {
-        isMusicSectionActive = true;
-      }
-
-      window.setTimeout(function () {
-        setMusicType('divine', true);
-      }, 250);
-    })();
-  </script>
-  <script>
     // Theme: saved user choice first, then device theme, with light as fallback.
     const deviceThemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
     function getThemePref() {
@@ -4230,9 +3911,12 @@
     var hobbiesSection = document.getElementById('hobbies');
     var tvFrame = document.querySelector('.tv-frame');
     if (!hobbiesSection || !tvFrame) return;
+    var lastTvAction = '';
 
     function sendTvAction(action) {
       if (!tvFrame.contentWindow) return;
+      if (action === lastTvAction) return;
+      lastTvAction = action;
       tvFrame.contentWindow.postMessage({
         type: 'portfolio-tv-media',
         action: action
@@ -4242,7 +3926,7 @@
     if ('IntersectionObserver' in window) {
       var tvObserver = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.2) {
             sendTvAction('resume');
           } else {
             sendTvAction('pause');
@@ -4250,9 +3934,185 @@
         });
       }, {
         root: wrapper || null,
-        threshold: [0, 0.3, 0.55]
+        rootMargin: '80px 0px',
+        threshold: [0, 0.2, 0.55]
       });
-      tvObserver.observe(hobbiesSection);
+      tvObserver.observe(tvFrame);
+    } else {
+      sendTvAction('resume');
+    }
+  })();
+  </script>
+
+  <script>
+  (function () {
+    var wrapper = document.getElementById('wrapper');
+    var cassetteFrame = document.querySelector('.fourtrack-source-frame');
+    if (!cassetteFrame) return;
+
+    window.addEventListener('message', function (event) {
+      var data = event.data || {};
+      var deltaX = Number(data.deltaX) || 0;
+      var deltaY = Number(data.deltaY) || 0;
+      var cassetteScroller = cassetteFrame.closest('.cassette-subsection');
+      if (data.type !== 'portfolio-cassette-wheel' || event.source !== cassetteFrame.contentWindow) return;
+
+      if (cassetteScroller && Math.abs(deltaX) > Math.abs(deltaY)) {
+        cassetteScroller.scrollLeft += deltaX;
+        return;
+      }
+
+      if (wrapper) {
+        wrapper.scrollTop += deltaY;
+      } else {
+        window.scrollBy(0, deltaY);
+      }
+    });
+  })();
+  </script>
+
+  <script>
+  (function () {
+    var cassetteSection = document.querySelector('.cassette-subsection');
+    if (!cassetteSection) return;
+
+    var tracks = Array.prototype.slice.call(cassetteSection.querySelectorAll('[data-cassette-audio]'));
+    var status = cassetteSection.querySelector('.cassette-audio-status');
+    var cassetteFrame = cassetteSection.querySelector('.fourtrack-source-frame');
+    var activeButton = tracks[0] || null;
+    var pendingButton = null;
+    var initialTrackLoaded = false;
+
+    window.__portfolioCassetteAudioReady = true;
+
+    function setStatus(text) {
+      if (status) status.textContent = text;
+    }
+
+    function pauseTvAudio() {
+      var tvFrame = document.querySelector('.tv-frame');
+      if (!tvFrame || !tvFrame.contentWindow) return;
+      tvFrame.contentWindow.postMessage({
+        type: 'portfolio-tv-media',
+        action: 'pause'
+      }, '*');
+    }
+
+    function getAbsoluteUrl(src) {
+      return new URL(src, window.location.href).href;
+    }
+
+    function sendRecorderMessage(message) {
+      if (!cassetteFrame || !cassetteFrame.contentWindow) return false;
+      cassetteFrame.contentWindow.postMessage(message, '*');
+      return true;
+    }
+
+    function setActiveButton(nextButton, isPlaying) {
+      tracks.forEach(function (button) {
+        var isActive = button === nextButton;
+        button.classList.toggle('is-active', isActive);
+        button.classList.toggle('is-playing', isActive && isPlaying);
+        button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+      activeButton = nextButton;
+    }
+
+    function loadTrack(button, shouldPlay) {
+      var src = button.getAttribute('data-cassette-audio');
+      if (!src) return;
+      var label = button.textContent.trim();
+      var absoluteSrc = getAbsoluteUrl(src);
+
+      if (activeButton === button && button.classList.contains('is-playing')) {
+        sendRecorderMessage({
+          type: 'portfolio-cassette-control',
+          action: 'stop'
+        });
+        setActiveButton(button, false);
+        setStatus('Stopped: ' + label);
+        return;
+      }
+
+      pendingButton = button;
+      setActiveButton(button, false);
+      setStatus((shouldPlay ? 'Loading: ' : 'Readying: ') + label);
+      pauseTvAudio();
+
+      if (!sendRecorderMessage({
+        type: 'portfolio-cassette-load-track',
+        src: absoluteSrc,
+        title: label,
+        trackIndex: 0,
+        play: !!shouldPlay
+      })) {
+        setActiveButton(button, false);
+        setStatus('Recorder is still loading');
+      }
+    }
+
+    tracks.forEach(function (button) {
+      button.addEventListener('click', function () {
+        loadTrack(button, true);
+      });
+    });
+
+    window.addEventListener('message', function (event) {
+      var data = event.data || {};
+      if (!cassetteFrame || event.source !== cassetteFrame.contentWindow) return;
+
+      if (data.type === 'portfolio-cassette-track-loaded') {
+        var loadedButton = pendingButton || activeButton;
+        if (loadedButton) {
+          initialTrackLoaded = true;
+          setActiveButton(loadedButton, false);
+          setStatus('Loaded in recorder: ' + loadedButton.textContent.trim());
+        }
+      }
+
+      if (data.type === 'portfolio-cassette-track-playing') {
+        var playingButton = pendingButton || activeButton;
+        if (playingButton) {
+          initialTrackLoaded = true;
+          setActiveButton(playingButton, true);
+          setStatus('Playing in recorder: ' + playingButton.textContent.trim());
+        }
+        pendingButton = null;
+      }
+
+      if (data.type === 'portfolio-cassette-track-error') {
+        var errorButton = pendingButton || activeButton;
+        if (errorButton) {
+          setActiveButton(errorButton, false);
+          setStatus('Could not load: ' + errorButton.textContent.trim());
+        }
+        pendingButton = null;
+      }
+
+      if (data.type === 'portfolio-cassette-transport-state') {
+        if (!activeButton) return;
+        if (data.state === 'playing') {
+          activeButton.classList.add('is-playing');
+          setStatus('Playing in recorder: ' + activeButton.textContent.trim());
+        } else if (data.state === 'stopped' || data.state === 'paused') {
+          activeButton.classList.remove('is-playing');
+          setStatus('Loaded in recorder: ' + activeButton.textContent.trim());
+        }
+      }
+
+      if (data.type === 'portfolio-cassette-ready') {
+        loadInitialTrack();
+      }
+    });
+
+    function loadInitialTrack() {
+      if (!activeButton || pendingButton || initialTrackLoaded) return;
+      loadTrack(activeButton, false);
+    }
+
+    if (cassetteFrame) {
+      cassetteFrame.addEventListener('load', loadInitialTrack);
+      window.setTimeout(loadInitialTrack, 800);
     }
   })();
   </script>
