@@ -8548,3 +8548,157 @@ body.night-theme .resume-fab-status {
     height: 40px;
   }
 }
+
+/* Large display responsiveness and layout optimization */
+@media (min-width: 901px) {
+  header {
+    left: 50%;
+    right: auto;
+    width: min(100%, 1760px);
+    padding-inline: clamp(28px, 3.2vw, 72px);
+    transform: translateX(-50%);
+  }
+
+  .heroSection {
+    width: min(100%, 1540px);
+    gap: clamp(4rem, 6vw, 8rem);
+    justify-content: space-between;
+    padding-inline: clamp(2rem, 5vw, 5.5rem);
+  }
+
+  .infoContainer {
+    flex: 1 1 520px;
+    max-width: 700px;
+  }
+
+  .heroSection .heading {
+    font-size: clamp(35px, 2.4vw, 48px);
+    line-height: 1.05;
+  }
+
+  .heroSection .subHeading {
+    font-size: clamp(45px, 3.45vw, 68px);
+    line-height: 1.05;
+  }
+
+  .heroSection .desc {
+    width: min(100%, 58ch);
+    font-size: clamp(16px, 1vw, 18px);
+    line-height: 1.7;
+  }
+
+  .projectTitle,
+  .projectHeading,
+  .serviceTitle,
+  .serviceIndex {
+    letter-spacing: 0;
+  }
+
+  .projectTitle {
+    font-size: clamp(56px, 5vw, 96px);
+  }
+
+  .about-grid {
+    max-width: 1420px;
+  }
+
+  .projectContainer.galleryGrid {
+    width: min(1480px, calc(100% - clamp(48px, 8vw, 160px)));
+    margin-inline: auto;
+    padding: clamp(58px, 4.6vw, 84px) 0 clamp(96px, 6vw, 132px);
+    gap: clamp(98px, 6.5vw, 128px) clamp(28px, 3vw, 48px);
+  }
+
+  .projectContainer.galleryGrid .projectHeading {
+    font-size: clamp(22px, 1.55vw, 30px);
+    line-height: 1.12;
+  }
+
+  .projectContainer.galleryGrid .projectSubHeading {
+    font-size: clamp(12px, 0.8vw, 14px);
+  }
+
+  .gfx-gallery,
+  .it-wrap,
+  .cc-wrap,
+  .servicesSection > .container {
+    max-width: 1360px;
+  }
+
+  .gfx-division {
+    padding-inline: max(5%, calc((100vw - 1460px) / 2));
+  }
+
+  .perf-marketing {
+    max-width: 1240px;
+  }
+
+  .skillContainer {
+    padding-inline: max(5rem, calc((100vw - 1360px) / 2));
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --orbit-size: clamp(440px, 26vw, 540px);
+    --orbit-radius: calc(var(--orbit-size) / 2);
+  }
+
+  .orbit-center-image {
+    width: clamp(280px, 16vw, 340px);
+    height: clamp(340px, 20vw, 420px);
+  }
+
+  .water-text-svg {
+    left: clamp(1rem, 4vw, 4rem);
+    bottom: clamp(0.5rem, 1.8vw, 2rem);
+  }
+}
+
+@media (min-width: 1600px) {
+  .heroSection {
+    width: min(1680px, calc(100% - 8vw));
+  }
+
+  .projectContainer.galleryGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: min(1680px, calc(100% - 8vw));
+    gap: clamp(98px, 5.4vw, 126px) clamp(26px, 2.2vw, 42px);
+  }
+
+  .projectContainer.galleryGrid .projectCard:hover {
+    transform: scale(1.045);
+  }
+
+  .projectContainer.galleryGrid .projectNumber {
+    font-size: clamp(92px, 6vw, 132px);
+  }
+
+  .servicesContainer.shape-grid {
+    width: min(1280px, 100%);
+  }
+
+  .hobbies-watch-subsection {
+    width: min(1520px, 100%);
+  }
+}
+
+@media (min-width: 2200px) {
+  .heroSection,
+  .projectContainer.galleryGrid {
+    width: min(1860px, calc(100% - 12vw));
+  }
+
+  .projectContainer.galleryGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 108px 34px;
+  }
+
+  .projectContainer.galleryGrid .projectHeading {
+    font-size: 24px;
+  }
+
+  .projectContainer.galleryGrid .projectSubHeading {
+    font-size: 12px;
+  }
+}
