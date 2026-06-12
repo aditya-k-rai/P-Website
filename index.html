@@ -2747,7 +2747,33 @@
   <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-  <script src="./hero-shards.js"></script>
+  <script>
+    (function () {
+      var fallback = document.querySelector('.hero-shard-fallback');
+      function showFallback() {
+        if (fallback) fallback.style.opacity = '1';
+      }
+
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var hasFinePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var isWideEnough = window.matchMedia && window.matchMedia('(min-width: 900px)').matches;
+      var highDpi = (window.devicePixelRatio || 1) > 1.5;
+      var lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+      var lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+
+      if (reduceMotion || !hasFinePointer || !isWideEnough || highDpi || lowMemory || lowCpu) {
+        showFallback();
+        return;
+      }
+
+      document.body.classList.add('hero-shards-enabled');
+      var script = document.createElement('script');
+      script.src = './hero-shards.js';
+      script.defer = true;
+      script.onerror = showFallback;
+      document.body.appendChild(script);
+    })();
+  </script>
   <script>
     // Theme: saved user choice first, then device theme, with light as fallback.
     const deviceThemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
@@ -4157,18 +4183,24 @@
     var canvas = document.getElementById('pmGraphCanvas');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
+    var pmSection = document.querySelector('.perf-marketing');
+    var wrapper = document.getElementById('wrapper');
     var W, H;
     var PAD = { top: 10, right: 16, bottom: 28, left: 38 };
+    function pmDpr() {
+      return Math.min(window.devicePixelRatio || 1, 1);
+    }
 
     function pmResize() {
       var rect = canvas.parentElement.getBoundingClientRect();
       W = rect.width; H = rect.height;
-      canvas.width = W * devicePixelRatio;
-      canvas.height = H * devicePixelRatio;
+      var dpr = pmDpr();
+      canvas.width = W * dpr;
+      canvas.height = H * dpr;
       canvas.style.width = W + 'px';
       canvas.style.height = H + 'px';
       ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(devicePixelRatio, devicePixelRatio);
+      ctx.scale(dpr, dpr);
     }
     window.addEventListener('resize', pmResize);
     pmResize();
@@ -4253,9 +4285,11 @@
     function pmDrawSales() {
       if (!sCtx) return;
       var sw = salesCanvas.offsetWidth, sh = salesCanvas.offsetHeight;
-      salesCanvas.width = sw * devicePixelRatio;
-      salesCanvas.height = sh * devicePixelRatio;
-      sCtx.scale(devicePixelRatio, devicePixelRatio);
+      var dpr = pmDpr();
+      salesCanvas.width = sw * dpr;
+      salesCanvas.height = sh * dpr;
+      sCtx.setTransform(1, 0, 0, 1, 0, 0);
+      sCtx.scale(dpr, dpr);
       sCtx.clearRect(0, 0, sw, sh);
       var pad = 2;
       sCtx.beginPath();
@@ -4358,6 +4392,7 @@
     });
 
     function pmRender() {
+      if (!pmRunning) return;
       ctx.clearRect(0, 0, W, H);
       drawGrid();
       pmData.forEach(function(p) {
@@ -4377,7 +4412,7 @@
           ctx.strokeStyle = p.color; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
         });
       }
-      requestAnimationFrame(pmRender);
+      pmRenderFrame = requestAnimationFrame(pmRender);
     }
 
     var PM_CPC_BASES = { Reddit:0.95, Instagram:2.10, Facebook:1.72, X:0.88, TikTok:1.45, LinkedIn:5.26, 'Google Ads':3.80, WhatsApp:0.62 };
@@ -4409,9 +4444,11 @@
       var rc = document.getElementById('pmRoasCanvas');
       var rx = rc.getContext('2d');
       var size = 64;
-      rc.width = size * devicePixelRatio; rc.height = size * devicePixelRatio;
+      var dpr = pmDpr();
+      rc.width = size * dpr; rc.height = size * dpr;
       rc.style.width = size + 'px'; rc.style.height = size + 'px';
-      rx.scale(devicePixelRatio, devicePixelRatio);
+      rx.setTransform(1, 0, 0, 1, 0, 0);
+      rx.scale(dpr, dpr);
       rx.clearRect(0, 0, size, size);
       var cx2 = size / 2, cy2 = size / 2, r = 26, lw = 7;
       var visible = PM_PLATFORMS.filter(function(p) { return p.visible; });
@@ -4452,10 +4489,67 @@
 
     pmUpdateCPC();
     pmUpdateROAS();
-    pmRender();
-    setInterval(pmUpdateLive, 600);
-    setInterval(pmUpdateCPC, 1200);
-    setInterval(pmUpdateROAS, 1500);
+    var pmRunning = false;
+    var pmRenderFrame = 0;
+    var pmLiveTimer = 0;
+    var pmCpcTimer = 0;
+    var pmRoasTimer = 0;
+
+    function pmStart() {
+      if (pmRunning) return;
+      pmRunning = true;
+      pmRender();
+      pmLiveTimer = setInterval(pmUpdateLive, 900);
+      pmCpcTimer = setInterval(pmUpdateCPC, 1800);
+      pmRoasTimer = setInterval(pmUpdateROAS, 2200);
+    }
+
+    function pmStop() {
+      pmRunning = false;
+      if (pmRenderFrame) cancelAnimationFrame(pmRenderFrame);
+      pmRenderFrame = 0;
+      clearInterval(pmLiveTimer);
+      clearInterval(pmCpcTimer);
+      clearInterval(pmRoasTimer);
+      pmLiveTimer = pmCpcTimer = pmRoasTimer = 0;
+    }
+
+    function pmIsVisible() {
+      var root = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+      var rect = (pmSection || canvas).getBoundingClientRect();
+      return rect.bottom > root.top - 160 && rect.top < root.bottom + 160;
+    }
+
+    function pmSyncRunning() {
+      if (document.hidden || !pmIsVisible()) pmStop();
+      else pmStart();
+    }
+
+    var pmSyncQueued = false;
+    function pmQueueSync() {
+      if (pmSyncQueued) return;
+      pmSyncQueued = true;
+      requestAnimationFrame(function () {
+        pmSyncQueued = false;
+        pmSyncRunning();
+      });
+    }
+
+    if ('IntersectionObserver' in window && pmSection) {
+      var pmObserver = new IntersectionObserver(pmSyncRunning, {
+        root: wrapper || null,
+        rootMargin: '160px 0px',
+        threshold: 0
+      });
+      pmObserver.observe(pmSection);
+    } else {
+      pmStart();
+    }
+    if (wrapper) wrapper.addEventListener('scroll', pmQueueSync, { passive: true });
+    window.addEventListener('scroll', pmQueueSync, { passive: true });
+    window.addEventListener('resize', pmQueueSync);
+    document.addEventListener('visibilitychange', pmSyncRunning);
+    pmSyncRunning();
   })();
   </script>
 </body>

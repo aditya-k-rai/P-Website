@@ -1228,8 +1228,12 @@ body.night-theme .heroSection::before,
   object-fit: contain;
   object-position: bottom;
   z-index: 1;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.2s ease;
+}
+
+.hero-shards-enabled .hero-shard-fallback {
+  opacity: 0;
 }
 
 .hero-shards-svg {
@@ -8700,5 +8704,285 @@ body.night-theme .resume-fab-status {
 
   .projectContainer.galleryGrid .projectSubHeading {
     font-size: 12px;
+  }
+}
+
+/* Fluid hero + device-wide responsive polish */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+img,
+video,
+canvas,
+iframe {
+  max-width: 100%;
+}
+
+#home,
+.projectSection,
+.skillContainer,
+.servicesSection,
+.hobbies-section,
+.lets-connect-section,
+.shloka-section,
+footer {
+  scroll-margin-top: clamp(78px, 8vw, 112px);
+}
+
+.heroSection {
+  --hero-inline: clamp(1rem, 5vw, 5.5rem);
+  --hero-copy-max: 700px;
+  --orbit-size: clamp(220px, min(40vw, 56svh), 540px);
+  --orbit-radius: calc(var(--orbit-size) * 0.455);
+  --orbit-node-size: clamp(26px, calc(var(--orbit-size) * 0.091), 42px);
+  width: min(1680px, 100%);
+  padding-inline: var(--hero-inline);
+  gap: clamp(1.5rem, 5vw, 8rem);
+}
+
+.heroSection .infoContainer {
+  flex: 1 1 clamp(280px, 38vw, var(--hero-copy-max));
+  max-width: var(--hero-copy-max);
+  gap: clamp(0.8rem, 2vw, 2rem);
+  min-width: 0;
+}
+
+.heroSection .heading {
+  max-width: 12ch;
+  font-size: clamp(1.35rem, 2.6vw, 3rem);
+  line-height: 1.06;
+  text-wrap: balance;
+}
+
+.heroSection .subHeading {
+  max-width: 12ch;
+  font-size: clamp(1.9rem, 5.2vw, 4.35rem);
+  line-height: 1.04;
+}
+
+.heroSection .desc {
+  width: min(100%, 58ch);
+  font-size: clamp(0.88rem, 1.1vw, 1.12rem);
+  line-height: 1.7;
+}
+
+.heroSection .btn {
+  min-height: clamp(44px, 3.3vw, 54px);
+  padding: clamp(0.65rem, 1vw, 0.9rem) clamp(1.45rem, 2.3vw, 2.35rem);
+  font-size: clamp(0.9rem, 1vw, 1.1rem);
+}
+
+.orbit-hero-right {
+  flex: 0 0 var(--orbit-size);
+  width: var(--orbit-size);
+  height: var(--orbit-size);
+}
+
+.orbit-center-image {
+  width: calc(var(--orbit-size) * 0.64);
+  height: calc(var(--orbit-size) * 0.78);
+}
+
+.orbit-animation-ring,
+.orbit-glow {
+  width: var(--orbit-size);
+  height: var(--orbit-size);
+}
+
+.orbit-slot {
+  width: var(--orbit-node-size);
+  height: var(--orbit-node-size);
+  margin-top: calc(var(--orbit-node-size) * -0.5);
+  margin-left: calc(var(--orbit-node-size) * -0.5);
+  transform: rotate(var(--angle)) translate(var(--orbit-radius));
+}
+
+.chip {
+  padding: clamp(4px, calc(var(--orbit-size) * 0.017), 9px) clamp(8px, calc(var(--orbit-size) * 0.038), 18px);
+  border-radius: clamp(6px, calc(var(--orbit-size) * 0.022), 10px);
+  font-size: clamp(8px, calc(var(--orbit-size) * 0.03), 13px);
+  line-height: 1.1;
+}
+
+.water-text-svg {
+  width: clamp(220px, 40vw, 720px);
+  height: auto;
+}
+
+.projectHeading,
+.projectSubHeading,
+.serviceCard h3,
+.serviceCard p,
+.ux-title,
+.ux-text,
+.hobby-card h3,
+.hobby-card p,
+.it-cat-title,
+.it-cat-why {
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px) {
+  .heroSection {
+    --orbit-size: clamp(250px, min(46vw, 42svh), 390px);
+    gap: clamp(1.4rem, 4vw, 3rem);
+  }
+}
+
+@media (max-width: 860px) {
+  header .glass-nav {
+    max-width: min(100%, calc(100vw - 20px));
+  }
+
+  header .glass-nav .nav-links {
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    gap: 3px !important;
+  }
+
+  header .glass-nav .nav-links li a {
+    width: 42px;
+    min-width: 42px;
+    padding: 0 !important;
+    justify-content: center;
+  }
+
+  header .glass-nav .nav-links li a span {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .heroSection {
+    --hero-copy-max: 680px;
+    --orbit-size: clamp(230px, min(60vw, 38svh), 360px);
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding-inline: clamp(1rem, 5vw, 2rem);
+    padding-top: clamp(6.4rem, 14vw, 8.5rem);
+    padding-bottom: clamp(2.5rem, 7vw, 4rem);
+  }
+
+  .heroSection .infoContainer {
+    align-items: center;
+    flex-basis: auto;
+  }
+
+  .heroSection .heading,
+  .heroSection .subHeading,
+  .heroSection .desc {
+    margin-inline: auto;
+  }
+
+  .water-text-svg {
+    left: 50%;
+    width: min(520px, calc(100vw - 2rem));
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 600px) {
+  .heroSection {
+    --orbit-size: clamp(220px, min(72vw, 38svh), 310px);
+    gap: clamp(0.9rem, 3.2vh, 1.5rem);
+    padding-inline: clamp(0.85rem, 4.8vw, 1.2rem);
+    padding-top: clamp(6.1rem, 24vw, 7.8rem);
+    min-height: 100svh;
+  }
+
+  .heroSection .heading {
+    font-size: clamp(1.18rem, 6.2vw, 1.6rem);
+  }
+
+  .heroSection .subHeading {
+    font-size: clamp(1.55rem, 8.5vw, 2.25rem);
+  }
+
+  .heroSection .desc {
+    max-width: 34rem;
+    font-size: clamp(0.82rem, 3.6vw, 0.95rem);
+    line-height: 1.55;
+  }
+
+  .water-text-svg {
+    width: min(320px, calc(100vw - 1.25rem));
+  }
+}
+
+@media (max-width: 420px) {
+  .heroSection {
+    --orbit-size: clamp(205px, min(76vw, 34svh), 270px);
+    padding-top: clamp(5.8rem, 26vw, 7rem);
+  }
+
+  .heroSection .btn {
+    width: min(100%, 210px);
+    justify-content: center;
+  }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .heroSection {
+    --orbit-size: clamp(190px, 36vh, 260px);
+    min-height: auto;
+    padding-top: 5.6rem;
+    padding-bottom: 2rem;
+    gap: 1rem;
+  }
+
+  .heroSection .infoContainer {
+    gap: 0.65rem;
+  }
+
+  .heroSection .desc {
+    margin-top: 0.3rem;
+  }
+
+  .water-text-svg {
+    display: none;
+  }
+}
+
+/* Performance safeguards for high-DPI laptops and large monitors */
+@media (min-width: 1200px), (min-resolution: 1.5dppx) {
+  #wrapper,
+  .heroSection::before {
+    background-attachment: scroll;
+  }
+
+  .glass-nav {
+    backdrop-filter: blur(26px) saturate(170%);
+    -webkit-backdrop-filter: blur(26px) saturate(170%);
+  }
+}
+
+@media (min-width: 1800px) {
+  .projectCard:hover,
+  .projectContainer.galleryGrid .projectCard:hover,
+  .gfx-gallery-item:hover,
+  .serviceCard:hover,
+  .ux-parent:hover .ux-card {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orbit-animation-ring,
+  .orbit-counter-rotator,
+  .pb-carousel-item,
+  .blobStyle,
+  .getStartedBtn,
+  .getStartedBtn::before,
+  .loader-spinner,
+  .resume-fab-glow,
+  .resume-download-fab::before {
+    animation-play-state: paused !important;
   }
 }
