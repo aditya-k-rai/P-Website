@@ -8789,6 +8789,19 @@ footer {
   height: var(--orbit-size);
 }
 
+@media (min-width: 1400px) {
+  .heroSection .infoContainer {
+    transform: translateX(clamp(1.35rem, 2.2vw, 3rem));
+  }
+
+  .orbit-hero-right {
+    --orbit-size: clamp(242px, min(44vw, 61.6svh), 594px);
+    --orbit-radius: calc(var(--orbit-size) * 0.455);
+    --orbit-node-size: clamp(28px, calc(var(--orbit-size) * 0.091), 46px);
+    transform: translateX(calc(-1 * clamp(2.6rem, 4.4vw, 6rem)));
+  }
+}
+
 .orbit-center-image {
   width: calc(var(--orbit-size) * 0.64);
   height: calc(var(--orbit-size) * 0.78);
