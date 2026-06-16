@@ -1237,8 +1237,13 @@ body.night-theme .heroSection::before,
 }
 
 .hero-shards-svg {
+  display: none;
   overflow: visible;
   z-index: 2;
+}
+
+.hero-shards-enabled .hero-shards-svg {
+  display: block;
 }
 
 .hero-shards-svg .shard {
@@ -8811,8 +8816,19 @@ footer {
 }
 
 .water-text-svg {
-  width: clamp(220px, 40vw, 720px);
+  display: none;
+  width: clamp(176px, 32vw, 576px);
   height: auto;
+  opacity: 1;
+  z-index: 1;
+}
+
+@media (min-width: 1440px) {
+  .water-text-svg {
+    bottom: 0;
+    display: block;
+    left: clamp(1rem, 4vw, 4rem);
+  }
 }
 
 .projectHeading,
@@ -8828,10 +8844,144 @@ footer {
   overflow-wrap: anywhere;
 }
 
+.ak-resume {
+  --about-portrait-size: clamp(230px, 26vw, 370px);
+  position: relative;
+}
+
+.ak-resume .ak-head,
+.ak-resume .ak-panels {
+  position: relative;
+  z-index: 2;
+}
+
+.ak-resume .about-user-image {
+  width: var(--about-portrait-size);
+  max-width: min(42%, 370px);
+  height: auto;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (min-width: 1181px) {
+  .ak-resume {
+    padding-right: calc(var(--about-portrait-size) * 0.46);
+  }
+
+  .ak-resume .about-user-image {
+    right: 0;
+    top: 50%;
+    transform: translateY(-45%);
+  }
+
+  .ak-resume .about-user-image:hover {
+    transform: translateY(-45%);
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1180px) {
+  .ak-resume {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "head"
+      "portrait"
+      "panels";
+    gap: clamp(14px, 2.5vw, 24px);
+    align-items: start;
+  }
+
+  .ak-resume .ak-head {
+    grid-area: head;
+  }
+
+  .ak-resume .about-user-image {
+    grid-area: portrait;
+    position: relative;
+    inset: auto;
+    justify-self: center;
+    align-self: end;
+    width: min(46vw, 280px);
+    max-width: 100%;
+    margin-top: clamp(2px, 1vw, 10px);
+    transform: none;
+  }
+
+  .ak-resume .about-user-image:hover {
+    transform: none;
+  }
+
+  .ak-resume .ak-panels {
+    grid-area: panels;
+  }
+}
+
+@media (max-width: 700px) {
+  .ak-resume {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .ak-resume .about-user-image {
+    position: relative;
+    inset: auto;
+    justify-self: center;
+    width: min(58vw, 230px);
+    max-width: 100%;
+    margin: clamp(12px, 4vw, 18px) auto 0;
+    transform: none;
+    order: 2;
+  }
+
+  .ak-resume .about-user-image:hover {
+    transform: none;
+  }
+
+  .ak-resume .ak-panels {
+    order: 3;
+  }
+}
+
 @media (max-width: 1100px) {
   .heroSection {
     --orbit-size: clamp(250px, min(46vw, 42svh), 390px);
     gap: clamp(1.4rem, 4vw, 3rem);
+  }
+
+  .water-text-svg {
+    display: none;
+  }
+}
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  .heroSection {
+    --hero-copy-max: 720px;
+    --orbit-size: clamp(300px, min(42vw, 42svh), 420px);
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding-top: clamp(6.8rem, 9vw, 8.5rem);
+    padding-bottom: clamp(3rem, 6vw, 5rem);
+  }
+
+  .heroSection .infoContainer {
+    align-items: center;
+    flex-basis: auto;
+  }
+
+  .heroSection .heading,
+  .heroSection .subHeading,
+  .heroSection .desc {
+    margin-inline: auto;
+  }
+
+  .heroSection .subHeading {
+    max-width: 11ch;
+    font-size: clamp(2.6rem, 6.2vw, 4.2rem);
+  }
+
+  .water-text-svg {
+    display: none;
   }
 }
 
@@ -8882,9 +9032,7 @@ footer {
   }
 
   .water-text-svg {
-    left: 50%;
-    width: min(520px, calc(100vw - 2rem));
-    transform: translateX(-50%);
+    display: none;
   }
 }
 
@@ -8912,7 +9060,7 @@ footer {
   }
 
   .water-text-svg {
-    width: min(320px, calc(100vw - 1.25rem));
+    display: none;
   }
 }
 
@@ -8985,4 +9133,31 @@ footer {
   .resume-download-fab::before {
     animation-play-state: paused !important;
   }
+}
+
+html.perf-lite #wrapper,
+html.perf-lite .heroSection::before {
+  background-attachment: scroll !important;
+}
+
+html.perf-lite .glass-nav {
+  backdrop-filter: blur(18px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(145%) !important;
+}
+
+html.perf-lite .orbit-animation-ring,
+html.perf-lite .orbit-counter-rotator,
+html.perf-lite .pb-carousel-item,
+html.perf-lite .blobStyle,
+html.perf-lite .ak-name,
+html.perf-lite .getStartedBtn,
+html.perf-lite .getStartedBtn::before,
+html.perf-lite .resume-fab-glow,
+html.perf-lite .resume-download-fab::before {
+  animation-play-state: paused !important;
+}
+
+.perf-marketing.lg-static .lg-canvas,
+#advertisements.lg-static .lg-canvas {
+  display: none;
 }

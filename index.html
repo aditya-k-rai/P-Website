@@ -24,21 +24,61 @@
   <!-- Favicon  -->
   <link rel="shortcut icon" href="./Images/userAsset/icon.ico" type="image/x-icon" />
 
-  <!-- Three.js for Advertisement section liquid-gradient background -->
+  <!-- Lightweight startup helpers. Heavy section libraries are loaded on demand. -->
   <script>
-    window.loadThreeFallback = function () {
-      if (window.THREE || document.querySelector('script[data-three-fallback]')) return;
-      var script = document.createElement('script');
-      script.src = './vendor/three.r128.min.js';
-      script.defer = true;
-      script.dataset.threeFallback = 'true';
-      document.head.appendChild(script);
-    };
-    window.setTimeout(function () {
-      if (!window.THREE) window.loadThreeFallback();
-    }, 2500);
+    (function () {
+      var dpr = window.devicePixelRatio || 1;
+      var screenArea = Math.max(window.innerWidth || 0, screen.width || 0) *
+        Math.max(window.innerHeight || 0, screen.height || 0) * dpr * dpr;
+      var lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+      var lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+      var perfLite = screenArea > 3200000 || lowMemory || lowCpu;
+
+      if (perfLite) document.documentElement.classList.add('perf-lite');
+      window.__portfolioPerfLite = !!perfLite;
+
+      window.__loadScriptOnce = function (src, done, fail) {
+        var existing = document.querySelector('script[data-src-key="' + src + '"]');
+        if (existing) {
+          if (existing.dataset.loaded === 'true') {
+            if (done) done();
+          } else {
+            existing.addEventListener('load', function () { if (done) done(); }, { once: true });
+            existing.addEventListener('error', function () { if (fail) fail(); }, { once: true });
+          }
+          return existing;
+        }
+
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.dataset.srcKey = src;
+        script.onload = function () {
+          script.dataset.loaded = 'true';
+          if (done) done();
+        };
+        script.onerror = function () {
+          if (fail) fail();
+        };
+        document.head.appendChild(script);
+        return script;
+      };
+
+      window.__loadThree = function (done) {
+        if (window.THREE) {
+          if (done) done();
+          return;
+        }
+        window.__loadScriptOnce(
+          'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js',
+          done,
+          function () {
+            window.__loadScriptOnce('./vendor/three.r128.min.js', done);
+          }
+        );
+      };
+    })();
   </script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" onerror="window.loadThreeFallback()"></script>
 </head>
 
 <body>
@@ -2113,10 +2153,18 @@
   <!-- Advertisement Section - Liquid Gradient (Three.js) -->
   <script>
     (function () {
+      var adSection = document.getElementById('advertisements');
+      if (!adSection) return;
+
+      function shouldUseStaticAdBackground() {
+        var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        return reduceMotion || (window.__portfolioPerfLite && window.innerWidth >= 1600);
+      }
+
       function boot() {
-        if (typeof THREE === 'undefined') { return setTimeout(boot, 120); }
+        if (typeof THREE === 'undefined') return;
         var canvas = document.getElementById('lg-canvas');
-        var section = document.getElementById('advertisements');
+        var section = adSection;
         if (!canvas || !section) return;
         var wrapper = document.getElementById('wrapper');
 
@@ -2502,8 +2550,37 @@
         syncRunningState();
       }
 
-      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-      else boot();
+      var bootRequested = false;
+      function requestBoot() {
+        if (bootRequested) return;
+        bootRequested = true;
+        if (shouldUseStaticAdBackground()) {
+          adSection.classList.add('lg-static');
+          return;
+        }
+        if (window.__loadThree) window.__loadThree(boot);
+        else boot();
+      }
+
+      function waitUntilNear() {
+        var wrapper = document.getElementById('wrapper');
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                observer.disconnect();
+                requestBoot();
+              }
+            });
+          }, { root: wrapper || null, rootMargin: '800px 0px', threshold: 0 });
+          observer.observe(adSection);
+        } else {
+          window.setTimeout(requestBoot, 1800);
+        }
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', waitUntilNear);
+      else waitUntilNear();
     })();
   </script>
 
@@ -2743,10 +2820,6 @@
     })();
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
   <script>
     (function () {
       var fallback = document.querySelector('.hero-shard-fallback');
@@ -2754,24 +2827,7 @@
         if (fallback) fallback.style.opacity = '1';
       }
 
-      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var hasFinePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-      var isWideEnough = window.matchMedia && window.matchMedia('(min-width: 900px)').matches;
-      var highDpi = (window.devicePixelRatio || 1) > 1.5;
-      var lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
-      var lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-
-      if (reduceMotion || !hasFinePointer || !isWideEnough || highDpi || lowMemory || lowCpu) {
-        showFallback();
-        return;
-      }
-
-      document.body.classList.add('hero-shards-enabled');
-      var script = document.createElement('script');
-      script.src = './hero-shards.js';
-      script.defer = true;
-      script.onerror = showFallback;
-      document.body.appendChild(script);
+      showFallback();
     })();
   </script>
   <script>
@@ -3323,19 +3379,60 @@
       });
     </script> -->
   <script>
-    var typeData = new Typed(".role", {
-      strings: [
+    (function () {
+      var target = document.querySelector('.role');
+      if (!target) return;
+
+      var strings = [
         "Front-end Web Developer",
         "Web Developer",
         "Web Designer",
         "Digital Marketer",
         "Coder",
-      ],
-      loop: true,
-      typeSpeed: 100,
-      backSpeed: 80,
-      backDelay: 1000,
-    });
+      ];
+      var wordIndex = 0;
+      var charIndex = 0;
+      var deleting = false;
+      var timer = 0;
+
+      function tick() {
+        var word = strings[wordIndex];
+        target.textContent = word.slice(0, charIndex);
+
+        if (!deleting && charIndex < word.length) {
+          charIndex++;
+          timer = window.setTimeout(tick, 95);
+          return;
+        }
+
+        if (!deleting) {
+          deleting = true;
+          timer = window.setTimeout(tick, 1050);
+          return;
+        }
+
+        if (charIndex > 0) {
+          charIndex--;
+          timer = window.setTimeout(tick, 55);
+          return;
+        }
+
+        deleting = false;
+        wordIndex = (wordIndex + 1) % strings.length;
+        timer = window.setTimeout(tick, 180);
+      }
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden && timer) {
+          window.clearTimeout(timer);
+          timer = 0;
+        } else if (!timer) {
+          tick();
+        }
+      });
+
+      tick();
+    })();
   </script>
 
   <!-- Script for Read More button functionality -->
@@ -3412,9 +3509,47 @@
       });
     })();
   </script>
-  <script src="./color-avalanche.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="./graphics-flipbook.js"></script>
+  <script>
+    (function () {
+      function lazyBootSection(selector, rootMargin, boot) {
+        var section = document.querySelector(selector);
+        if (!section || section.dataset.lazyBooted === 'true') return;
+        var wrapper = document.getElementById('wrapper');
+
+        function run() {
+          if (section.dataset.lazyBooted === 'true') return;
+          section.dataset.lazyBooted = 'true';
+          boot();
+        }
+
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                observer.disconnect();
+                run();
+              }
+            });
+          }, { root: wrapper || null, rootMargin: rootMargin || '600px 0px', threshold: 0 });
+          observer.observe(section);
+        } else {
+          window.setTimeout(run, 1800);
+        }
+      }
+
+      lazyBootSection('#skills', '700px 0px', function () {
+        window.__loadScriptOnce('https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js', function () {
+          window.__loadScriptOnce('./color-avalanche.js');
+        });
+      });
+
+      lazyBootSection('#graphics', '900px 0px', function () {
+        window.__loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', function () {
+          window.__loadScriptOnce('./graphics-flipbook.js');
+        });
+      });
+    })();
+  </script>
 
   <!-- Vertical 3D Gallery -->
   <script>

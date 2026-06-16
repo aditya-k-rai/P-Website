@@ -26,11 +26,7 @@
 
     pdfjsLib.getDocument(url).promise.then(function (pdf) {
       currentPdf = pdf;
-      var renderPromises = [];
-      for (var i = 1; i <= pdf.numPages; i++) {
-        renderPromises.push(renderPage(pdf, i));
-      }
-      Promise.all(renderPromises).then(function (canvases) {
+      renderPagesSequentially(pdf).then(function (canvases) {
         renderedCanvases = canvases;
         buildBook(canvases);
         container.classList.remove('loading');
@@ -43,11 +39,37 @@
     });
   }
 
-  // Render at high resolution (3x) for crisp text, CSS scales it down to fit
+  function renderPagesSequentially(pdf) {
+    var canvases = [];
+    var pageNum = 1;
+
+    function next() {
+      if (pageNum > pdf.numPages) return Promise.resolve(canvases);
+      if (indicator) indicator.textContent = 'Loading ' + pageNum + ' / ' + pdf.numPages;
+
+      return renderPage(pdf, pageNum).then(function (canvas) {
+        canvases.push(canvas);
+        pageNum++;
+        return new Promise(function (resolve) {
+          window.setTimeout(resolve, 0);
+        }).then(next);
+      });
+    }
+
+    return next();
+  }
+
+  function getRenderScale() {
+    if (window.__portfolioPerfLite) return 1;
+    if (window.innerWidth <= 700) return 1.15;
+    if (window.innerWidth <= 1180) return 1.25;
+    return 1.35;
+  }
+
+  // Render at a bounded resolution so large PDFs do not lock up the tab.
   function renderPage(pdf, pageNum) {
     return pdf.getPage(pageNum).then(function (page) {
-      // Render at 3x native scale for sharp text
-      var scaled = page.getViewport({ scale: 3 });
+      var scaled = page.getViewport({ scale: getRenderScale() });
 
       var canvas = document.createElement('canvas');
       canvas.width = scaled.width;
