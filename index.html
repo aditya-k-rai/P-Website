@@ -367,17 +367,6 @@
               <div class="ak-panel-title">Profile</div>
               <p class="ak-para">Full-stack developer, digital marketer, and IT specialist &mdash; I treat curiosity like a workbench. Build, break, fix, repeat &mdash; and stay for the part where it finally clicks.</p>
               <p class="ak-para">BCA graduate, CCSU Meerut. Shipping production work across e-commerce, hospitality, construction, AI, and EV brands &mdash; code, campaigns, and creative under one roof.</p>
-              <div class="ak-interests">
-                <div class="ak-section-label">Areas of Interest</div>
-                <div class="ak-interests-tags">
-                  <span>Full-Stack Dev</span>
-                  <span>Digital Marketing</span>
-                  <span>AI &amp; Creative Tools</span>
-                  <span>Network Security</span>
-                  <span>UI / UX Design</span>
-                  <span>SEO &amp; Growth</span>
-                </div>
-              </div>
             </div>
 
             <div class="ak-panel is-shown" data-ak-panel="journey">
@@ -2822,12 +2811,44 @@
 
   <script>
     (function () {
+      var svg = document.getElementById('heroFaceShards');
       var fallback = document.querySelector('.hero-shard-fallback');
       function showFallback() {
         if (fallback) fallback.style.opacity = '1';
+        document.body.classList.remove('hero-shards-enabled');
       }
 
-      showFallback();
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var hasFinePointer = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var isWideEnough = !window.matchMedia || window.matchMedia('(min-width: 900px)').matches;
+      var lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
+      var lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
+
+      if (!svg || reduceMotion || !hasFinePointer || !isWideEnough || lowMemory || lowCpu) {
+        showFallback();
+        return;
+      }
+
+      function loadScript(src, done, fail) {
+        if (window.__loadScriptOnce) {
+          window.__loadScriptOnce(src, done, fail);
+          return;
+        }
+
+        var script = document.createElement('script');
+        script.src = src;
+        script.async = true;
+        script.onload = function () { if (done) done(); };
+        script.onerror = function () { if (fail) fail(); };
+        document.head.appendChild(script);
+      }
+
+      document.body.classList.add('hero-shards-enabled');
+      loadScript('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js', function () {
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js', function () {
+          loadScript('./hero-shards.js', null, showFallback);
+        }, showFallback);
+      }, showFallback);
     })();
   </script>
   <script>

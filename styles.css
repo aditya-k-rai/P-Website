@@ -1232,10 +1232,6 @@ body.night-theme .heroSection::before,
   transition: opacity 0.2s ease;
 }
 
-.hero-shards-enabled .hero-shard-fallback {
-  opacity: 0;
-}
-
 .hero-shards-svg {
   display: none;
   overflow: visible;
@@ -4574,40 +4570,6 @@ body.night-theme #advertisements {
   margin: 0 0 14px;
 }
 
-.ak-section-label {
-  display: block;
-  font-size: 10px;
-  color: #808088;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  font-weight: 700;
-  margin: 0 0 8px;
-}
-
-.ak-interests-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 4px;
-}
-
-.ak-interests-tags span {
-  font-size: 12px;
-  padding: 5px 12px;
-  background: linear-gradient(135deg, rgba(232, 73, 73, 0.15), rgba(78, 69, 213, 0.2));
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  color: #e0e0e8;
-  font-weight: 500;
-  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.ak-interests-tags span:hover {
-  transform: translateY(-2px);
-  border-color: rgba(192, 132, 252, 0.55);
-  box-shadow: 0 6px 16px -6px rgba(192, 132, 252, 0.5);
-}
-
 .ak-skillgroup { margin-bottom: 14px; }
 .ak-skillgroup:last-child { margin-bottom: 0; }
 
@@ -4860,21 +4822,6 @@ body:not(.night-theme) #about .ak-panel-title::after {
 
 body:not(.night-theme) #about .ak-para {
   color: #27272a;
-}
-
-body:not(.night-theme) #about .ak-section-label {
-  color: #3f3f46;
-}
-
-body:not(.night-theme) #about .ak-interests-tags span {
-  background: linear-gradient(135deg, rgba(232, 73, 73, 0.14), rgba(109, 40, 217, 0.18));
-  border-color: rgba(0, 0, 0, 0.15);
-  color: #18181b;
-}
-
-body:not(.night-theme) #about .ak-interests-tags span:hover {
-  border-color: rgba(109, 40, 217, 0.6);
-  box-shadow: 0 6px 16px -6px rgba(109, 40, 217, 0.45);
 }
 
 body:not(.night-theme) #about .ak-skill-pills span {
