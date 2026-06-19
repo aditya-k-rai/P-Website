@@ -13,10 +13,10 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
   <link rel="preload" as="image" href="./Images/userAsset/Aditya_nobg.png" fetchpriority="high" />
 
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100;300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" />
+
   <!-- Link CSS  -->
   <link rel="stylesheet" href="./styles.css" />
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100&display=swap" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -2879,15 +2879,12 @@
         document.head.appendChild(script);
       }
 
+      var heroShardsBooted = false;
+
       function bootHeroShards() {
-        document.body.classList.add('hero-shards-enabled');
-        // Load jQuery -> GSAP -> hero-shards sequentially but AFTER loader is gone
-        // so these ~800KB of scripts don't compete with the visible page
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js', function () {
-          loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js', function () {
-            loadScript('./hero-shards.js', null, showFallback);
-          }, showFallback);
-        }, showFallback);
+        if (heroShardsBooted) return;
+        heroShardsBooted = true;
+        loadScript('./hero-shards.js', null, showFallback);
       }
 
       // Delay hero-shards until loader is hidden so it doesn't compete during initial paint
@@ -2900,7 +2897,7 @@
         }, { once: true });
         // Fallback: if loader event never fires, boot after 4s
         setTimeout(function() {
-          if (!document.body.classList.contains('hero-shards-enabled')) bootHeroShards();
+          if (!heroShardsBooted) bootHeroShards();
         }, 4000);
       }
     })();

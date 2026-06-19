@@ -708,59 +708,69 @@
     if (started) return;
     started = true;
 
-    if (!window.jQuery || !window.TimelineMax || !window.Power4 || !window.CSSPlugin) {
+    if (!Element.prototype.animate) {
       if (fallbackImage) {
         fallbackImage.style.opacity = '1';
       }
+      document.body.classList.remove('hero-shards-enabled');
       return;
     }
 
-    window.CSSPlugin.useSVGTransformAttr = true;
-
-    var $ = window.jQuery;
-    var shards = $("#heroFaceShards .shard");
+    var shards = Array.prototype.slice.call(svg.querySelectorAll('.shard'));
     if (!shards.length) {
       if (fallbackImage) {
         fallbackImage.style.opacity = '1';
       }
+      document.body.classList.remove('hero-shards-enabled');
       return;
     }
+
+    svg.style.opacity = '1';
+    document.body.classList.add('hero-shards-enabled');
 
     if (fallbackImage) {
       fallbackImage.style.opacity = '0';
     }
 
-    var timeline = new window.TimelineMax({
-      repeat: 0,
-      onComplete: function () {
-        if (fallbackImage) {
-          fallbackImage.style.opacity = '1';
-        }
-        svg.style.transition = 'opacity 0.2s ease';
-        svg.style.opacity = '0';
+    var finished = 0;
+    function finishOne() {
+      finished += 1;
+      if (finished < shards.length) return;
+
+      if (fallbackImage) {
+        fallbackImage.style.opacity = '1';
       }
-    });
+      svg.style.transition = 'opacity 0.2s ease';
+      svg.style.opacity = '0';
+    }
 
-    shards.each(function (i, el) {
+    shards.forEach(function (el, i) {
       var c = CENTROIDS[i] || [300, 375];
-      timeline.set(el, {
-        svgOrigin: c[0] + ' ' + c[1],
-        x: '+=' + getRandom(-1000, 1000),
-        y: '+=' + getRandom(-1000, 1000),
-        rotation: '+=' + getRandom(-720, 720),
-        scale: 0,
-        opacity: 0
-      }, 0);
-    });
+      var startX = getRandom(-1000, 1000);
+      var startY = getRandom(-1000, 1000);
+      var startRotation = getRandom(-720, 720);
+      var delay = i * 9;
+      var animation = el.animate([
+        {
+          opacity: 0,
+          transform: 'translate(' + startX + 'px, ' + startY + 'px) rotate(' + startRotation + 'deg) scale(0)'
+        },
+        {
+          opacity: 1,
+          transform: 'translate(0, 0) rotate(0deg) scale(1)'
+        }
+      ], {
+        duration: 2500,
+        delay: delay,
+        easing: 'cubic-bezier(0.165, 0.84, 0.44, 1)',
+        fill: 'forwards'
+      });
 
-    timeline.staggerTo(shards.toArray(), 2.5, {
-      x: 0,
-      y: 0,
-      opacity: 1,
-      scale: 1,
-      rotation: 0,
-      ease: window.Power4.easeOut
-    }, 0.009, 0);
+      el.style.transformBox = 'view-box';
+      el.style.transformOrigin = c[0] + 'px ' + c[1] + 'px';
+      animation.onfinish = finishOne;
+      animation.oncancel = finishOne;
+    });
   }
 
   function scheduleStart(anchorTs) {

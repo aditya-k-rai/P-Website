@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap');
-
 @media (max-width: 600px) {
   .infoContainer .btn {
     margin-left: auto;
@@ -21,8 +19,6 @@
     margin-right: 0;
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
-
 :root {
   --liquid-bg-color: #e5e5ea;
   --liquid-blob-1: #ff2a5f;
@@ -84,7 +80,7 @@ body.night-theme,
 }
 
 .night-theme {
-  font-family: 'Montserrat', sans-serif !important;
+  font-family: "Be Vietnam Pro", sans-serif !important;
   color: #F9F6EF !important;
   background-image: radial-gradient(circle at 50% 50%, #2f3040, #1f2020) !important;
 }
@@ -215,8 +211,6 @@ footer,
 .chooser input[type='radio']:not(:checked) + label:active {
   box-shadow: inset -1px -1px #F9F6EF40;
 }
-@import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Space%20Grotesk:400');
-
 :root {
   /*  change this for scaling  */
   --m: 4rem;
@@ -399,8 +393,6 @@ footer,
   font-size: 1rem;
   margin-top: 1rem;
 }
-
-@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&display=swap");
 
 * {
   box-sizing: border-box;
