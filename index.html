@@ -16,8 +16,7 @@
   <!-- Link CSS  -->
   <link rel="stylesheet" href="./styles.css" />
 
-  <!-- Combined Google Fonts – single request with display=swap to avoid render-blocking -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100&family=Be+Vietnam+Pro:wght@300&family=Space+Grotesk:wght@400;700&family=Noto+Serif+Devanagari:wght@400;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100&display=swap" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -2849,12 +2848,20 @@
       }
 
       var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var hasFinePointer = !window.matchMedia || window.matchMedia('(hover: hover) and (pointer: fine)').matches;
       var isWideEnough = !window.matchMedia || window.matchMedia('(min-width: 900px)').matches;
-      var lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
-      var lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
 
-      if (!svg || reduceMotion || !hasFinePointer || !isWideEnough || lowMemory || lowCpu) {
+      if (!svg) {
+        console.warn('Hero Shards: SVG element #heroFaceShards not found.');
+        showFallback();
+        return;
+      }
+      if (reduceMotion) {
+        console.info('Hero Shards: Disabled due to prefers-reduced-motion.');
+        showFallback();
+        return;
+      }
+      if (!isWideEnough) {
+        console.info('Hero Shards: Disabled on narrow screens (<900px).');
         showFallback();
         return;
       }

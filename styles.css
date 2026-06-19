@@ -1,4 +1,4 @@
-/* Google Fonts are now loaded in HTML head - no @import needed here */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+Devanagari:wght@400;700&display=swap');
 
 @media (max-width: 600px) {
   .infoContainer .btn {
@@ -21,7 +21,7 @@
     margin-right: 0;
   }
 }
-/* Google Fonts are now in HTML head; Space Grotesk also loaded there */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
 
 :root {
   --liquid-bg-color: #e5e5ea;
@@ -215,7 +215,7 @@ footer,
 .chooser input[type='radio']:not(:checked) + label:active {
   box-shadow: inset -1px -1px #F9F6EF40;
 }
-/* Space Grotesk loaded via HTML head consolidated font request */
+@import url('https://fonts.googleapis.com/css?family=Space%20Grotesk:700|Space%20Grotesk:400');
 
 :root {
   /*  change this for scaling  */
@@ -400,7 +400,7 @@ footer,
   margin-top: 1rem;
 }
 
-/* Be Vietnam Pro loaded via HTML head consolidated font request */
+@import url("https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300&display=swap");
 
 * {
   box-sizing: border-box;
@@ -9139,10 +9139,14 @@ html.perf-lite .resume-download-fab::before {
    until they're near the viewport.  Dramatically cuts
    the initial render cost on a long single-page site.
    contain-intrinsic-size prevents scroll-height collapse.
+
+   NOTE: #skills and #graphics are excluded because they use
+   IntersectionObserver to lazy-load heavy scripts (matter.js,
+   color-avalanche.js, pdf.js, graphics-flipbook.js).
+   content-visibility:auto can interfere with those observers
+   by reporting zero height before the section is rendered.
    ==================================================== */
 #projects,
-#skills,
-#graphics,
 #socialmedia,
 #advertisements,
 #itSpecialist,
