@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -10,13 +10,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
   <link rel="preload" as="image" href="./Images/userAsset/Aditya_nobg.png" fetchpriority="high" />
 
   <!-- Link CSS  -->
   <link rel="stylesheet" href="./styles.css" />
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100&display=swap" />
+  <!-- Combined Google Fonts – single request with display=swap to avoid render-blocking -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100&family=Be+Vietnam+Pro:wght@300&family=Space+Grotesk:wght@400;700&family=Noto+Serif+Devanagari:wght@400;700&display=swap" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -116,26 +117,55 @@
       var loaderPercent = document.getElementById('loaderPercent');
       var progressBar = document.querySelector('.loader-progress-bar');
       var progress = 0;
-      var interval = setInterval(function() {
-        progress += Math.random() * 12 + 3;
-        if (progress >= 100) {
-          progress = 100;
-          clearInterval(interval);
-          loaderPercent.textContent = '100%';
-          progressBar.style.width = '100%';
+      var lastTime = 0;
+      var startTime = Date.now();
+      var MAX_LOADER_MS = 3500; // hard cap: never block more than 3.5s
+
+      function dismissLoader() {
+        progress = 100;
+        loaderPercent.textContent = '100%';
+        progressBar.style.width = '100%';
+        setTimeout(function() {
+          loader.classList.add('hidden');
+          window.__portfolioLoaderHiddenAt = Date.now();
+          window.dispatchEvent(new CustomEvent('portfolio:loader-hidden'));
           setTimeout(function() {
-            loader.classList.add('hidden');
-            window.__portfolioLoaderHiddenAt = Date.now();
-            window.dispatchEvent(new CustomEvent('portfolio:loader-hidden'));
-            setTimeout(function() {
-              loader.setAttribute('hidden', '');
-            }, 700);
-          }, 400);
-        } else {
-          loaderPercent.textContent = Math.floor(progress) + '%';
-          progressBar.style.width = Math.floor(progress) + '%';
+            loader.setAttribute('hidden', '');
+          }, 700);
+        }, 350);
+      }
+
+      function tickLoader(now) {
+        if (progress >= 100) return;
+        // Hard cap: force dismiss if too slow (e.g. slow network)
+        if (Date.now() - startTime > MAX_LOADER_MS) {
+          dismissLoader();
+          return;
         }
-      }, 80);
+        var delta = now - lastTime;
+        lastTime = now;
+        // Use elapsed time instead of random intervals for consistency
+        var elapsed = Date.now() - startTime;
+        var targetProgress = Math.min(95, (elapsed / MAX_LOADER_MS) * 100);
+        progress += (targetProgress - progress) * 0.15 + Math.random() * 2;
+        if (progress >= 100) {
+          dismissLoader();
+          return;
+        }
+        loaderPercent.textContent = Math.floor(progress) + '%';
+        progressBar.style.width = Math.floor(progress) + '%';
+        requestAnimationFrame(tickLoader);
+      }
+
+      // Listen for page load to fast-complete loader
+      if (document.readyState === 'complete') {
+        setTimeout(dismissLoader, 200);
+      } else {
+        window.addEventListener('load', function() {
+          if (progress < 100) setTimeout(dismissLoader, 200);
+        }, { once: true });
+        requestAnimationFrame(tickLoader);
+      }
     })();
   </script>
 
@@ -2834,7 +2864,6 @@
           window.__loadScriptOnce(src, done, fail);
           return;
         }
-
         var script = document.createElement('script');
         script.src = src;
         script.async = true;
@@ -2843,12 +2872,30 @@
         document.head.appendChild(script);
       }
 
-      document.body.classList.add('hero-shards-enabled');
-      loadScript('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js', function () {
-        loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js', function () {
-          loadScript('./hero-shards.js', null, showFallback);
+      function bootHeroShards() {
+        document.body.classList.add('hero-shards-enabled');
+        // Load jQuery -> GSAP -> hero-shards sequentially but AFTER loader is gone
+        // so these ~800KB of scripts don't compete with the visible page
+        loadScript('https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js', function () {
+          loadScript('https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js', function () {
+            loadScript('./hero-shards.js', null, showFallback);
+          }, showFallback);
         }, showFallback);
-      }, showFallback);
+      }
+
+      // Delay hero-shards until loader is hidden so it doesn't compete during initial paint
+      if (window.__portfolioLoaderHiddenAt) {
+        // Loader already gone — boot after a short yield
+        setTimeout(bootHeroShards, 400);
+      } else {
+        window.addEventListener('portfolio:loader-hidden', function() {
+          setTimeout(bootHeroShards, 300);
+        }, { once: true });
+        // Fallback: if loader event never fires, boot after 4s
+        setTimeout(function() {
+          if (!document.body.classList.contains('hero-shards-enabled')) bootHeroShards();
+        }, 4000);
+      }
     })();
   </script>
   <script>
