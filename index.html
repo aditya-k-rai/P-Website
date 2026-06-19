@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100;300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" />
 
   <!-- Link CSS  -->
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./styles.css?v=20260619-3" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -221,7 +221,7 @@
           <pattern id="water" width=".25" height="1.1" patternContentUnits="objectBoundingBox">
             <path fill="#0077be" d="M0.25,1H0c0,0,0-0.659,0-0.916c0.083-0.303,0.158,0.334,0.25,0C0.25,0.327,0.25,1,0.25,1z"/>
           </pattern>
-          <text id="water-txt" x="10" y="90" style="font-weight:bold;font-size:90px;font-family:'Space Grotesk',Helvetica,sans-serif">Aditya Rai</text>
+          <text id="water-txt" x="10" y="90" style="font-weight:bold;font-size:90px;font-family:'Be Vietnam Pro',Arial,sans-serif">Aditya Rai</text>
           <mask id="water-mask">
             <use xlink:href="#water-txt" fill="#ffffff"/>
           </mask>
@@ -2844,6 +2844,7 @@
       var fallback = document.querySelector('.hero-shard-fallback');
       function showFallback() {
         if (fallback) fallback.style.opacity = '1';
+        document.body.classList.remove('hero-shards-pending');
         document.body.classList.remove('hero-shards-enabled');
       }
 
@@ -2866,6 +2867,8 @@
         return;
       }
 
+      document.body.classList.add('hero-shards-pending');
+
       function loadScript(src, done, fail) {
         if (window.__loadScriptOnce) {
           window.__loadScriptOnce(src, done, fail);
@@ -2884,8 +2887,10 @@
       function bootHeroShards() {
         if (heroShardsBooted) return;
         heroShardsBooted = true;
-        loadScript('./hero-shards.js', null, showFallback);
+        loadScript('./hero-shards.js?v=20260619-3', null, showFallback);
       }
+
+      bootHeroShards();
 
       // Delay hero-shards until loader is hidden so it doesn't compete during initial paint
       if (window.__portfolioLoaderHiddenAt) {

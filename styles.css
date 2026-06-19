@@ -401,6 +401,15 @@ footer,
   font-family: "Be Vietnam Pro", sans-serif;
 }
 
+html,
+body,
+button,
+input,
+textarea,
+select {
+  font-family: "Be Vietnam Pro", Arial, sans-serif;
+}
+
 #wrapper {
   width: 100%;
   height: 100vh;
@@ -1231,6 +1240,7 @@ body.night-theme .heroSection::before,
   transition: opacity 0.2s ease;
 }
 
+.hero-shards-pending .hero-shard-fallback,
 .hero-shards-enabled .hero-shard-fallback {
   opacity: 0;
 }
@@ -1241,6 +1251,7 @@ body.night-theme .heroSection::before,
   z-index: 2;
 }
 
+.hero-shards-pending .hero-shards-svg,
 .hero-shards-enabled .hero-shards-svg {
   display: block;
 }
@@ -8670,6 +8681,7 @@ html {
 
 body {
   overflow-x: hidden;
+  font-family: "Be Vietnam Pro", Arial, sans-serif;
 }
 
 img,
@@ -9154,4 +9166,44 @@ html.perf-lite .resume-download-fab::before {
 /* Hero section is always visible – never defer it */
 .heroSection {
   content-visibility: visible;
+}
+
+/* Final hosted-font guard: keep normal UI text consistent after all component rules. */
+body :where(
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  a,
+  span,
+  button,
+  input,
+  textarea,
+  select,
+  label,
+  li,
+  strong,
+  em,
+  small,
+  .heading,
+  .subHeading,
+  .desc,
+  .btn,
+  .getStartedBtn,
+  .projectTitle,
+  .projectHeading,
+  .projectSubHeading,
+  .gfx-division-title,
+  .gfx-division-desc,
+  .poster-effect-section,
+  .sm-carousel__placeholder,
+  .sm-carousel__btn,
+  .sm-carousel__indicator,
+  .shloka-hint,
+  .shloka-meaning
+):not(.shloka-section *):not(.fa):not([class^="fa-"]):not([class*=" fa-"]) {
+  font-family: "Be Vietnam Pro", Arial, sans-serif !important;
 }

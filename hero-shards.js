@@ -712,6 +712,7 @@
       if (fallbackImage) {
         fallbackImage.style.opacity = '1';
       }
+      document.body.classList.remove('hero-shards-pending');
       document.body.classList.remove('hero-shards-enabled');
       return;
     }
@@ -721,12 +722,14 @@
       if (fallbackImage) {
         fallbackImage.style.opacity = '1';
       }
+      document.body.classList.remove('hero-shards-pending');
       document.body.classList.remove('hero-shards-enabled');
       return;
     }
 
     svg.style.opacity = '1';
     document.body.classList.add('hero-shards-enabled');
+    document.body.classList.remove('hero-shards-pending');
 
     if (fallbackImage) {
       fallbackImage.style.opacity = '0';
@@ -742,6 +745,9 @@
       }
       svg.style.transition = 'opacity 0.2s ease';
       svg.style.opacity = '0';
+      window.setTimeout(function () {
+        document.body.classList.remove('hero-shards-enabled');
+      }, 220);
     }
 
     shards.forEach(function (el, i) {
@@ -774,9 +780,7 @@
   }
 
   function scheduleStart(anchorTs) {
-    var elapsed = typeof anchorTs === 'number' ? (Date.now() - anchorTs) : 0;
-    var wait = Math.max(1000 - elapsed, 0);
-    window.setTimeout(startAssembly, wait);
+    window.setTimeout(startAssembly, 0);
   }
 
   buildShards();
