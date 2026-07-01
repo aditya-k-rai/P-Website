@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Montserrat:wght@100;300;400;500;600;700&family=Noto+Serif+Devanagari:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" />
 
   <!-- Link CSS  -->
-  <link rel="stylesheet" href="./styles.css?v=20260619-3" />
+  <link rel="stylesheet" href="./styles.css?v=20260620-5" />
 
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -689,10 +689,10 @@
               Built to showcase completed projects and brand credibility.
             </p>
             <div class="btnGroup">
-              <a href="https://github.com/aditya-k-rai" title="GitHubLink">
+              <a href="https://aarnaconstructions.com/" title="GitHubLink" target="_blank" rel="noopener noreferrer">
                 <span class="btn-icon github-icon"></span>
               </a>
-              <a href="https://portfolio.aarnaconstructions.com/" title="Live Link">
+              <a href="https://aarnaconstructions.com/" title="Live Link" target="_blank" rel="noopener noreferrer">
                 <span class="btn-icon link-icon"></span>
               </a>
             </div>
@@ -714,10 +714,10 @@
               Built to present services, projects, and client enquiries.
             </p>
             <div class="btnGroup">
-              <a href="https://github.com/aditya-k-rai" title="GitHubLink">
+              <a href="https://aarnaconstructions.com/" title="GitHubLink" target="_blank" rel="noopener noreferrer">
                 <span class="btn-icon github-icon"></span>
               </a>
-              <a href="https://new.aarnaconstructions.com/" title="Live Link">
+              <a href="https://aarnaconstructions.com/" title="Live Link" target="_blank" rel="noopener noreferrer">
                 <span class="btn-icon link-icon"></span>
               </a>
             </div>
@@ -2887,7 +2887,7 @@
       function bootHeroShards() {
         if (heroShardsBooted) return;
         heroShardsBooted = true;
-        loadScript('./hero-shards.js?v=20260619-3', null, showFallback);
+        loadScript('./hero-shards.js?v=20260619-4', null, showFallback);
       }
 
       bootHeroShards();
@@ -4763,6 +4763,38 @@
     document.addEventListener('visibilitychange', pmSyncRunning);
     pmSyncRunning();
   })();
+  </script>
+  <script>
+    (function () {
+      var portrait = document.querySelector('#about .about-user-image');
+      if (!portrait) return;
+      portrait.classList.add('is-waiting');
+
+      function revealPortrait() {
+        portrait.classList.remove('is-waiting');
+        portrait.classList.add('is-visible');
+      }
+
+      if (!('IntersectionObserver' in window)) {
+        revealPortrait();
+        return;
+      }
+
+      var wrapper = document.getElementById('wrapper');
+      var observer = new IntersectionObserver(function (entries) {
+        if (entries.some(function (entry) { return entry.isIntersecting; })) {
+          revealPortrait();
+          observer.disconnect();
+        }
+      }, {
+        root: wrapper || null,
+        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.15
+      });
+
+      observer.observe(portrait);
+      window.setTimeout(revealPortrait, 1800);
+    })();
   </script>
 </body>
 
