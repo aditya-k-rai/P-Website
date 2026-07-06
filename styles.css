@@ -9410,13 +9410,15 @@ html.perf-ultra-lite .lets-connect-canvas {
 
   #about .about-phone-wrap {
     justify-self: center !important;
-    width: 100% !important;
+    width: min(100%, 320px) !important;
     max-width: 100% !important;
     min-height: clamp(420px, 86vw, 520px) !important;
     perspective: none;
   }
 
   #about .bb-phone-3d {
+    width: 100% !important;
+    max-width: 320px !important;
     --bb-scale: 0.82;
     transform-style: flat;
     will-change: auto;
@@ -9448,7 +9450,7 @@ html.perf-ultra-lite .lets-connect-canvas {
 
   #about .ak-mini-chip--link {
     margin-left: 0;
-    padding-left: 42px;
+    padding-left: 16px;
   }
 
   #about .ak-resume .about-user-image,
