@@ -33,6 +33,7 @@
   var isVisible = false;
   var isRunning = false;
   var hasSpawned = false;
+  var perfLite = !!window.__portfolioPerfLite;
 
   // Color data
   var colorListItems = document.querySelectorAll('#ca-color-source li');
@@ -135,7 +136,7 @@
     var w = section.offsetWidth;
     var padding = 50;
     var isMobile = window.innerWidth <= 600;
-    var pillCount = isMobile ? 25 : 50;
+    var pillCount = perfLite ? 18 : (isMobile ? 25 : 50);
     var pillFontSize = isMobile ? 11 : 14;
     var pillHeight = isMobile ? 30 : 40;
     var charWidth = isMobile ? 7 : 9;
@@ -190,18 +191,23 @@
 
   // Sync DOM to physics — only when visible
   var animFrameId = null;
-  function updateLoop() {
+  var lastSync = 0;
+  var syncInterval = perfLite ? 66 : 0;
+  function updateLoop(ts) {
     if (!isVisible) {
       animFrameId = null;
       return;
     }
-    bodiesDOM.forEach(function (pair) {
-      var pos = pair.body.position;
-      var angle = pair.body.angle;
-      pair.elem.style.transform =
-        'translate(' + (pos.x - pair.elem.offsetWidth / 2) + 'px, ' +
-        (pos.y - pair.elem.offsetHeight / 2) + 'px) rotate(' + angle + 'rad)';
-    });
+    if (!syncInterval || !lastSync || ts - lastSync >= syncInterval) {
+      lastSync = ts;
+      bodiesDOM.forEach(function (pair) {
+        var pos = pair.body.position;
+        var angle = pair.body.angle;
+        pair.elem.style.transform =
+          'translate(' + (pos.x - pair.elem.offsetWidth / 2) + 'px, ' +
+          (pos.y - pair.elem.offsetHeight / 2) + 'px) rotate(' + angle + 'rad)';
+      });
+    }
     animFrameId = requestAnimationFrame(updateLoop);
   }
 
@@ -246,7 +252,10 @@
   observer.observe(section);
 
   // Resize
+  var resizeTimer = 0;
   window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
     var w = section.offsetWidth;
     var h = section.offsetHeight;
     render.canvas.width = w;
@@ -254,6 +263,7 @@
     render.options.width = w;
     render.options.height = h;
     createWalls();
+    }, 160);
   });
 
   // Controls
@@ -261,7 +271,7 @@
   var btnExplode = document.getElementById('ca-btn-explode');
   var gravityOn = true;
 
-  btnGravity.addEventListener('click', function () {
+  if (btnGravity) btnGravity.addEventListener('click', function () {
     gravityOn = !gravityOn;
     engine.gravity.y = gravityOn ? 1 : 0;
     btnGravity.textContent = gravityOn ? 'Zero Gravity' : 'Restore Gravity';
@@ -275,7 +285,7 @@
     }
   });
 
-  btnExplode.addEventListener('click', function () {
+  if (btnExplode) btnExplode.addEventListener('click', function () {
     var ctx = getAudioCtx();
     if (ctx.state === 'suspended') ctx.resume();
     var osc = ctx.createOscillator();

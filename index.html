@@ -28,14 +28,26 @@
   <script>
     (function () {
       var dpr = window.devicePixelRatio || 1;
-      var screenArea = Math.max(window.innerWidth || 0, screen.width || 0) *
-        Math.max(window.innerHeight || 0, screen.height || 0) * dpr * dpr;
-      var lowMemory = navigator.deviceMemory && navigator.deviceMemory < 4;
-      var lowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency < 4;
-      var perfLite = screenArea > 3200000 || lowMemory || lowCpu;
+      var vw = window.innerWidth || document.documentElement.clientWidth || screen.width || 0;
+      var vh = window.innerHeight || document.documentElement.clientHeight || screen.height || 0;
+      var screenArea = Math.max(vw, screen.width || 0) *
+        Math.max(vh, screen.height || 0) * dpr * dpr;
+      var memory = navigator.deviceMemory || 0;
+      var cores = navigator.hardwareConcurrency || 0;
+      var lowMemory = memory && memory <= 3;
+      var veryLowMemory = memory && memory <= 2;
+      var lowCpu = cores && cores <= 4;
+      var veryLowCpu = cores && cores <= 2;
+      var narrowPhone = Math.min(vw, vh) <= 430;
+      var mobileLike = (navigator.maxTouchPoints || 0) > 0 && Math.min(vw, vh) <= 760;
+      var highDpiMobile = mobileLike && dpr >= 2.5;
+      var perfLite = screenArea > 3200000 || lowMemory || lowCpu || (narrowPhone && highDpiMobile);
+      var perfUltraLite = veryLowMemory || veryLowCpu || (mobileLike && (memory && memory <= 3) && (cores && cores <= 4));
 
       if (perfLite) document.documentElement.classList.add('perf-lite');
+      if (perfUltraLite) document.documentElement.classList.add('perf-ultra-lite');
       window.__portfolioPerfLite = !!perfLite;
+      window.__portfolioPerfUltraLite = !!perfUltraLite;
 
       window.__loadScriptOnce = function (src, done, fail) {
         var existing = document.querySelector('script[data-src-key="' + src + '"]');
@@ -1479,7 +1491,7 @@
           </div>
         </div>
         <div class="hobbies-tv-wrap">
-          <iframe class="tv-frame" src="./tv.html" title="Interactive retro TV video player" loading="lazy" scrolling="no"></iframe>
+          <iframe class="tv-frame" data-src="./tv.html" title="Interactive retro TV video player" loading="lazy" scrolling="no"></iframe>
         </div>
       </div>
 
@@ -1487,7 +1499,7 @@
         <h3 id="cassetteDeckTitle" class="sr-only">4TRACK-CC audio cassette player</h3>
         <iframe
           class="fourtrack-source-frame"
-          src="./4track-recorder/index.html"
+          data-src="./4track-recorder/index.html"
           title="4TRACK-CC open-source 4-track recorder"
           loading="lazy"
           allow="microphone"
@@ -1970,6 +1982,10 @@
       function initLetsConnectCanvas() {
         var canvas = document.getElementById('lets-connect-canvas');
         if (!canvas || !canvas.getContext) return;
+        if (window.__portfolioPerfUltraLite || (window.__portfolioPerfLite && window.innerWidth <= 700)) {
+          canvas.setAttribute('hidden', '');
+          return;
+        }
 
         var ctx = canvas.getContext('2d');
         var img = new Image();
@@ -2176,7 +2192,7 @@
 
       function shouldUseStaticAdBackground() {
         var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        return reduceMotion || (window.__portfolioPerfLite && window.innerWidth >= 1600);
+        return reduceMotion || !!window.__portfolioPerfLite || window.innerWidth <= 760;
       }
 
       function boot() {
@@ -2609,6 +2625,11 @@
       if (!section) return;
       var canvas = section.querySelector('.it-bg-canvas');
       if (!canvas || !canvas.getContext) return;
+      if (window.__portfolioPerfUltraLite || (window.__portfolioPerfLite && window.innerWidth <= 760)) {
+        canvas.setAttribute('hidden', '');
+        section.classList.add('it-bg-static');
+        return;
+      }
       var ctx = canvas.getContext('2d');
 
       var arr = [];
@@ -2890,20 +2911,18 @@
         loadScript('./hero-shards.js?v=20260619-4', null, showFallback);
       }
 
-      bootHeroShards();
-
       // Delay hero-shards until loader is hidden so it doesn't compete during initial paint
       if (window.__portfolioLoaderHiddenAt) {
-        // Loader already gone — boot after a short yield
-        setTimeout(bootHeroShards, 400);
+        // Loader already gone - boot after a short yield
+        setTimeout(bootHeroShards, window.__portfolioPerfLite ? 1400 : 400);
       } else {
         window.addEventListener('portfolio:loader-hidden', function() {
-          setTimeout(bootHeroShards, 300);
+          setTimeout(bootHeroShards, window.__portfolioPerfLite ? 1400 : 300);
         }, { once: true });
         // Fallback: if loader event never fires, boot after 4s
         setTimeout(function() {
           if (!heroShardsBooted) bootHeroShards();
-        }, 4000);
+        }, window.__portfolioPerfLite ? 6500 : 4000);
       }
     })();
   </script>
@@ -3588,6 +3607,27 @@
   </script>
   <script>
     (function () {
+      function buildStaticSkillPills(section) {
+        var scene = section.querySelector('#ca-scene-container');
+        var source = section.querySelector('#ca-color-source');
+        if (!scene || !source || scene.dataset.staticBuilt === 'true') return;
+        scene.dataset.staticBuilt = 'true';
+        section.classList.add('ca-static');
+        scene.innerHTML = '';
+        Array.prototype.slice.call(source.querySelectorAll('li')).slice(0, 36).forEach(function (li) {
+          var pill = document.createElement('span');
+          pill.className = 'ca-static-pill';
+          pill.textContent = li.textContent.trim();
+          pill.style.backgroundColor = li.dataset.color || '#ffffff';
+          scene.appendChild(pill);
+          var rgb = window.getComputedStyle(pill).backgroundColor.match(/\d+/g);
+          if (rgb) {
+            var brightness = (parseInt(rgb[0], 10) * 299 + parseInt(rgb[1], 10) * 587 + parseInt(rgb[2], 10) * 114) / 1000;
+            pill.style.color = brightness > 145 ? '#111827' : '#ffffff';
+          }
+        });
+      }
+
       function lazyBootSection(selector, rootMargin, boot) {
         var section = document.querySelector(selector);
         if (!section || section.dataset.lazyBooted === 'true') return;
@@ -3615,16 +3655,54 @@
       }
 
       lazyBootSection('#skills', '700px 0px', function () {
+        var section = document.querySelector('#skills');
+        if (window.__portfolioPerfUltraLite || (window.__portfolioPerfLite && window.innerWidth <= 560)) {
+          if (section) buildStaticSkillPills(section);
+          return;
+        }
         window.__loadScriptOnce('https://cdn.jsdelivr.net/npm/matter-js@0.19.0/build/matter.min.js', function () {
           window.__loadScriptOnce('./color-avalanche.js');
         });
       });
 
       lazyBootSection('#graphics', '900px 0px', function () {
+        if (window.__portfolioPerfUltraLite && window.innerWidth <= 560) return;
         window.__loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', function () {
           window.__loadScriptOnce('./graphics-flipbook.js');
         });
       });
+
+      function lazyLoadIframe(frame) {
+        if (!frame || frame.hasAttribute('src') || !frame.dataset.src) return;
+        frame.src = frame.dataset.src;
+      }
+
+      function initLazyIframes() {
+        var frames = Array.prototype.slice.call(document.querySelectorAll('iframe[data-src]'));
+        if (!frames.length) return;
+        var wrapper = document.getElementById('wrapper');
+
+        if ('IntersectionObserver' in window) {
+          var observer = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                lazyLoadIframe(entry.target);
+                observer.unobserve(entry.target);
+              }
+            });
+          }, {
+            root: wrapper || null,
+            rootMargin: window.__portfolioPerfLite ? '120px 0px' : '600px 0px',
+            threshold: 0
+          });
+          frames.forEach(function (frame) { observer.observe(frame); });
+        } else {
+          frames.forEach(lazyLoadIframe);
+        }
+      }
+
+      if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLazyIframes);
+      else initLazyIframes();
     })();
   </script>
 
@@ -3808,14 +3886,37 @@
       var navLinks = document.querySelector('.nav-links');
       var total = cards.length;
       if (total === 0) return;
+      var lowMediaMode = !!window.__portfolioPerfLite;
 
       var activeIndex = 0;
-      var isPlaying = true;   // auto-advance state
-      var isMuted = false;    // audio state
+      var isPlaying = !lowMediaMode;   // auto-advance state
+      var isMuted = lowMediaMode;    // audio state
       var autoTimer = null;
       var isHovering = false; // hover-to-play-full state
       var isSectionActive = false;
       var visibilityFrame = 0;
+
+      if (lowMediaMode) {
+        cards.forEach(function (card) {
+          var video = card.querySelector('.sm-carousel__video');
+          if (!video || !video.getAttribute('src')) return;
+          video.dataset.src = video.getAttribute('src');
+          video.removeAttribute('src');
+          video.load();
+        });
+        if (playPauseBtn) {
+          playPauseBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+          playPauseBtn.setAttribute('aria-label', 'Play');
+        }
+      }
+
+      function loadVideoSource(video) {
+        if (!video) return;
+        if (!video.getAttribute('src') && video.dataset.src) {
+          video.src = video.dataset.src;
+          video.load();
+        }
+      }
 
       function getActiveVideo() {
         var card = cards[activeIndex];
@@ -3844,9 +3945,15 @@
       }
 
       function playSectionVideos(withSound) {
-        cards.forEach(function (card) {
+        cards.forEach(function (card, i) {
           var video = card.querySelector('.sm-carousel__video');
           if (!video) return;
+          if (i !== activeIndex) {
+            video.pause();
+            video.muted = true;
+            return;
+          }
+          loadVideoSource(video);
           video.volume = video.volume || 0.75;
           video.muted = !withSound;
           video.loop = true;
@@ -3956,7 +4063,8 @@
           var video = card.querySelector('.sm-carousel__video');
           if (!video) return;
 
-          if (isSectionActive && isPlaying) {
+          if (isSectionActive && isPlaying && i === activeIndex) {
+            loadVideoSource(video);
             video.muted = isMuted;
             video.loop = !isHovering;
             var p = video.play();
@@ -4149,6 +4257,10 @@
     var lastTvAction = '';
 
     function sendTvAction(action) {
+      if (!tvFrame.hasAttribute('src')) {
+        if (tvFrame.dataset.src) tvFrame.src = tvFrame.dataset.src;
+        return;
+      }
       if (!tvFrame.contentWindow) return;
       if (action === lastTvAction) return;
       lastTvAction = action;
@@ -4157,6 +4269,13 @@
         action: action
       }, '*');
     }
+
+    tvFrame.addEventListener('load', function () {
+      lastTvAction = '';
+      var rect = hobbiesSection.getBoundingClientRect();
+      var rootRect = wrapper ? wrapper.getBoundingClientRect() : { top: 0, bottom: window.innerHeight };
+      if (rect.bottom > rootRect.top && rect.top < rootRect.bottom) sendTvAction('resume');
+    });
 
     if ('IntersectionObserver' in window) {
       var tvObserver = new IntersectionObserver(function (entries) {
@@ -4342,6 +4461,7 @@
 
     function loadInitialTrack() {
       if (!activeButton || pendingButton || initialTrackLoaded) return;
+      if (!cassetteFrame.hasAttribute('src') && cassetteFrame.dataset.src) return;
       loadTrack(activeButton, false);
     }
 
@@ -4591,8 +4711,9 @@
       if (tx + 145 > W) tx = mx - 155;
       if (ty < 0) ty = 10;
       tip.style.left = tx + 'px'; tip.style.top = ty + 'px';
+      if (!pmContinuousRender) pmRender();
     });
-    canvas.addEventListener('mouseleave', function() { pmHoveredX = -1; pmHideTooltip(); });
+    canvas.addEventListener('mouseleave', function() { pmHoveredX = -1; pmHideTooltip(); if (!pmContinuousRender) pmRender(); });
     function pmHideTooltip() { document.getElementById('pmTooltip').classList.remove('visible'); }
 
     document.querySelectorAll('#pmLegend .pm-legend-item').forEach(function(el) {
@@ -4624,7 +4745,7 @@
           ctx.strokeStyle = p.color; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
         });
       }
-      pmRenderFrame = requestAnimationFrame(pmRender);
+      if (pmContinuousRender) pmRenderFrame = requestAnimationFrame(pmRender);
     }
 
     var PM_CPC_BASES = { Reddit:0.95, Instagram:2.10, Facebook:1.72, X:0.88, TikTok:1.45, LinkedIn:5.26, 'Google Ads':3.80, WhatsApp:0.62 };
@@ -4706,14 +4827,15 @@
     var pmLiveTimer = 0;
     var pmCpcTimer = 0;
     var pmRoasTimer = 0;
+    var pmContinuousRender = !window.__portfolioPerfLite;
 
     function pmStart() {
       if (pmRunning) return;
       pmRunning = true;
       pmRender();
-      pmLiveTimer = setInterval(pmUpdateLive, 900);
-      pmCpcTimer = setInterval(pmUpdateCPC, 1800);
-      pmRoasTimer = setInterval(pmUpdateROAS, 2200);
+      pmLiveTimer = setInterval(function () { pmUpdateLive(); if (!pmContinuousRender) pmRender(); }, window.__portfolioPerfLite ? 1800 : 900);
+      pmCpcTimer = setInterval(pmUpdateCPC, window.__portfolioPerfLite ? 3200 : 1800);
+      pmRoasTimer = setInterval(pmUpdateROAS, window.__portfolioPerfLite ? 3800 : 2200);
     }
 
     function pmStop() {
