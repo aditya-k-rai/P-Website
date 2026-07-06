@@ -9392,6 +9392,159 @@ html.perf-ultra-lite .lets-connect-canvas {
   }
 }
 
+/* About section smartphone rescue: override the late desktop placement rules. */
+@media (max-width: 900px) {
+  #about {
+    overflow-x: hidden;
+  }
+
+  #about .about-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    gap: clamp(14px, 4vw, 24px) !important;
+    padding-inline: clamp(14px, 4vw, 22px) !important;
+    padding-top: clamp(8px, 2vw, 18px) !important;
+    align-items: start !important;
+  }
+
+  #about .about-phone-wrap {
+    justify-self: center !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: clamp(420px, 86vw, 520px) !important;
+    perspective: none;
+  }
+
+  #about .bb-phone-3d {
+    --bb-scale: 0.82;
+    transform-style: flat;
+    will-change: auto;
+  }
+
+  #about .about-copy,
+  #about .ak-resume {
+    min-width: 0;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  #about .ak-head,
+  #about .ak-panels {
+    min-width: 0;
+  }
+
+  #about .ak-chips-row {
+    width: 100%;
+    gap: 8px;
+  }
+
+  #about .ak-mini-chip,
+  #about .ak-mini-chip--link {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  #about .ak-mini-chip--link {
+    margin-left: 0;
+    padding-left: 42px;
+  }
+
+  #about .ak-resume .about-user-image,
+  #about .ak-resume .about-user-image.is-waiting,
+  #about .ak-resume .about-user-image.is-visible {
+    --about-portrait-drop: 0px;
+    position: relative !important;
+    inset: auto !important;
+    display: block !important;
+    justify-self: center;
+    width: min(72vw, 260px) !important;
+    max-width: 100% !important;
+    margin: 8px auto 2px !important;
+    transform: none !important;
+    translate: 0 0 !important;
+    animation: none !important;
+    opacity: 1 !important;
+    z-index: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  #about.projectSection {
+    padding-inline: 0;
+  }
+
+  #about .projectTitle {
+    font-size: clamp(2rem, 11vw, 2.7rem);
+    margin-bottom: 0.75rem;
+  }
+
+  #about .about-grid {
+    gap: 12px !important;
+    padding-inline: clamp(12px, 4vw, 16px) !important;
+  }
+
+  #about .about-phone-wrap {
+    min-height: clamp(360px, 102vw, 460px) !important;
+  }
+
+  #about .bb-phone-3d {
+    --bb-scale: 0.72;
+  }
+
+  #about .bb-phone-3d::after {
+    display: none;
+  }
+
+  #about .ak-name {
+    font-size: clamp(1.45rem, 8vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+
+  #about .ak-role {
+    font-size: clamp(0.78rem, 3.7vw, 0.95rem);
+    line-height: 1.45;
+  }
+
+  #about .ak-mini-chip {
+    font-size: 11px;
+    padding-block: 6px;
+  }
+
+  #about .ak-panels.ak-split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+
+  #about .ak-para,
+  #about .ak-t-company {
+    font-size: 12.5px;
+  }
+
+  #about .ak-timeline {
+    padding-left: 22px;
+  }
+
+  #about .ak-t-dot {
+    left: -24px;
+  }
+}
+
+@media (max-width: 360px) {
+  #about .about-phone-wrap {
+    min-height: 330px !important;
+  }
+
+  #about .bb-phone-3d {
+    --bb-scale: 0.58;
+  }
+
+  #about .ak-mini-chip--link {
+    width: 100%;
+  }
+}
+
 /* Final hosted-font guard: keep normal UI text consistent after all component rules. */
 body :where(
   h1,
